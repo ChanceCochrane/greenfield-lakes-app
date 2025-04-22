@@ -1,0 +1,114 @@
+.results-container {
+    max-width: 100%;
+    overflow-x: auto
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+  }
+
+  .no-scores {
+    text-align: center;
+    padding: 15px;
+    background-color: #f8f8f8;
+    border-radius: 4px;
+  }
+
+  table {
+    border-collapse: separate;
+    border-spacing: 0.5rem; /* <-- this controls space between cells */
+  }
+
+  .results-table {
+    width: max-content;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    font-size: 0.9rem;
+    overflow-x: auto; /* Enables horizontal scrolling */
+    max-width: 100%; /* Ensures the container doesn't exceed the viewport */
+    white-space: nowrap; /* Prevents table content from wrapping */
+  }
+
+  th, td {
+    padding: 8px 6px;
+    text-align: center;
+    border: 1px solid #ddd;
+  }
+
+  th {
+    background-color: #4CAF50;
+    font-weight: bold;
+  }
+
+  td {
+    background-color: white;
+  }
+
+  .score-header {
+    background-color: #4CAF50;
+    width: 20px;
+    min-width: 20px;
+  }
+
+  .score-cell {
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    text-align: center;
+    vertical-align: middle;
+    box-sizing: border-box; /* Ensures border/padding are included in the cell size */
+  }
+
+
+  tr:nth-child(even) td {
+    background-color: #f9f9f9;
+  }
+
+  tr:hover td {
+    background-color: #e8f5e9;
+  }
+
+  .score-cell.birdie {
+    border: 4px solid green;
+    padding: 0.25rem;
+    font-weight: bold;
+    color: green;
+    text-align: center;
+  }
+
+  .score-cell.skins {
+    background-color: #ffeb3b !important; /* Yellow highlight for skins */
+  }
+
+  .toggle-button {
+    display: block;
+    margin: 16px auto;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    background-color: #0d1321;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    max-width: 90%;
+    width: 100%;
+  }
+
+  .toggle-button:hover {
+    background-color: #1d2a48;
+  }
+
+  .toggle-button:active {
+    background-color: #0d1321;
+  }
+
+  @media (min-width: 600px) {
+    .toggle-button {
+      max-width: 300px;
+    }
+  }

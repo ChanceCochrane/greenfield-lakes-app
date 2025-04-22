@@ -1,2 +1,30 @@
-<h1>Welcome to Greenfield Lakes</h1>
-<p>This is the home page for the Greenfield Lakes application.</p>
+<div class="hero">
+  <img src="/assets/GreenfieldLogo.png" alt="Greenfield Lakes Logo" class="logo">
+  <h1> Welcome to the Greenfield Lakes Men's Club </h1>
+  <p>Sign up now to reserve your spot in the next tournament!</p>
+  <button class="signup-btn" [routerLink]="['/schedule']">Sign Up Now</button>
+</div>
+
+<section class="leaderboard">
+  <h2>Results from {{ getFormattedDate(lastTournamentDate) }}</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Player</th>
+        <th>Net Score</th>
+        <th>Gross Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let player of leaderboard">
+        <td>{{ player.name }}</td>
+        <td>{{ player.netscore }}</td>
+        <td>{{ player.grossscore }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="results-button-wrapper">
+    <button class="results-btn" (click)="goToFullResults()">Full Leaderboard</button>
+  </div>
+</section>

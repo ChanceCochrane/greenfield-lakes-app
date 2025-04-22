@@ -1,2 +1,117 @@
-h1 { color: #2c3e50; }
-p { font-size: 1.1rem; }
+/* Hero section */
+.hero {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  background: url('https://source.unsplash.com/1600x900/?golf-course') no-repeat center center/cover;
+  color: rgb(61, 58, 58);
+  padding: 0px 20px;
+  border-radius: 10px;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+.hero p {
+  font-size: 1.6rem;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* Tournament details */
+.details {
+  background: #f4f4f4;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 10px;
+}
+
+.details h2 {
+  text-align: center;
+}
+
+.details ul {
+  list-style-type: none;
+  padding: 0;
+  text-align: center;
+}
+
+.details li {
+  margin: 10px 0;
+  font-size: 1.2rem;
+}
+
+/* CTA section */
+.cta {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 1.2rem;
+}
+
+.signup-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 12px 20px 12px 20px;
+  font-size: 1.2rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.results-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+
+}
+
+.signup-btn:hover {
+  background: #218838;
+}
+
+.leaderboard {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.leaderboard h2 {
+  margin-bottom: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+th {
+  background: #333;
+  color: white;
+}
+
+tbody tr:nth-child(even) {
+  background: #f2f2f2;
+}
+
+
+.logo {
+  width: 100px;
+  height: auto;
+  margin: 0px auto 25px auto;
+}

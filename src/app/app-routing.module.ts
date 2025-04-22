@@ -4,6 +4,9 @@ import { HomeComponent } from './components/home/home.component';
 import { InformationComponent } from './components/information/information.component';
 import { ScheduleComponent } from './components/schedule/schedule.component';
 import { ScoringComponent } from './components/scoring/scoring.component';
+import { ResultsComponent } from './components/results/results.component';
+import { TeeSheetComponent } from './components/tee-sheet/tee-sheet.component';
+import { AdminComponent } from './components/admin/admin.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -11,6 +14,9 @@ const routes: Routes = [
   { path: 'information', component: InformationComponent },
   { path: 'schedule', component: ScheduleComponent },
   { path: 'scoring', component: ScoringComponent },
+  { path: 'results/:date', component: ResultsComponent },
+  { path: 'teesheet/:date', component: TeeSheetComponent },
+  { path: 'admin', component: AdminComponent},
   { path: '**', redirectTo: '/home' }
 ];
 

@@ -1,2 +1,17 @@
-<h1>Schedule</h1>
-<p>Upcoming events and tournament schedule.</p>
+<div class="schedule">
+  <h1>2025 Tournament Schedule</h1>
+
+  <div *ngFor="let tournament of tournaments">
+    <div class="tournament">
+      <span>{{ tournament.date | date: 'fullDate' }}</span>
+
+      <!-- Only show the Sign Up button if the tournament is in the future -->
+      <button *ngIf="tournament.canSignUp" (click)="onSignUp(tournament.date)">
+        Tee Sheet
+      </button>
+      <button *ngIf="!tournament.canSignUp" (click)="getResults(tournament.date)">
+        Results
+      </button>
+    </div>
+  </div>
+</div>

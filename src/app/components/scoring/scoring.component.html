@@ -1,2 +1,73 @@
-<h1>Scoring</h1>
-<p>Live scoring and tournament results.</p>
+<!-- Dropdown for Tee Time Selection -->
+<div class="dropdown-container">
+  <select *ngIf="teeTimes.length > 0; else noTeeTimes" (change)="onGroupSelect($event)">
+    <option value="" disabled selected>Select a tee time</option>
+    <option *ngFor="let teeTime of teeTimes; let i = index" [value]="i">
+      {{ teeTime.displayUsers }}
+    </option>
+  </select>
+  <ng-template #noTeeTimes>
+    <p>No tee times today {{ selectedDateString | date: 'EEEE, MMMM d' }}.</p>
+  </ng-template>
+
+  <div *ngIf="selectedUsers.length > 0" class="scoring-interface">
+    <div class="hole-control">
+      <button (click)="decrementHole()">&#9664;</button>
+      <span>
+        <ng-container [ngSwitch]="holeIndex">
+          <ng-container *ngSwitchCase="9">Front 9</ng-container>
+          <ng-container *ngSwitchCase="19">Back 9</ng-container>
+          <ng-container *ngSwitchCase="20">Total Score</ng-container>
+          <ng-container *ngSwitchDefault>Hole {{ holeIndex < 9 ? holeIndex + 1 : holeIndex }}</ng-container>
+        </ng-container>
+      </span>
+      <button (click)="incrementHole()">&#9654;</button>
+    </div>
+
+    <div *ngFor="let user of selectedUsers" class="player-row">
+      <span>{{ user.name }}</span>
+            <!-- Hole Scores -->
+      <div class="score-control" *ngIf="holeIndex >= 0 && holeIndex < 9">
+        <button (click)="adjustScore(user, -1)">&#9664;</button>
+        <span>{{ user.currentRound?.[holeIndex] ?? 0 }}</span>
+        <button (click)="adjustScore(user, 1)">&#9654;</button>
+      </div>
+
+      <!-- Front 9 Total -->
+      <div class="score-control" *ngIf="holeIndex === 9">
+        <span> {{ getFrontNineTotal(user) }}</span>
+      </div>
+
+      <!-- Hole Scores 10–18 -->
+      <div class="score-control" *ngIf="holeIndex >= 10 && holeIndex < 19">
+        <button (click)="adjustScore(user, -1)">&#9664;</button>
+        <span>{{ user.currentRound?.[holeIndex - 1] ?? 0 }}</span>
+        <button (click)="adjustScore(user, 1)">&#9654;</button>
+      </div>
+
+      <!-- Back 9 Total -->
+      <div class="score-control" *ngIf="holeIndex === 19">
+        <span> {{ getBackNineTotal(user) }}</span>
+      </div>
+
+      <!-- Overall Total -->
+      <div class="score-control" *ngIf="holeIndex === 20">
+        <span> {{ getTotalScore(user) }}</span>
+      </div>
+    </div>
+</div>
+
+<!-- Leaderboards -->
+<div *ngIf="teeTimes.length > 0">
+  <app-live-leaderboard
+    [refreshTrigger]="leaderboardTrigger.asObservable()"
+    [selectedDate]="selectedDateString"
+    [showNet]="false">
+  </app-live-leaderboard>
+
+  <app-live-leaderboard
+    [selectedDate]="selectedDateString"
+    [refreshTrigger]="leaderboardTrigger.asObservable()"
+    [showNet]="true">
+  </app-live-leaderboard>
+</div>

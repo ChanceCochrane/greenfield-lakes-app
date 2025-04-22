@@ -6,6 +6,15 @@ import { HomeComponent } from './components/home/home.component';
 import { InformationComponent } from './components/information/information.component';
 import { ScheduleComponent } from './components/schedule/schedule.component';
 import { ScoringComponent } from './components/scoring/scoring.component';
+import { HttpClientModule } from '@angular/common/http';
+import { LeaderboardService } from './services/leaderboard.service';
+import { TeeTimeService } from './services/tee-time.service';
+import { TournamentService } from './services/tournament.service';
+import { ResultsComponent } from './components/results/results.component';
+import { TeeSheetComponent } from './components/tee-sheet/tee-sheet.component';
+import { FormsModule } from '@angular/forms';
+import { LiveLeaderboardComponent } from './components/live-leaderboard/live-leaderboard.component';
+import { AdminComponent } from './components/admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -13,13 +22,21 @@ import { ScoringComponent } from './components/scoring/scoring.component';
     HomeComponent,
     InformationComponent,
     ScheduleComponent,
-    ScoringComponent
+    ScoringComponent,
+    ResultsComponent,
+    TeeSheetComponent,
+    LiveLeaderboardComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [LeaderboardService,
+    TeeTimeService,
+    TournamentService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,0 +1,69 @@
+<div class="results-container">
+  <h2>{{ showNetLeaderboard ? 'Net' : 'Gross' }} Results - {{ displayDate }}</h2>
+
+  <button (click)="toggleLeaderboard()" class="toggle-button">
+    Click to See {{ !showNetLeaderboard ? 'Net' : 'Gross' }} Results
+  </button>
+
+  <div *ngIf="usersWithScores.length === 0" class="no-scores">
+    No scores available for this date
+  </div>
+
+  <table *ngIf="usersWithScores.length > 0" class="results-table">
+    <thead>
+      <tr>
+        <th class="sticky-col">Player</th>
+        <th class="score-header">1</th>
+        <th class="score-header">2</th>
+        <th class="score-header">3</th>
+        <th class="score-header">4</th>
+        <th class="score-header">5</th>
+        <th class="score-header">6</th>
+        <th class="score-header">7</th>
+        <th class="score-header">8</th>
+        <th class="score-header">9</th>
+        <th class="score-header">10</th>
+        <th class="score-header">11</th>
+        <th class="score-header">12</th>
+        <th class="score-header">13</th>
+        <th class="score-header">14</th>
+        <th class="score-header">15</th>
+        <th class="score-header">16</th>
+        <th class="score-header">17</th>
+        <th class="score-header">18</th>
+        <th>Gross Score</th>
+        <th>Handicap</th>
+        <th>Net Score</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <!-- Par Row -->
+      <tr class="par-row">
+        <td class="sticky-col"><strong>Par</strong></td>
+        <td *ngFor="let par of parValues" class="score-header">{{ par }}</td>
+        <td class="score-header">{{ calculateParTotal() }}</td>
+        <td class="score-header"></td>
+        <td class="score-header"></td>
+      </tr>
+
+      <!-- User Rows -->
+      <tr *ngFor="let user of usersWithScores">
+        <td class="sticky-col">{{ user.name }}</td>
+        <td
+          *ngFor="let score of user.currentRound; let i = index"
+          class="score-cell"
+          [ngClass]="{
+            'birdie': score < parValues[i],
+            'skins': skins(i, user)
+          }"
+        >
+          {{ score }}
+        </td>
+        <td>{{ calculateTotal(user) }}</td>
+        <td>{{ user.handicap !== null && user.handicap !== undefined ? user.handicap : 0 }}</td>
+        <td>{{ calculateNetTotal(user) }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

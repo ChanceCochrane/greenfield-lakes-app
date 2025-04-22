@@ -1,0 +1,153 @@
+/* tee-time.component.css */
+.admin-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.date-header {
+  margin-bottom: 20px;
+  font-size: 1.2em;
+}
+
+.tee-time {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.time {
+  width: 100px;
+  font-weight: bold;
+}
+
+.players {
+  flex: 1;
+  display: flex;
+  gap: 10px;
+}
+
+select {
+  padding: 5px;
+  width: 150px;
+}
+
+/* tee-time.component.css */
+.tee-time-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Style for the date header */
+.date-header {
+  margin-bottom: 20px;
+}
+
+.date-header label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+/* Flexbox layout for the list of tee times */
+.tee-times-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* Add space between the rows */
+}
+
+.user-tee-time {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px; /* Space between name and dropdown */
+}
+
+.user-name {
+  font-weight: bold;
+  width: 150px; /* Limit the width of the name for better alignment */
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+.tee-time-select select {
+  padding: 8px;
+  font-size: 14px;
+  width: 150px;
+}
+
+.create-user-header h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.user-form-container {
+  margin-top: 30px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+}
+
+.user-form-container button {
+  margin-bottom: 30px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .tee-time-container {
+    padding: 10px;
+  }
+
+  .user-tee-time {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .user-name {
+    width: auto; /* Allow name to take up available space */
+    margin-bottom: 5px;
+  }
+
+  .tee-time-select select {
+    width: 100%; /* Make select dropdown fill available space */
+  }
+}
+
+button {
+  margin: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button:nth-child(2) {
+  background-color: #dc3545; /* Red for delete button */
+}
+p {
+  margin: 0.5rem 0;
+}
+
+.archive-button {
+  margin-top: 20px;
+  padding: 10px 16px;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.archive-button:hover {
+  background-color: #145ea8;
+}

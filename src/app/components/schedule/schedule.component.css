@@ -1,2 +1,28 @@
-h1 { color: #2c3e50; }
-p { font-size: 1.1rem; }
+.schedule {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+h1 {
+  text-align: center;
+  color: #2C3E50;
+}
+
+.tournament {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+button {
+  background-color: #2980B9;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #3498DB;
+}

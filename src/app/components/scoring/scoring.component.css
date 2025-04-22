@@ -1,2 +1,157 @@
-h1 { color: #2c3e50; }
-p { font-size: 1.1rem; }
+.dropdown-container {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+select {
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 1rem;
+  padding: 0.5rem;
+  margin-bottom: 10px;
+}
+
+.hole-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+  gap: 16px;
+}
+
+.hole-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hole-label {
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+.par-label {
+  font-size: 0.9em;
+  color: gray;
+}
+
+.nav-btn {
+  font-size: 1.4em;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.score-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  border-bottom: 1px solid #ccc;
+}
+
+.user-name {
+  flex: 1;
+  font-size: 1.1em;
+}
+
+.score-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.score-control span {
+  font-weight: bold;
+}
+
+.score-control.total {
+  background-color: #f1f1f1;
+  padding: 0.5rem;
+  border-top: 2px solid #ccc;
+}
+
+.score-control button {
+  font-size: 1.2em;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.scoring-interface {
+  margin-top: 20px;
+}
+
+.hole-control {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: 25px;
+  margin-bottom: 15px;
+}
+
+.player-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+}
+
+.score-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+}
+.leaderboard {
+  padding: 1rem;
+  background: #f0f0f0;
+  border-radius: 10px;
+  margin-top: 2rem;
+}
+
+.leaderboard h2 {
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.leaderboard-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+  background: white;
+  margin-bottom: 0.5rem;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.position {
+  width: 1.5rem;
+  font-weight: bold;
+}
+
+.name {
+  flex: 1;
+  margin-left: 0.5rem;
+}
+
+.score {
+  margin-left: 1rem;
+  font-weight: bold;
+}
+
+.score.under {
+  color: red;
+}
+
+.score.even {
+  color: green;
+}
+
+.score.over {
+  color: green;
+}
