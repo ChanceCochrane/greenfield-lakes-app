@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../../objects/user';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TeeTimeService {
-  private apiUrl = 'http://localhost:3000'; // Your Node API URL
+  private apiUrl = environment.apiUrl; // Your Node API URL
 
   constructor(private http: HttpClient) {}
 
