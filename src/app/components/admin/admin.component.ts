@@ -38,8 +38,6 @@ export class AdminComponent {
 
     this.getUsers();
 
-    this.fetchTeeTimes();
-
     this.fetchSubmissions();
   }
 
@@ -47,6 +45,7 @@ export class AdminComponent {
     this.teeTimeService.getUsers().subscribe(
       (users: User[]) => {
         this.users = users;
+        this.fetchTeeTimes();
       },
       error => {
         console.error('Error fetching users:', error);
