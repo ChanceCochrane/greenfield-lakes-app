@@ -17,13 +17,16 @@ export class ScheduleComponent implements OnInit{
     this.generateTournamentSchedule();
   }
 
-  // Generate the tournament dates starting from Jan 5, 2025, every other Sunday
   generateTournamentSchedule(): void {
     const today = new Date();
 
-    // Read dates from environment variable
     this.tournaments = environment.tournamentDates.map(dateString => {
-      const tournamentDate = new Date(dateString);
+      // Split the date string (e.g., '2025-04-13') into components
+      const [year, month, day] = dateString.split('-').map(Number);
+
+      // Create a Date object with local date components (month is 0-based in JS)
+      const tournamentDate = new Date(year, month - 1, day);
+
       return {
         date: tournamentDate,
         canSignUp: tournamentDate > today
