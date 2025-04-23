@@ -27,20 +27,20 @@ export class AdminComponent {
   submissions: { [key: string]: { name: string; group: string; time: string; submissionTime: Date } } | null = null; // Store the submissions data
   message: string = ''; // Store success/error messages
 
-  constructor(private teeTimeService: TeeTimeService) {
+  constructor(private teeTimeService: TeeTimeService) {  }
+
+  ngOnInit(): void {
     // Set to next Sunday
     this.generateTeeTimes();
 
-    this.fetchSubmissions();
-  }
-
-  ngOnInit(): void {
     this.selectedDate = this.getNextSundayDate();
     this.selectedDateString = this.formatDate(this.selectedDate);
 
     this.getUsers();
 
     this.fetchTeeTimes();
+
+    this.fetchSubmissions();
   }
 
   getUsers(): void {
