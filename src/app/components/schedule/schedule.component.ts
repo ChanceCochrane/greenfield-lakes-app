@@ -34,14 +34,16 @@ export class ScheduleComponent implements OnInit{
     });
   }
 
-  // Navigate to the sign-up page when the button is clicked
+  // Navigate to the tee page when the button is clicked
   onSignUp(tournamentDate: Date): void {
-    const formattedDate = tournamentDate.toISOString().split('T')[0]; // e.g., "2025-04-21"
+    const normalizedDate = new Date(tournamentDate.getFullYear(), tournamentDate.getMonth(), tournamentDate.getDate());
+    const formattedDate = normalizedDate.toISOString().split('T')[0];
     this.router.navigate(['/teesheet', formattedDate]);
   }
 
   getResults(tournamentDate: Date): void {
-    const formattedDate = tournamentDate.toISOString().split('T')[0]; // e.g., "2025-04-21"
+    const normalizedDate = new Date(tournamentDate.getFullYear(), tournamentDate.getMonth(), tournamentDate.getDate());
+    const formattedDate = normalizedDate.toISOString().split('T')[0];
     this.router.navigate(['/results', formattedDate]);
   }
 }
