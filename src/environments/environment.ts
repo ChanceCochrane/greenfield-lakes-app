@@ -1,8 +1,8 @@
 export const environment = {
   production: false,
   sundayTeeTimes: [
-    "6:37", "6:45", "6:52", "7:00", "7:07",
-    "7:15", "7:22", "7:30", "7:37", "7:45"
+    "7:00", "7:07", "7:15", "7:22", "7:30",
+    "7:37", "7:45", "7:52", "8:00", "8:07"
   ],
   apiUrl: 'http://localhost:3000',
   tournamentDates: [ '2025-04-13',
