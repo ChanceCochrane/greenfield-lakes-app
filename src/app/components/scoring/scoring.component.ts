@@ -20,6 +20,7 @@ export class ScoringComponent {
   leaderboardTrigger = new Subject<void>();
   selectedDate: Date = new Date(); // TO DO: Set this to todays date so the leaderboard is only visible on tourney day
   selectedDateString: string = '';
+  initializeRound = [3, 4, 5, 3, 3, 3, 3, 3, 5, 4, 3, 3, 3, 3, 4, 3, 3, 4];
 
   constructor(private teeTimeService: TeeTimeService) {}
 
@@ -45,7 +46,18 @@ export class ScoringComponent {
     });
 
     this.teeTimeService.getUsersFromTeeTimesByDate(this.selectedDateString).subscribe({
-      next: (users) => this.allUsers = users,
+      next: (users) => {
+        this.allUsers = users,
+        this.allUsers.forEach((user) => {
+          if (user.currentRound == null || user.currentRound.length === 0) {
+            this.teeTimeService.updateUser({
+              name: user.name,
+              currentRound: this.initializeRound,
+            }).subscribe();
+            this.leaderboardTrigger.next(); // trigger leaderboard update
+          }
+        });
+      },
       error: (err) => {
         console.error('Failed to load filtered users:', err);
         this.allUsers = [];
@@ -116,7 +128,9 @@ export class ScoringComponent {
   formatDate(date: Date): string {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based, so +1
-    const day = String(date.getDate()).padStart(2, '0');
+    const adjustedDate = new Date(date);
+    adjustedDate.setHours(adjustedDate.getHours() - 7);
+    const day = String(adjustedDate.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`; // "YYYY-MM-DD"
   }
 }
