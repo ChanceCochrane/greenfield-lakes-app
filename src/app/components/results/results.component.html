@@ -9,10 +9,12 @@
     No scores available for this date
   </div>
 
+  <div class="table-scroll-outer">
+  <div class="table-scroll-wrapper">
   <table *ngIf="usersWithScores.length > 0" class="results-table">
     <thead>
-      <tr>
-        <th class="sticky-col">Player</th>
+      <tr class="sticky-row">
+        <th class="th-player">Player</th>
         <th class="score-header">1</th>
         <th class="score-header">2</th>
         <th class="score-header">3</th>
@@ -35,18 +37,17 @@
         <th>Handicap</th>
         <th>Net Score</th>
       </tr>
-    </thead>
-    <tbody>
 
-      <!-- Par Row -->
-      <tr class="par-row">
-        <td class="sticky-col"><strong>Par</strong></td>
+      <tr class="sticky-row par-row">
+        <td><strong>Par</strong></td>
         <td *ngFor="let par of parValues" class="score-header">{{ par }}</td>
         <td class="score-header">{{ calculateParTotal() }}</td>
         <td class="score-header"></td>
         <td class="score-header"></td>
       </tr>
+    </thead>
 
+    <tbody>
       <!-- User Rows -->
       <tr *ngFor="let user of usersWithScores">
         <td class="sticky-col">{{ user.name }}</td>
@@ -64,6 +65,7 @@
         <td>{{ user.handicap !== null && user.handicap !== undefined ? user.handicap : 0 }}</td>
         <td>{{ calculateNetTotal(user) }}</td>
       </tr>
-    </tbody>
   </table>
+  </div>
+  </div>
 </div>

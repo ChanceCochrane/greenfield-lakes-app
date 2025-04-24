@@ -1,6 +1,10 @@
 .results-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     max-width: 100%;
-    overflow-x: auto
+    margin: 0 auto;
+    padding: 20px;
   }
 
   h2 {
@@ -21,16 +25,55 @@
     border-spacing: 0.5rem; /* <-- this controls space between cells */
   }
 
+  .table-scroll-outer {
+    width: 100%;
+    overflow-x: auto;
+    position: relative;
+  }
+
+  .table-scroll-wrapper {
+    width: max-content;    
+    overflow: auto;
+    max-width: 100%;
+    max-height: 80vh;
+    position: relative;
+    -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+  }
+
   .results-table {
     width: max-content;
     border-collapse: collapse;
     background-color: white;
     box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     font-size: 0.9rem;
-    overflow-x: auto; /* Enables horizontal scrolling */
-    max-width: 100%; /* Ensures the container doesn't exceed the viewport */
-    white-space: nowrap; /* Prevents table content from wrapping */
+    min-width: 100%;
   }
+
+  thead {
+    position: sticky;
+    z-index: 5;
+  }
+
+  .sticky-row {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: #4CAF50;
+  }
+
+  .par-row {
+    top: 53px;
+  }
+
+  .sticky-col {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background-color: #fff;
+    border: 1px solid red;
+  }
+  
 
   th, td {
     padding: 8px 6px;
