@@ -1,3 +1,10 @@
+/* General Reset for Consistency */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 .results-container {
   display: flex;
   flex-direction: column;
@@ -37,6 +44,7 @@ table {
   max-height: 80vh;
   position: relative;
   -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+  margin: 0 auto; /* Center the wrapper */
 }
 
 .results-table {
@@ -90,7 +98,7 @@ td.par-tab {
 
 .skins-container {
   margin-top: 20px;
-  width: 50%;
+  width: 100%; /* Adjusted for mobile */
   text-align: center;
   align-content: center;
 }
@@ -134,7 +142,6 @@ td.par-tab {
   border-radius: 4px;
   font-size: 0.9rem;
   text-align: center;
-  max-width: 600px;
   width: 100%;
 }
 
@@ -207,8 +214,44 @@ tr:hover td {
   background-color: #0d1321;
 }
 
-@media (min-width: 600px) {
+/* Desktop adjustments */
+@media (min-width: 1024px) {
+  .results-table {
+    min-width: auto; /* Allow the table to shrink to content size */
+    width: auto; /* Let the table take its natural width */
+  }
+
+  .table-scroll-wrapper {
+    max-width: 1200px; /* Optional: cap the max width for very large screens */
+    overflow-x: hidden; /* Disable horizontal scroll on desktop if table fits */
+  }
+
+  .table-scroll-outer {
+    display: flex;
+    justify-content: center; /* Center the table on desktop */
+  }
+
   .toggle-button {
     max-width: 300px;
+  }
+
+  .skins-container {
+    width: 50%; /* Restore the original width for desktop */
+    max-width: 600px; /* Optional: cap the width */
+  }
+
+  .no-skins {
+    max-width: 600px;
+  }
+}
+
+/* Keep mobile behavior as is */
+@media (max-width: 1023px) {
+  .table-scroll-wrapper {
+    overflow-x: auto; /* Ensure horizontal scrolling on mobile */
+  }
+
+  .results-table {
+    min-width: 100%; /* Ensure table takes full width on mobile */
   }
 }

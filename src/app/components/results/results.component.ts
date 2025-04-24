@@ -24,7 +24,8 @@ export class ResultsComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.targetDate = params['date']; // Get the date parameter from the route
-      this.displayDate = new Date(this.targetDate).toLocaleDateString(); // Convert to a readable format
+      const [year, month, day] = this.targetDate.split('-').map(Number);
+      this.displayDate = new Date(year, month - 1, day).toLocaleDateString();
       this.loadScores();
     });
   }
