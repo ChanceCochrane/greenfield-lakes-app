@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-schedule',
@@ -16,35 +17,33 @@ export class ScheduleComponent implements OnInit{
     this.generateTournamentSchedule();
   }
 
-  // Generate the tournament dates starting from Jan 5, 2025, every other Sunday
   generateTournamentSchedule(): void {
-    const startDate = new Date('2025-01-05');
     const today = new Date();
-    let tournamentDate = startDate;
 
-    for (let i = 0; i < 26; i++) {  // Generating 26 Sundays (one for each bi-weekly event)
-      const canSignUp = tournamentDate > today;  // Check if the date is in the future
+    this.tournaments = environment.tournamentDates.map(dateString => {
+      // Split the date string (e.g., '2025-04-13') into components
+      const [year, month, day] = dateString.split('-').map(Number);
 
-      this.tournaments.push({
-        date: new Date(tournamentDate),
-        canSignUp
-      });
+      // Create a Date object with local date components (month is 0-based in JS)
+      const tournamentDate = new Date(year, month - 1, day);
 
-      // Increment by 14 days (every other Sunday)
-      tournamentDate.setDate(tournamentDate.getDate() + 14);
-    }
+      return {
+        date: tournamentDate,
+        canSignUp: tournamentDate > today
+      };
+    });
   }
 
-  // Navigate to the sign-up page when the button is clicked
+  // Navigate to the tee page when the button is clicked
   onSignUp(tournamentDate: Date): void {
-    const formattedDate = tournamentDate.toISOString().split('T')[0]; // e.g., "2025-04-21"
-    console.log('Navigating to:', formattedDate);
+    const normalizedDate = new Date(tournamentDate.getFullYear(), tournamentDate.getMonth(), tournamentDate.getDate());
+    const formattedDate = normalizedDate.toISOString().split('T')[0];
     this.router.navigate(['/teesheet', formattedDate]);
   }
 
   getResults(tournamentDate: Date): void {
-    const formattedDate = tournamentDate.toISOString().split('T')[0]; // e.g., "2025-04-21"
-    console.log('Navigating to:', formattedDate);
+    const normalizedDate = new Date(tournamentDate.getFullYear(), tournamentDate.getMonth(), tournamentDate.getDate());
+    const formattedDate = normalizedDate.toISOString().split('T')[0];
     this.router.navigate(['/results', formattedDate]);
   }
 }

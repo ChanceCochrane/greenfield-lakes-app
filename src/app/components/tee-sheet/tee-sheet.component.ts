@@ -27,7 +27,11 @@ export class TeeSheetComponent {
     this.route.params.subscribe(params => {
       const dateStr = params['date'];
       if (dateStr) {
-        this.tournamentDate = new Date(dateStr);
+        const dateParts = dateStr.split('-'); // ['2025', '04', '27']
+        const year = +dateParts[0];
+        const month = +dateParts[1] - 1; // Months are 0-based
+        const day = +dateParts[2];
+        this.tournamentDate = new Date(year, month, day);
       }
     });
     this.loadTeeTimes();
