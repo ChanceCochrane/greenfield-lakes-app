@@ -4,7 +4,7 @@ export const environment = {
     "7:00", "7:07", "7:15", "7:22", "7:30",
     "7:37", "7:45", "7:52", "8:00", "8:07"
   ],
-  apiUrl: 'https://greenfield-api.fly.dev',
+  apiUrl: 'https://localhost:3000',
   tournamentDates: [ '2025-04-13',
     '2025-04-27', '2025-05-11',
     '2025-05-25', '2025-06-08',
