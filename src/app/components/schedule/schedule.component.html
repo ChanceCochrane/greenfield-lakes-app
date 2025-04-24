@@ -7,10 +7,10 @@
         <span>{{ tournament.date | date: 'fullDate' }}</span>
 
         <!-- Only show the Sign Up button if the tournament is in the future -->
-        <button *ngIf="tournament.canSignUp" (click)="onSignUp(tournament.date)">
+        <button *ngIf="tournament.canSignUp" class="signup-btn" (click)="onSignUp(tournament.date)">
           Tee Sheet
         </button>
-        <button *ngIf="!tournament.canSignUp" (click)="getResults(tournament.date)">
+        <button *ngIf="!tournament.canSignUp" class="result-btn" (click)="getResults(tournament.date)">
           Results
         </button>
       </div>

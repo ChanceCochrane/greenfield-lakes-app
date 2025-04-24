@@ -89,4 +89,18 @@ export class ResultsComponent implements OnInit {
 
     return isUniqueMin;
   }
+
+  // Updated method to generate and sort skins list by hole number
+  getSkinsList(): { player: string; hole: number }[] {
+    const skinsList: { player: string; hole: number }[] = [];
+    this.usersWithScores.forEach((user) => {
+      user.currentRound.forEach((score, i) => {
+        if (this.skins(i, user)) {
+          skinsList.push({ player: user.name, hole: i + 1 }); // Hole numbers are 1-based
+        }
+      });
+    });
+    // Sort by hole number (ascending: Hole 1 to Hole 18)
+    return skinsList.sort((a, b) => a.hole - b.hole);
+  }
 }

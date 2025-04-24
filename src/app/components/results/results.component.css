@@ -1,83 +1,83 @@
 .results-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 100%;
-    margin: 0 auto;
-    padding: 20px;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+}
 
-  h2 {
-    text-align: center;
-    margin-bottom: 10px;
-    font-size: 1.5rem;
-  }
+h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
 
-  .no-scores {
-    text-align: center;
-    padding: 15px;
-    background-color: #f8f8f8;
-    border-radius: 4px;
-  }
+.no-scores {
+  text-align: center;
+  padding: 15px;
+  background-color: #f8f8f8;
+  border-radius: 4px;
+}
 
-  table {
-    border-collapse: separate;
-  }
+table {
+  border-collapse: separate;
+}
 
-  .table-scroll-outer {
-    width: 100%;
-    overflow-x: auto;
-    position: relative;
-  }
+.table-scroll-outer {
+  width: 100%;
+  overflow-x: auto;
+  position: relative;
+}
 
-  .table-scroll-wrapper {
-    width: max-content;    
-    overflow: auto;
-    max-width: 100%;
-    max-height: 80vh;
-    position: relative;
-    -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
-  }
+.table-scroll-wrapper {
+  width: max-content;
+  overflow: auto;
+  max-width: 100%;
+  max-height: 80vh;
+  position: relative;
+  -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+}
 
-  .results-table {
-    width: max-content;
-    border-collapse: collapse;
-    background-color: white;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-    font-size: 0.9rem;
-    min-width: 100%;
-  }
+.results-table {
+  width: max-content;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  font-size: 0.9rem;
+  min-width: 100%;
+}
 
-  thead {
-    position: sticky;
-    top: 0;
-    left: 0;
-    z-index: 5;
-    overflow-x: hidden;
-  }
+thead {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  overflow-x: hidden;
+}
 
-  .sticky-row {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background-color: rgba(200, 247, 197) !important;
-  }
+.sticky-row {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: rgba(200, 247, 197) !important;
+}
 
-  .par-row {
-    top: 53px;
-  }
+.par-row {
+  top: 53px;
+}
 
-  td.par-tab {
-    background-color: lightblue;
-  }
+td.par-tab {
+  background-color: #39aaed;
+}
 
-  .users-column {
-    position: sticky;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    background-color: #fff;
-  }
+.users-column {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background-color: #fff;
+}
 
 .sticky-col {
   position: sticky;
@@ -87,85 +87,128 @@
   box-shadow: 2px 0 5px rgba(0,0,0,0.1);
   isolation: isolate;
 }
-  
-  
 
-  th, td {
-    padding: 8px 6px;
-    text-align: center;
-    border: 1px solid #ddd;
-  }
+.skins-container {
+  margin-top: 20px;
+  width: 50%;
+  text-align: center;
+  align-content: center;
+}
 
-  th {
-    background-color: lightblue;
-    font-weight: bold;
-  }
+.skins-container h3 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #0d1321;
+  margin-bottom: 10px;
+}
 
-  td {
-    background-color: white;
-  }
+.skins-list {
+  list-style: none;
+  padding: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  align-items: center;
+}
 
-  td.score-header {
-    background-color: lightblue;
-    font-weight: bold;
-  }
+.skin-item {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.9rem;
+  text-align: center;
+}
 
-  .score-header {
-    background-color: lightblue;
-    width: 20px;
-    min-width: 20px;
-  }
+.skin-item:last-child {
+  border-bottom: none;
+}
 
-  .score-cell {
-    width: 2rem;
-    height: 2rem;
-    padding: 0;
-    text-align: center;
-    vertical-align: middle;
-    box-sizing: border-box; /* Ensures border/padding are included in the cell size */
-  }
+.skin-item:hover {
+  background-color: #e8f5e9;
+}
 
-  tr:hover td {
-    background-color: #e8f5e9;
-  }
+.no-skins {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f8f8f8;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+}
 
-  .score-cell.birdie {
-    padding: 0.25rem;
-    font-weight: bold;
-    color: #ed7c39;
-    text-align: center;
-  }
+th, td {
+  padding: 8px 6px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
 
-  .score-cell.skins {
-    background-color: lightblue; /* Yellow highlight for skins */
-  }
+th {
+  background-color: #39aaed;
+  font-weight: bold;
+}
 
+td {
+  background-color: white;
+}
+
+td.score-header {
+  background-color: #39aaed;
+  font-weight: bold;
+}
+
+.score-header {
+  background-color: #39aaed;
+  width: 20px;
+  min-width: 20px;
+}
+
+.score-cell {
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  text-align: center;
+  vertical-align: middle;
+  box-sizing: border-box; /* Ensures border/padding are included in the cell size */
+}
+
+tr:hover td {
+  background-color: #e8f5e9;
+}
+
+.score-cell.birdie {
+  padding: 0.25rem;
+  font-weight: bold;
+  color: #ed7c39;
+  text-align: center;
+}
+
+.score-cell.skins {
+  background-color: #39aaed;
+}
+
+.toggle-button {
+  display: block;
+  margin: 16px auto;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  background-color: #0d1321;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  max-width: 90%;
+  width: 100%;
+}
+
+.toggle-button:active {
+  background-color: #0d1321;
+}
+
+@media (min-width: 600px) {
   .toggle-button {
-    display: block;
-    margin: 16px auto;
-    padding: 12px 24px;
-    font-size: 16px;
-    font-weight: 600;
-    color: white;
-    background-color: #0d1321;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    max-width: 90%;
-    width: 100%;
+    max-width: 300px;
   }
-
-  .toggle-button:hover {
-    background-color: #1d2a48;
-  }
-
-  .toggle-button:active {
-    background-color: #0d1321;
-  }
-
-  @media (min-width: 600px) {
-    .toggle-button {
-      max-width: 300px;
-    }
-  }
+}

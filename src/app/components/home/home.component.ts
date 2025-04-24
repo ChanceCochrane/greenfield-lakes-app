@@ -22,7 +22,7 @@ export class HomeComponent {
   ngOnInit(): void {
     this.lastTournamentDate = this.tournamentService.getMostRecentTournamentDate();
     this.leaderboardService.getLeaderboardForDate(this.lastTournamentDate).subscribe((users: User[]) => {
-      this.leaderboard = users.slice(0, 5).map(user => ({
+      this.leaderboard = users.slice(0, 10).map(user => ({
         name: user.name,
         netscore: this.calculateNet(user),
         grossscore: this.calculateGross(user),

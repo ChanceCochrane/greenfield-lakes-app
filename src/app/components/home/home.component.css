@@ -52,7 +52,7 @@
 }
 
 .signup-btn {
-  background: #ed7c39;
+  background: #39aaed;
   color: white;
   border: none;
   padding: 12px 20px 12px 20px;
@@ -70,11 +70,6 @@
   border-radius: 5px;
   cursor: pointer;
   margin-top: 15px;
-
-}
-
-.signup-btn:hover {
-  background: #218838;
 }
 
 .leaderboard {

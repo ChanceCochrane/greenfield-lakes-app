@@ -11,6 +11,16 @@ h2 {
   color: #1f2937;
 }
 
+h3 {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 0.25rem;
+  color: #1f2937;
+  text-align: center;
+}
+
+
 .tee-time {
   background-color: #ffffff;
   border-radius: 12px;
@@ -50,14 +60,6 @@ h2 {
   color: #334155;
 }
 
-h3 {
-  font-size: 1.25rem;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-  color: #1e293b;
-  text-align: center;
-}
-
 form {
   display: flex;
   flex-direction: column;
@@ -91,7 +93,7 @@ input[type="text"]:focus {
 button {
   padding: 0.75rem;
   font-size: 1rem;
-  background-color: #ed7c39;
+  background-color: #39aaed;
   color: white;
   border: none;
   border-radius: 8px;

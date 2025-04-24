@@ -40,7 +40,6 @@
 button {
   padding: 0.75rem 1rem;
   font-size: 1.2rem;
-  background-color: #ed7c39;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -49,21 +48,10 @@ button {
   min-width: 200px;
 }
 
-button:hover {
-  background-color: #218838;
+.result-btn {
+  background-color: #39aaed;
 }
 
-@media (hover: none) {
-  button:hover {
-    background-color: #28a745; /* Keep button consistent on mobile tap */
-  }
-}
-
-button:active {
-  background-color: #28a745;
-}
-
-button:focus {
-  outline: 2px solid #218838;
-  outline-offset: 2px;
+.signup-btn {
+  background-color: #ed7c39; /* orange */
 }

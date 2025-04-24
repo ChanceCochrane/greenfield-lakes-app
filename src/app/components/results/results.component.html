@@ -46,7 +46,7 @@
             <td class="score-header"></td>
           </tr>
         </thead>
-       
+
         <!-- User Rows -->
         <tr *ngFor="let user of usersWithScores">
           <td class="sticky-col">{{ user.name }}</td>
@@ -65,6 +65,18 @@
           <td>{{ calculateNetTotal(user) }}</td>
         </tr>
       </table>
+
+      <div class="skins-container" *ngIf="getSkinsList().length > 0">
+        <h3>Skins</h3>
+        <ul class="skins-list">
+          <li *ngFor="let skin of getSkinsList()" class="skin-item">
+            {{ skin.player }} - Hole {{ skin.hole }}
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="getSkinsList().length === 0" class="no-skins">
+        No skins awarded.
+      </div>
     </div>
   </div>
 </div>
