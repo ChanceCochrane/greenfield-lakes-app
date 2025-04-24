@@ -134,16 +134,6 @@ export class AdminComponent {
           console.error('Error creating tee time:', error);
         }
       });
-      this.teeTimeService.updateUser({
-        name: user,
-        currentRound: this.initializeRound,
-      }).subscribe();
-    }
-    else {
-      this.teeTimeService.updateUser({
-        name: user,
-        currentRound: [], // Clear the current round if tee time is 'N/A'
-      }).subscribe();
     }
   }
 
