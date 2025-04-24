@@ -47,16 +47,20 @@ export class ScoringComponent {
 
     this.teeTimeService.getUsersFromTeeTimesByDate(this.selectedDateString).subscribe({
       next: (users) => {
-        this.allUsers = users,
-        this.allUsers.forEach((user) => {
-          if (user.currentRound == null || user.currentRound.length === 0) {
-            this.teeTimeService.updateUser({
-              name: user.name,
-              currentRound: this.initializeRound,
-            }).subscribe();
-            this.leaderboardTrigger.next(); // trigger leaderboard update
-          }
-        });
+        this.allUsers = users;
+        if (this.allUsers?.length > 0) {
+          this.allUsers.forEach((user) => {
+            if (user.currentRound == null || user.currentRound.length === 0) {
+              this.teeTimeService.updateUser({
+                name: user.name,
+                currentRound: this.initializeRound,
+              }).subscribe(
+                this.leaderboardTrigger.next.bind(this.leaderboardTrigger), // trigger leaderboard update
+                (err) => console.error(`Error initializing round for ${user.name}:`, err)
+              );
+            }
+          });
+        }
       },
       error: (err) => {
         console.error('Failed to load filtered users:', err);
