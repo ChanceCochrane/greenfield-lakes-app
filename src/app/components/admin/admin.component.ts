@@ -24,6 +24,10 @@ export class AdminComponent {
   times: string[] = environment.sundayTeeTimes;
   initializeRound = [3, 4, 5, 3, 3, 3, 3, 3, 5, 4, 3, 3, 3, 3, 4, 3, 3, 4];
 
+  accessCode = '';
+  authorized = false;
+  errorMessage = '';
+
   submissions: { [key: string]: { name: string; group: string; time: string; submissionTime: Date } } | null = null; // Store the submissions data
   message: string = ''; // Store success/error messages
 
@@ -170,6 +174,15 @@ export class AdminComponent {
         console.error(err);
       }
     });
+  }
+
+  checkAccess() {
+    if (this.accessCode.trim().toUpperCase() === 'GFMC') {
+      this.authorized = true;
+      this.errorMessage = '';
+    } else {
+      this.errorMessage = 'Invalid code. Try again.';
+    }
   }
 
   formatDate(date: Date): string {
