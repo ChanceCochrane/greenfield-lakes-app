@@ -4,10 +4,10 @@
   <input type="text" id="name" [(ngModel)]="name" name="name" required />
 
   <label for="group">Group</label>
-  <input type="text" id="group" [(ngModel)]="group" name="group" required />
+  <input placeholder="e.g. John, Mike, Sarah" type="text" id="group" [(ngModel)]="group" name="group" required />
 
   <label for="timeSuggestion">Time Suggestion</label>
-  <input type="text" id="timeSuggestion" [(ngModel)]="timeSuggestion" name="timeSuggestion" required />
+  <input placeholder="e.g. 7:00, Early, Late, Anytime" type="text" id="timeSuggestion" [(ngModel)]="timeSuggestion" name="timeSuggestion" required />
 
   <button type="submit" [disabled]="!name || !group || !timeSuggestion">Submit</button>
 </form>

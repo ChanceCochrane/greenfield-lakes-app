@@ -90,6 +90,14 @@ select {
   font-size: 25px;
   margin-bottom: 15px;
 }
+.hole-control button {
+  padding: 10px 20px;
+  font-size: 1.2em;
+  border: 2px solid black;
+  border-radius: 8px;
+
+
+}
 
 .player-row {
   display: flex;

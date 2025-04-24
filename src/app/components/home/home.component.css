@@ -52,7 +52,7 @@
 }
 
 .signup-btn {
-  background: #28a745;
+  background: #ed7c39;
   color: white;
   border: none;
   padding: 12px 20px 12px 20px;
@@ -63,7 +63,7 @@
 }
 
 .results-btn {
-  background: #28a745;
+  background: #ed7c39;
   color: white;
   border: none;
   padding: 12px 20px;
@@ -110,8 +110,3 @@ tbody tr:nth-child(even) {
 }
 
 
-.logo {
-  width: 100px;
-  height: auto;
-  margin: 0px auto 25px auto;
-}
