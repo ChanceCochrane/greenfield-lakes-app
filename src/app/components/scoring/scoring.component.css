@@ -124,7 +124,7 @@ select:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.2s;
+  color: #fff;
 }
 
 .score-control button:hover,
