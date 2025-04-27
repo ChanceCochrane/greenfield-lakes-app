@@ -105,11 +105,14 @@ export class ScoringComponent {
     while (user.currentRound.length <= this.holeIndex) {
       user.currentRound.push(0); // Initialize missing holes
     }
-
-    let newScore = user.currentRound[this.holeIndex] += delta;
+    let hole = this.holeIndex;
+    if (this.holeIndex >= 10) {
+      hole = this.holeIndex - 1;
+    }
+    let newScore = user.currentRound[hole] += delta;
 
     // Call service to update this user's score
-    this.teeTimeService.updateUserScore(user.name, this.holeIndex, newScore).subscribe({
+    this.teeTimeService.updateUserScore(user.name, hole, newScore).subscribe({
       next: () => {
         this.leaderboardTrigger.next(); // trigger leaderboard update
       },
