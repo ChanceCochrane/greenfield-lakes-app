@@ -1,10 +1,42 @@
-.men-club-info {
-  font-family: Arial, sans-serif;
-  margin: 20px;
-  line-height: 1.6;
+.wrapper {
+  display: grid;
+  place-items: center;
 }
 
-h1 {
+.typing-demo {
+  width: 18ch;
+  animation: typing 2s steps(18), blink .5s step-end infinite alternate;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 3px solid;
+  font-family: monospace;
+  font-size: 2em;
+}
+
+@keyframes typing {
+  from {
+    width: 0
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent
+  }
+}
+
+body {
   text-align: center;
-  color: #2C3E50;
+}
+
+.info {
+  position: absolute;
+  bottom: 0;
+  padding: 20px;
+}
+
+.counter-amount {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #ed7c39;
 }
