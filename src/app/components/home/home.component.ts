@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 export class HomeComponent {
   leaderboard: { name: string; netscore: number; grossscore: number }[] = [];
   lastTournamentDate: string = '';
+  nextTournamentDate: string = '';
 
   constructor(private leaderboardService: LeaderboardService,
     private tournamentService: TournamentService,
@@ -21,6 +22,7 @@ export class HomeComponent {
 
   ngOnInit(): void {
     this.lastTournamentDate = this.tournamentService.getMostRecentTournamentDate();
+    this.nextTournamentDate = this.tournamentService.getNextTournamentDate();
     this.leaderboardService.getLeaderboardForDate(this.lastTournamentDate).subscribe((users: User[]) => {
       this.leaderboard = users.slice(0, 10).map(user => ({
         name: user.name,
@@ -44,6 +46,11 @@ export class HomeComponent {
   goToFullResults(): void {
     const date = new Date(this.lastTournamentDate).toISOString().split('T')[0]; // Get date in YYYY-MM-DD format
     this.router.navigate(['/results', date]);
+  }
+
+  goToSignUp(): void {
+    const date = new Date(this.nextTournamentDate).toISOString().split('T')[0]; // Get date in YYYY-MM-DD format
+    this.router.navigate(['/teesheet', date]);
   }
 
   private calculateGross(user: User): number {
