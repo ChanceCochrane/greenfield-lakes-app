@@ -10,7 +10,7 @@ import { TeeTimeService } from './tee-time.service';
 export class LeaderboardService {
   constructor(private teeTimeService: TeeTimeService) {}
 
-  getLeaderboardForDate(date: string): Observable<User[]> {
+  getNetLeaderboardForDate(date: string): Observable<User[]> {
     const targetDate = new Date(date).toISOString().split('T')[0];
 
     return this.teeTimeService.getUsers().pipe(
@@ -26,6 +26,26 @@ export class LeaderboardService {
             currentRound: this.getRoundForDate(user, targetDate),
           }))
           .sort((a, b) => this.calculateNetTotal(a) - this.calculateNetTotal(b))
+      )
+    );
+  }
+
+  getGrossLeaderboardForDate(date: string): Observable<User[]> {
+    const targetDate = new Date(date).toISOString().split('T')[0];
+
+    return this.teeTimeService.getUsers().pipe(
+      map((users: User[]) =>
+        users
+          .filter(user =>
+            user.rounds?.some(round =>
+              new Date(round.date).toISOString().split('T')[0] === targetDate
+            )
+          )
+          .map(user => ({
+            ...user,
+            currentRound: this.getRoundForDate(user, targetDate),
+          }))
+          .sort((a, b) => this.calculateTotal(a) - this.calculateTotal(b))
       )
     );
   }

@@ -11,7 +11,8 @@ import { Router } from '@angular/router';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-  leaderboard: { name: string; netscore: number; grossscore: number }[] = [];
+  netLeaderboard: { name: string; netscore: number; }[] = [];
+  grossLeaderboard: { name: string; grossscore: number; }[] = [];
   lastTournamentDate: string = '';
   nextTournamentDate: string = '';
 
@@ -23,11 +24,17 @@ export class HomeComponent {
   ngOnInit(): void {
     this.lastTournamentDate = this.tournamentService.getMostRecentTournamentDate();
     this.nextTournamentDate = this.tournamentService.getNextTournamentDate();
-    this.leaderboardService.getLeaderboardForDate(this.lastTournamentDate).subscribe((users: User[]) => {
-      this.leaderboard = users.slice(0, 10).map(user => ({
+    this.leaderboardService.getNetLeaderboardForDate(this.lastTournamentDate).subscribe((users: User[]) => {
+      this.netLeaderboard = users.slice(0, 5).map(user => ({
         name: user.name,
-        netscore: this.calculateNet(user),
-        grossscore: this.calculateGross(user),
+        netscore: this.calculateNet(user)
+      }));
+    });
+
+    this.leaderboardService.getGrossLeaderboardForDate(this.lastTournamentDate).subscribe((users: User[]) => {
+      this.grossLeaderboard = users.slice(0, 5).map(user => ({
+        name: user.name,
+        grossscore: this.calculateGross(user)
       }));
     });
   }

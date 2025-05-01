@@ -52,7 +52,7 @@
 }
 
 .signup-btn {
-  background: #39aaed;
+  background: #ed7c39;
   color: white;
   border: none;
   padding: 12px 20px 12px 20px;
@@ -96,7 +96,7 @@ th, td {
 }
 
 th {
-  background: #333;
+  background: #39aaed;
   color: white;
 }
 
@@ -104,4 +104,10 @@ tbody tr:nth-child(even) {
   background: #f2f2f2;
 }
 
-
+.board-title {
+  margin-top: 20px;
+  font-size: 1.4rem;
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}

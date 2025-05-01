@@ -5,19 +5,33 @@
 </div>
 
 <section class="leaderboard">
-  <h2>Results from {{ getFormattedDate(lastTournamentDate) }}</h2>
+  <h2 class="board-title">Results from {{ getFormattedDate(lastTournamentDate) }}</h2>
+  <h3 class="board-title">Net Leaders</h3>
   <table>
     <thead>
       <tr>
         <th>Player</th>
         <th>Net Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let player of netLeaderboard">
+        <td>{{ player.name }}</td>
+        <td>{{ player.netscore }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 class="board-title">Gross Leaders</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Player</th>
         <th>Gross Score</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let player of leaderboard">
+      <tr *ngFor="let player of grossLeaderboard">
         <td>{{ player.name }}</td>
-        <td>{{ player.netscore }}</td>
         <td>{{ player.grossscore }}</td>
       </tr>
     </tbody>
