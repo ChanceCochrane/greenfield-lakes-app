@@ -44,7 +44,8 @@ export class ResultsComponent implements OnInit {
         )
       ).map(user => ({
         ...user,
-        currentRound: this.getRoundForDate(user)
+        currentRound: this.getRoundForDate(user),
+        handicap: this.calculateHandicap(user),
       })).sort((a, b) => this.calculateNetTotal(a) - this.calculateNetTotal(b)); // Sort lowest net score first
     });
   }
@@ -63,6 +64,14 @@ export class ResultsComponent implements OnInit {
       new Date(this.targetDate).toISOString().split('T')[0]
     );
     return round?.roundScores || [];
+  }
+
+  private calculateHandicap(user: User): number {
+    const round = user.rounds?.find(round =>
+      new Date(round.date).toISOString().split('T')[0] ===
+      new Date(this.targetDate).toISOString().split('T')[0]
+    );
+    return round?.handicap || 0;
   }
 
   calculateTotal(user: User): number {
