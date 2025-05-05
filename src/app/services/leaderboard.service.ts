@@ -23,6 +23,7 @@ export class LeaderboardService {
           )
           .map(user => ({
             ...user,
+            handicap: this.calculateHandicap(user, targetDate),
             currentRound: this.getRoundForDate(user, targetDate),
           }))
           .sort((a, b) => this.calculateNetTotal(a) - this.calculateNetTotal(b))
@@ -65,5 +66,13 @@ export class LeaderboardService {
   private calculateNetTotal(user: User): number {
     const grossScore = this.calculateTotal(user);
     return grossScore - (user.handicap || 0);
+  }
+
+  private calculateHandicap(user: User, date: string): number {
+    const round = user.rounds?.find(round =>
+      new Date(round.date).toISOString().split('T')[0] ===
+      new Date(date).toISOString().split('T')[0]
+    );
+    return round?.handicap || 0;
   }
 }
