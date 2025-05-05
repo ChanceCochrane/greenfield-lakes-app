@@ -55,6 +55,11 @@ export class TeeTimeService {
     return this.http.get(url);
   }
 
+  deleteTeeTimesByDate(date: string): Observable<any> {
+    let url = `${this.apiUrl}/tee-times/${date}`;
+    return this.http.delete(url);
+  }
+
   // Get users who have tee times on a specific date
   getUsersFromTeeTimesByDate(date: string): Observable<User[]> {
     return this.http.get<User[]>(`${this.apiUrl}/tee-times/usersFromTeeTimesByDate?date=${encodeURIComponent(date)}`);

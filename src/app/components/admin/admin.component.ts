@@ -174,6 +174,12 @@ export class AdminComponent {
         console.error(err);
       }
     });
+    this.teeTimeService.deleteTeeTimesByDate(today).subscribe({
+      error: (err) => {
+        alert("Error deleting tee times.");
+        console.error(err);
+      }
+    });
   }
 
   checkAccess() {

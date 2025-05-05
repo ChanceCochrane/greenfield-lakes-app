@@ -40,3 +40,23 @@ body {
   font-weight: bold;
   color: #ed7c39;
 }
+
+.construction-notice {
+  text-align: center;
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  border-radius: 5px;
+  color: #856404;
+}
+
+.construction-notice h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.5em;
+}
+
+.construction-notice p {
+  margin: 0;
+  font-size: 1.25em;
+}
