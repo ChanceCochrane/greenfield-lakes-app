@@ -48,7 +48,11 @@ export class AdminComponent {
   getUsers(): void {
     this.teeTimeService.getUsers().subscribe(
       (users: User[]) => {
-        this.users = users;
+        this.users = users.map(user => {
+          // Ensure that 0 is used when the handicap is null or undefined
+          user.handicap = user.handicap ?? 0;
+          return user;
+        });
         this.fetchTeeTimes();
       },
       error => {
@@ -97,6 +101,26 @@ export class AdminComponent {
         this.message = 'Error deleting submissions: ' + error.message;
       },
     });
+  }
+
+  onHandicapChange(user: User, newHandicap: number): void {
+    const parsed = Number(newHandicap);
+    if (isNaN(parsed) || parsed < -10 || parsed > 30) {
+      console.warn(`Invalid handicap value for ${user.name}: ${newHandicap}`);
+      return;
+    }
+
+    // Only update if the value actually changed
+    if (user.handicap !== parsed) {
+      user.handicap = parsed;
+
+      this.teeTimeService.updateUser({
+        name: user.name,
+        handicap: parsed,
+      }).subscribe(
+        (err) => console.error(`Error updating handicap for ${user.name}:`, err)
+      );
+    }
   }
 
   getNextSundayDate(): Date {

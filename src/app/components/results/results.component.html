@@ -1,6 +1,17 @@
 <div class="results-container">
   <h2>{{ showNetLeaderboard ? 'Net' : 'Gross' }} Results - {{ displayDate }}</h2>
-
+  <div class="skins-container" *ngIf="getSkinsList().length > 0">
+    <h3>Skins Winners</h3>
+    <div class="skins-cards-container">
+      <div *ngFor="let skin of getSkinsList()" class="skin-card">
+        <div class="player-name">{{ skin.player }}</div>
+        <div class="hole-number">Hole {{ skin.hole }}</div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="getSkinsList().length === 0" class="no-skins">
+    No skins awarded.
+  </div>
   <button (click)="toggleLeaderboard()" class="toggle-button">
     Click to See {{ !showNetLeaderboard ? 'Net' : 'Gross' }} Results
   </button>
@@ -65,18 +76,6 @@
           <td>{{ calculateNetTotal(user) }}</td>
         </tr>
       </table>
-
-      <div class="skins-container" *ngIf="getSkinsList().length > 0">
-        <h3>Skins</h3>
-        <ul class="skins-list">
-          <li *ngFor="let skin of getSkinsList()" class="skin-item">
-            {{ skin.player }} - Hole {{ skin.hole }}
-          </li>
-        </ul>
-      </div>
-      <div *ngIf="getSkinsList().length === 0" class="no-skins">
-        No skins awarded.
-      </div>
     </div>
   </div>
 </div>

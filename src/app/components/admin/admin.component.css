@@ -33,8 +33,16 @@
 }
 
 select {
-  padding: 5px;
-  width: 150px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 300px;
+}
+
+select:focus {
+  border-color: #007bff;
 }
 
 /* tee-time.component.css */
@@ -58,26 +66,109 @@ select {
 .tee-times-list {
   display: flex;
   flex-direction: column;
-  gap: 5px; /* Add space between the rows */
+  padding: 20px;
+  gap: 20px;
+  width: 100%; /* Ensure the list fills the width */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* responsive grid */
 }
 
 .user-tee-time {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px; /* Space between name and dropdown */
+  flex-direction: column;
+  align-items: center;  /* Center everything horizontally */
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 100%; /* Make sure the user entry takes the full available width */
 }
 
 .user-name {
+  font-size: 18px;
   font-weight: bold;
-  width: 150px; /* Limit the width of the name for better alignment */
-  white-space: nowrap; /* Prevent text wrapping */
+  text-align: center;
+  margin-bottom: 10px;
+  width: 100%; /* Ensure name text aligns correctly */
+}
+
+.user-name input {
+  margin-left: 10px;
+  padding: 8px;
+  font-size: 16px;
+  width: 60px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.user-name input:focus {
+  border-color: #007bff;
+}
+
+.inputs-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;  /* Space between the input fields */
+  width: 100%; /* Ensure container takes full width */
+  max-width: 350px; /* Optional: set a max-width for larger screens */
+}
+
+/* Styling for the handicap input */
+.handicap-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%; /* Ensure input stretches to full width */
+  max-width: 250px;  /* Set a max-width for inputs */
+}
+
+.handicap-input label {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.handicap-input input {
+  padding: 8px;
+  font-size: 16px;
+  text-align: center;
+  width: 100%;
+  max-width: 150px;  /* Adjust max-width to fit mobile screens */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.handicap-input input:focus {
+  border-color: #007bff;
+}
+
+.tee-time-select {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 250px;
+}
+
+.tee-time-select label {
+  font-size: 16px;
+  margin-bottom: 5px;
 }
 
 .tee-time-select select {
-  padding: 8px;
-  font-size: 14px;
-  width: 150px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.tee-time-select select:focus {
+  border-color: #007bff;
 }
 
 .create-user-header h2 {
@@ -99,7 +190,7 @@ select {
 }
 
 /* Mobile responsiveness */
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .tee-time-container {
     padding: 10px;
   }
@@ -109,13 +200,22 @@ select {
     align-items: flex-start;
   }
 
+  /* For small screens, adjust layout */
   .user-name {
-    width: auto; /* Allow name to take up available space */
-    margin-bottom: 5px;
+    font-size: 16px;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
+  .user-name input {
+    margin-left: 0;
+    margin-top: 5px;
+    width: 50px;  /* adjust size for smaller screens */
+  }
+
+  .handicap-input input,
   .tee-time-select select {
-    width: 100%; /* Make select dropdown fill available space */
+    max-width: 100%;  /* Make sure inputs take full width on mobile */
   }
 }
 

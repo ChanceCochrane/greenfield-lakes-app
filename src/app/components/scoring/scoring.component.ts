@@ -109,7 +109,24 @@ export class ScoringComponent {
     if (this.holeIndex >= 10) {
       hole = this.holeIndex - 1;
     }
-    let newScore = user.currentRound[hole] += delta;
+
+    // Get the current score
+    let currentScore = user.currentRound[hole];
+
+    // Calculate the new score with the delta adjustment
+    let newScore = currentScore + delta;
+
+    // Ensure the new score is between 1 and 10 (inclusive)
+    if (newScore < 1) {
+      newScore = 1;
+    } else if (newScore > 10) {
+      newScore = 10;
+    }
+    // If the score didn't actually change, return early
+    if (newScore === currentScore) {
+      return;
+    }
+    user.currentRound[hole] = newScore;
 
     // Call service to update this user's score
     this.teeTimeService.updateUserScore(user.name, hole, newScore).subscribe({

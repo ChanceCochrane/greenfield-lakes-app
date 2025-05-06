@@ -14,18 +14,31 @@
 
     <div class="tee-times-list">
       <div *ngFor="let user of users" class="user-tee-time">
-        <div class="user-name">{{ user.name }} (HCP: {{ user.handicap }})</div>
-        <div class="tee-time-select">
-          <select
-            id="teeTime-{{ user.name }}"
-            [(ngModel)]="selectedTeeTimes[user.name]"
-            (change)="updateTeeTime(user.name, selectedTeeTimes[user.name])"
-          >
-          <option value="N/A">N/A</option>
-          <option *ngFor="let time of teeTimes" [value]="time">
-            {{ time }}
-          </option>
-          </select>
+        <div class="user-name">{{ user.name }}</div>
+        <div class="inputs-container">
+          <div class="handicap-input">
+            <label for="handicap-{{ user.name }}">Handicap:</label>
+            <input
+              type="number"
+              [ngModel]="user.handicap"
+              (ngModelChange)="onHandicapChange(user, $event)"
+              min="-10"
+              max="30"
+            />
+          </div>
+          <div class="tee-time-select">
+            <label for="teeTime-{{ user.name }}">Tee Time:</label>
+            <select
+              id="teeTime-{{ user.name }}"
+              [(ngModel)]="selectedTeeTimes[user.name]"
+              (change)="updateTeeTime(user.name, selectedTeeTimes[user.name])"
+            >
+            <option value="N/A">N/A</option>
+            <option *ngFor="let time of teeTimes" [value]="time">
+              {{ time }}
+            </option>
+            </select>
+          </div>
         </div>
       </div>
     </div>

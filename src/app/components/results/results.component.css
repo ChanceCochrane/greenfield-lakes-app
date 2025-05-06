@@ -98,51 +98,64 @@ td.par-tab {
 
 .skins-container {
   margin-top: 20px;
-  width: 100%; /* Adjusted for mobile */
+  width: 100%; /* Ensure it's mobile-friendly */
+  padding: 10px;
   text-align: center;
-  align-content: center;
+  background-color: #f3f6f9; /* Light background for section */
+  border-radius: 8px;
 }
 
 .skins-container h3 {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: bold;
-  color: #0d1321;
-  margin-bottom: 10px;
+  color: #333;
+  margin-bottom: 15px;
 }
 
-.skins-list {
-  list-style: none;
-  padding: 0;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-  align-items: center;
+.skins-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
 }
 
-.skin-item {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-  font-size: 0.9rem;
+.skin-card {
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 90%;  /* Responsive width for mobile */
+  max-width: 150px; /* Limit the width on large screens */
   text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
-.skin-item:last-child {
-  border-bottom: none;
+.skin-card:hover {
+  transform: translateY(-5px); /* Small hover effect */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
 }
 
-.skin-item:hover {
-  background-color: #e8f5e9;
+.player-name {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #39aaed;
+  margin-bottom: 5px;
+}
+
+.hole-number {
+  font-size: 0.9rem;
+  color: #555;
 }
 
 .no-skins {
   margin-top: 20px;
   padding: 15px;
-  background-color: #f8f8f8;
+  background-color: #ffebee; /* Soft red background for "no skins" message */
   border-radius: 4px;
-  font-size: 0.9rem;
+  font-size: 1rem;
   text-align: center;
-  width: 100%;
+  color: #d32f2f; /* Red color for the message */
 }
 
 th, td {
@@ -202,16 +215,12 @@ tr:hover td {
   font-size: 16px;
   font-weight: 600;
   color: white;
-  background-color: #0d1321;
+  background-color: #ed7c39;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   max-width: 90%;
   width: 100%;
-}
-
-.toggle-button:active {
-  background-color: #0d1321;
 }
 
 /* Desktop adjustments */
@@ -253,5 +262,16 @@ tr:hover td {
 
   .results-table {
     min-width: 100%; /* Ensure table takes full width on mobile */
+  }
+}
+
+@media (min-width: 600px) {
+  .skins-cards-container {
+    justify-content: space-between;
+  }
+
+  .skin-card {
+    width: 30%; /* Three columns on larger screens */
+    max-width: none;
   }
 }
