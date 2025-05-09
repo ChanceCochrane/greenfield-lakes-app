@@ -101,3 +101,7 @@ button {
   transition: background-color 0.2s;
 }
 
+.skins-check {
+  color: green;
+  font-size: 1.1em;
+}

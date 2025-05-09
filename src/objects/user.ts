@@ -3,6 +3,7 @@ export interface User {
   handicap: number;
   currentRound: number[];
   rounds?: Round[];
+  paidSkins: boolean;
 }
 
 export interface Round {

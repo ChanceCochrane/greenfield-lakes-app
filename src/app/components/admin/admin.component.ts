@@ -51,6 +51,7 @@ export class AdminComponent {
         this.users = users.map(user => {
           // Ensure that 0 is used when the handicap is null or undefined
           user.handicap = user.handicap ?? 0;
+          user.paidSkins = user.paidSkins ?? false; // Initialize paidSkins if not present
           return user;
         });
         this.fetchTeeTimes();
@@ -168,7 +169,7 @@ export class AdminComponent {
   onSubmit() {
     if (this.user.name && this.user.handicap !== null) {
       // Call the createUser method from the service
-      this.teeTimeService.createUser(this.user.name, this.user.handicap, [], [])
+      this.teeTimeService.createUser(this.user.name, this.user.handicap, [], [], false)
         .subscribe(
           (response) => {
             this.submissionMessage = 'User created successfully!';
@@ -220,5 +221,19 @@ export class AdminComponent {
     const month = String(date.getMonth() + 1).padStart(2, '0'); // JS months are 0-indexed
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
+  }
+
+  onCheckboxChange(user: User, isChecked: boolean): void {
+    user.paidSkins = isChecked;
+    this.teeTimeService.updateUser({
+      name: user.name,
+      paidSkins: user.paidSkins
+    }).subscribe({
+      error: (err) => {
+        alert("Error updating paid skins status.");
+        console.error(err);
+      }
+    });
+
   }
 }

@@ -39,6 +39,19 @@
             </option>
             </select>
           </div>
+
+          <div class="paid-skins-container">
+            <label>
+              Paid Skins:
+              <input
+                type="checkbox"
+                id="checkbox"
+                [(ngModel)]="user.paidSkins"
+                (ngModelChange)="onCheckboxChange(user, $event)"
+              />
+            </label>
+          </div>
+
         </div>
       </div>
     </div>

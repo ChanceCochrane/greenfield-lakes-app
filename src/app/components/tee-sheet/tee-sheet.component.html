@@ -17,9 +17,13 @@
   <div class="tee-time" *ngFor="let slot of teeSheet">
     <div class="time-header">{{ slot.time }} AM</div>
     <div class="players">
-    <div class="player" *ngFor="let user of slot.users; let i = index">
-      <span class="player-number">{{ i + 1 }}.</span>
-      <span class="player-name">{{ user || '' }}</span>
+      <div class="player" *ngFor="let user of slot.users; let i = index">
+        <span class="player-number">{{ i + 1 }}.</span>
+        <span class="player-name">
+          {{ user?.name || '' }}
+          <span *ngIf="user?.paidSkins" class="skins-check">✅</span>
+        </span>
+      </div>
     </div>
   </div>
 </div>

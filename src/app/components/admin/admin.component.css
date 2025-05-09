@@ -306,3 +306,14 @@ p {
   font-size: 14px;
   text-align: center;
 }
+
+.paid-skins-container label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+
+#checkbox:checked + #text-box {
+  background-color: #39aaed; /* Change the color when checked */
+}

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TeeTimeService } from '../../services/tee-time.service';
 import { formatDate } from '@angular/common';
 import { environment } from '../../../environments/environment';
+import { User } from '../../../objects/user';
 
 @Component({
   selector: 'app-tee-sheet',
@@ -16,7 +17,8 @@ export class TeeSheetComponent {
   group = '';
   timeSuggestion = '';
   times: string[] = environment.sundayTeeTimes;
-  teeSheet: { time: string; users: (string | null)[] }[] = [];
+  teeSheet: { time: string; users: (User  | null)[] }[] = [];
+  allUsers: User[] = [];
 
   constructor(private route: ActivatedRoute,
     private teeTimeService: TeeTimeService,
@@ -34,7 +36,23 @@ export class TeeSheetComponent {
         this.tournamentDate = new Date(year, month, day);
       }
     });
-    this.loadTeeTimes();
+    this.getAllUsers();
+  }
+
+  getAllUsers(): void {
+    this.teeTimeService.getUsers().subscribe(
+      (users: User[]) => {
+        this.allUsers = users.map(user => {
+          // Ensure that 0 is used when the handicap is null or undefined
+          user.paidSkins = user.paidSkins ?? false; // Initialize paidSkins if not present
+          return user;
+        });
+        this.loadTeeTimes(); // Load tee times after fetching users
+      },
+      error => {
+        console.error('Error fetching users:', error);
+      }
+    );
   }
 
   loadTeeTimes(): void {
@@ -53,11 +71,15 @@ export class TeeSheetComponent {
   buildTeeSheet(teeTimes: any[]): void {
     this.teeSheet = this.times.map((time) => {
       const teeTime = teeTimes.find((t) => t.time === time);
-      let users: (string | null)[] = Array(4).fill(null); // Always start with 4 slots
+      let users: (User  | null)[] = Array(4).fill(null); // Always start with 4 slots
 
       if (teeTime && teeTime.users) {
         // Populate users; extend array if more than 4 users
-        users = teeTime.users.slice(0, 6).map((user: string) => user || null);
+        users = teeTime.users.slice(0, 6).map((userName: string) => {
+          const matchedUser = this.allUsers.find(u => u.name === userName);
+          return matchedUser ?? { name: userName, paidSkins: false }; // fallback if user not found
+        });
+
         // Pad with null if fewer than 4 users
         while (users.length < 4) {
           users.push(null);
