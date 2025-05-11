@@ -150,11 +150,16 @@ export class ScoringComponent {
   }
 
   formatDate(date: Date): string {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based, so +1
-    const adjustedDate = new Date(date);
-    adjustedDate.setHours(adjustedDate.getHours() - 7);
-    const day = String(adjustedDate.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`; // "YYYY-MM-DD"
+    // Create a date in MST (UTC-7) without manual hour adjustment
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/Phoenix', // Arizona time zone
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
+
+    // Format the date as YYYY-MM-DD
+    const [{ value: month }, , { value: day }, , { value: year }] = formatter.formatToParts(date);
+    return `${year}-${month}-${day}`;
   }
 }
