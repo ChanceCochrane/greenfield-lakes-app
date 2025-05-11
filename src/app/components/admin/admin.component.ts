@@ -145,13 +145,13 @@ export class AdminComponent {
   }
 
   updateTeeTime(user: string, teeTime: string) {
-    this.teeTimeService.removeUserFromTeeTime(this.selectedDate.toISOString().split('T')[0], user).subscribe({
+    this.teeTimeService.removeUserFromTeeTime(this.selectedDateString, user).subscribe({
       next: res => console.log('Success:', res),
       error: err => console.error('Error:', err)
     });
     if(teeTime !== 'N/A') {
       const teeTimeData = {
-        date: this.selectedDate.toISOString().split('T')[0], // Format date as YYYY-MM-DD
+        date: this.selectedDateString, // Format date as YYYY-MM-DD
         time: teeTime,
         users: [user]
       };
