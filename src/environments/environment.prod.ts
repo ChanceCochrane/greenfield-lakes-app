@@ -16,5 +16,6 @@ export const environment = {
     '2025-11-09', '2025-11-23',
     '2025-12-06', '2025-12-07'
   ],
-  holeInOnePot: 468
+  holeInOnePot: 340,
+  endOfYearPot: 464
 };

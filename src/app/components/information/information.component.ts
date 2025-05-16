@@ -9,8 +9,11 @@ import { environment } from '../../../environments/environment';
 })
 export class InformationComponent {
 
-  targetAmount = environment.holeInOnePot; // Final amount to display
-  displayAmount = 0;    // Value that animates
+  targetAmountHoleInOne = environment.holeInOnePot; // Final amount to display
+  targetAmountEndOfYearPot = environment.endOfYearPot; // Final amount to display
+
+  holeInOneDisplay = 0;    // Value that animates
+  endOfYearPot = 0;
 
   ngOnInit(): void {
     this.animateCountUp();
@@ -20,13 +23,22 @@ export class InformationComponent {
     const duration = 2500; // total animation time in ms
     const frameRate = 40;  // ms between each step
     const totalSteps = duration / frameRate;
-    const increment = this.targetAmount / totalSteps;
+    const increment = this.targetAmountHoleInOne / totalSteps;
+    const incrementEoY = this.targetAmountEndOfYearPot / totalSteps;
 
     const counter = setInterval(() => {
-      this.displayAmount += increment;
-      if (this.displayAmount >= this.targetAmount) {
-        this.displayAmount = this.targetAmount;
+      this.holeInOneDisplay += increment;
+      if (this.holeInOneDisplay >= this.targetAmountHoleInOne) {
+        this.holeInOneDisplay = this.targetAmountHoleInOne;
         clearInterval(counter);
+      }
+    }, frameRate);
+
+    const counterEoY = setInterval(() => {
+      this.endOfYearPot += incrementEoY;
+      if (this.endOfYearPot >= this.targetAmountEndOfYearPot) {
+        this.endOfYearPot = this.targetAmountEndOfYearPot;
+        clearInterval(counterEoY);
       }
     }, frameRate);
   }
