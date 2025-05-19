@@ -33,13 +33,12 @@
               [(ngModel)]="selectedTeeTimes[user.name]"
               (change)="updateTeeTime(user.name, selectedTeeTimes[user.name])"
             >
-            <option value="N/A">N/A</option>
-            <option *ngFor="let time of teeTimes" [value]="time">
-              {{ time }}
-            </option>
+              <option value="N/A">N/A</option>
+              <option *ngFor="let time of teeTimes" [value]="time">
+                {{ time }}
+              </option>
             </select>
           </div>
-
           <div class="paid-skins-container">
             <label>
               Paid Skins:
@@ -51,7 +50,6 @@
               />
             </label>
           </div>
-
         </div>
       </div>
     </div>
