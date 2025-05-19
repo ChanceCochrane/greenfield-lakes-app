@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  sundayTeeTimes: [
+  sundayTeeTimes: [ "5:52",
     "6:00", "6:07", "6:15", "6:22", "6:30",
     "6:37", "6:45", "6:52", "7:00"
   ],
