@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { TeeTimeService } from '../../services/tee-time.service';
 import { User } from '../../../objects/user';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-admin',
@@ -10,6 +11,7 @@ import { User } from '../../../objects/user';
   styleUrl: './admin.component.css'
 })
 export class AdminComponent {
+  private apiUrl = environment.apiUrl; // Your Node API URL
   selectedDate: Date = new Date(); // Default to today's date
   selectedDateString: string = '';
   users: User[] = []; // List of users you want to display
@@ -31,7 +33,7 @@ export class AdminComponent {
   submissions: { [key: string]: { name: string; group: string; time: string; submissionTime: Date } } | null = null; // Store the submissions data
   message: string = ''; // Store success/error messages
 
-  constructor(private teeTimeService: TeeTimeService) {  }
+  constructor(private teeTimeService: TeeTimeService, private http: HttpClient) {  }
 
   ngOnInit(): void {
     // Set to next Sunday
@@ -208,12 +210,22 @@ export class AdminComponent {
   }
 
   checkAccess() {
-    if (this.accessCode.trim().toUpperCase() === 'GFMC') {
-      this.authorized = true;
-      this.errorMessage = '';
-    } else {
-      this.errorMessage = 'Invalid code. Try again.';
-    }
+    const authUrl = `${this.apiUrl}/verifyAdminAccess`;
+    this.http.post<{ authorized: boolean, error?: string }>(authUrl, { accessCode: this.accessCode })
+      .subscribe({
+        next: (response) => {
+          if (response.authorized) {
+            this.authorized = true;
+            this.errorMessage = '';
+          } else {
+            this.errorMessage = response.error || 'Invalid code. Try again.';
+          }
+        },
+        error: (err) => {
+          this.errorMessage = 'Error verifying access. Please try again later.';
+          console.error('API error:', err);
+        }
+      });
   }
 
   formatDate(date: Date): string {
