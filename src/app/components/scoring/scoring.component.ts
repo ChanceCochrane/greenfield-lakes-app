@@ -21,6 +21,11 @@ export class ScoringComponent {
   selectedDate: Date = new Date(); // TO DO: Set this to todays date so the leaderboard is only visible on tourney day
   selectedDateString: string = '';
   initializeRound = [3, 4, 5, 3, 3, 3, 3, 3, 5, 4, 3, 3, 3, 3, 4, 3, 3, 4];
+  accordionStates: { [key: string]: boolean } = {
+    net: false,
+    gross: false
+  };
+  selectedTeeTimeIndex: number | null = null;
 
   constructor(private teeTimeService: TeeTimeService) {}
 
@@ -73,6 +78,7 @@ export class ScoringComponent {
     const selectedId = (event.target as HTMLSelectElement).value;
     const index = parseInt(selectedId, 10);
     this.selectedGroupId = selectedId; // Keep for UI highlighting if needed
+    this.selectedTeeTimeIndex = selectedId ? +selectedId : null;
     this.loadSelectedGroup(index);
   }
 
@@ -161,5 +167,9 @@ export class ScoringComponent {
     // Format the date as YYYY-MM-DD
     const [{ value: month }, , { value: day }, , { value: year }] = formatter.formatToParts(date);
     return `${year}-${month}-${day}`;
+  }
+
+  toggleAccordion(type: string) {
+    this.accordionStates[type] = !this.accordionStates[type];
   }
 }

@@ -1,6 +1,7 @@
 <!-- Dropdown for Tee Time Selection -->
 <div class="dropdown-container">
-  <select *ngIf="teeTimes.length > 0; else noTeeTimes" (change)="onGroupSelect($event)">
+  <select *ngIf="teeTimes.length > 0; else noTeeTimes" (change)="onGroupSelect($event)"
+    [ngClass]="{'no-selection': !selectedTeeTimeIndex}">
     <option value="" disabled selected>Select a tee time</option>
     <option *ngFor="let teeTime of teeTimes; let i = index" [value]="i">
       {{ teeTime.displayUsers }}
@@ -57,17 +58,35 @@
     </div>
 </div>
 
-<!-- Leaderboards -->
+<!-- Leaderboards with Accordion Dropdown -->
 <div *ngIf="teeTimes.length > 0">
-  <app-live-leaderboard
-    [refreshTrigger]="leaderboardTrigger.asObservable()"
-    [selectedDate]="selectedDateString"
-    [showNet]="false">
-  </app-live-leaderboard>
+  <!-- Net Leaderboard Accordion -->
+  <div class="accordion-item">
+    <div class="accordion-header" (click)="toggleAccordion('net')">
+      <h3>Net Leaderboard</h3>
+      <span>{{ accordionStates['net'] ? '-' : '+' }}</span>
+    </div>
+    <div class="accordion-content" [ngClass]="{'open': accordionStates['net']}">
+      <app-live-leaderboard
+        [selectedDate]="selectedDateString"
+        [refreshTrigger]="leaderboardTrigger.asObservable()"
+        [showNet]="true">
+      </app-live-leaderboard>
+    </div>
+  </div>
 
-  <app-live-leaderboard
-    [selectedDate]="selectedDateString"
-    [refreshTrigger]="leaderboardTrigger.asObservable()"
-    [showNet]="true">
-  </app-live-leaderboard>
+  <!-- Gross Leaderboard Accordion -->
+  <div class="accordion-item">
+    <div class="accordion-header" (click)="toggleAccordion('gross')">
+      <h3>Gross Leaderboard</h3>
+      <span>{{ accordionStates['gross'] ? '-' : '+' }}</span>
+    </div>
+    <div class="accordion-content" [ngClass]="{'open': accordionStates['gross']}">
+      <app-live-leaderboard
+        [refreshTrigger]="leaderboardTrigger.asObservable()"
+        [selectedDate]="selectedDateString"
+        [showNet]="false">
+      </app-live-leaderboard>
+    </div>
+  </div>
 </div>

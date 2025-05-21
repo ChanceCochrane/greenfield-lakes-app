@@ -16,7 +16,69 @@ body {
 /* Dropdown Container */
 .dropdown-container {
   margin-bottom: 1.5rem;
+  margin-top: 1rem;
   text-align: center;
+  padding: 0 1rem
+}
+
+.dropdown-container select {
+  /* Button-like styling */
+  background-color: #39aaed; /* Orange color */
+  color: white;
+  font-size: 1.25rem; /* Larger text for better visibility */
+  padding: 1rem 2rem; /* Increased padding for a larger button */
+  border: none;
+  border-radius: 8px; /* Rounded corners */
+  width: 100%; /* Full width on mobile */
+  max-width: 400px; /* Optional: Limit width on larger screens */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  appearance: none; /* Remove default arrow */
+  cursor: pointer; /* Indicate interactivity */
+  text-align: center; /* Center the text */
+  height: 60px; /* Fixed height for consistent size */
+  line-height: 1.5; /* Align text vertically */
+  box-sizing: border-box
+}
+
+/* Hide the default arrow in modern browsers */
+.dropdown-container select::-ms-expand {
+  display: none;
+}
+
+/* Optional: Custom arrow using pseudo-elements (if supported) */
+.dropdown-container select:after {
+  content: '▼'; /* Down arrow */
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; /* Prevent interaction with the arrow */
+}
+
+/* Add extra padding when no group is selected */
+.dropdown-container select.no-selection {
+  margin-bottom: 1rem; /* Increased padding for more space */
+}
+
+/* Hover and focus states */
+.dropdown-container select:hover,
+.dropdown-container select:focus {
+  background-color: #39aaed; /* Slightly darker orange on hover/focus */
+  outline: none; /* Remove default focus outline */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Ensure the disabled option (persistent label) is styled consistently */
+.dropdown-container select option[disabled][selected] {
+  color: white;
+  background-color: #39aaed;
+}
+
+/* Fallback for no tee times message */
+.dropdown-container p {
+  font-size: 1rem;
+  color: #666;
+  margin-top: 0.5rem;
 }
 
 select {
@@ -41,12 +103,6 @@ select:focus {
   box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
 }
 
-.dropdown-container p {
-  font-size: 1rem;
-  color: #666;
-  margin-top: 0.5rem;
-}
-
 /* Hole Control */
 .hole-control {
   display: flex;
@@ -65,7 +121,7 @@ select:focus {
   width: 48px;
   height: 48px;
   font-size: 1.5rem;
-  background-color: #39aaed;
+  background-color: #ED7C39;
   color: #fff;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -77,7 +133,7 @@ select:focus {
 
 .hole-control button:hover,
 .hole-control button:focus {
-  background-color: #39aaed;
+  background-color: #ED7C39;
   outline: none;
 }
 
@@ -117,7 +173,7 @@ select:focus {
   width: 48px;
   height: 48px;
   font-size: 1.5rem;
-  background-color: #ED7C39;
+  background-color: #39aaed;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -129,11 +185,52 @@ select:focus {
 
 .score-control button:hover,
 .score-control button:focus {
-  background-color: #ED7C39;
+  background-color: #39aaed;
   outline: none;
 }
 
 /* Scoring Interface */
 .scoring-interface {
   margin-top: 1.5rem;
+}
+
+.accordion-item {
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.accordion-header {
+  background-color: #f4f4f4;
+  padding: 1rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.accordion-header:hover {
+  background-color: #e0e0e0;
+}
+
+.accordion-content {
+  display: none;
+  padding: 1rem;
+  background-color: #fff;
+  transition: all 0.3s ease; /* Smooth transition for opening/closing */
+}
+
+.accordion-content.open {
+  display: block;
+}
+
+h3 {
+  align-items: center;
+}
+
+/* Ensure the leaderboard fits within the accordion */
+app-live-leaderboard {
+  display: block;
+  width: 100%;
 }
