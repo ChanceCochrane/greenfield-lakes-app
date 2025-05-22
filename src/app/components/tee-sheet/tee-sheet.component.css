@@ -2,6 +2,8 @@
   padding: 1rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f1f5f9;
+  max-width: 750px;
+  margin: 0 auto;
 }
 
 h2 {
@@ -99,9 +101,16 @@ button {
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.2s;
+  width: 250px;
+  margin: 0 auto;
 }
 
 .skins-check {
   color: green;
   font-size: 1.1em;
+}
+
+.submissionText {
+  max-width: 750px;
+  margin: 0 auto;
 }
