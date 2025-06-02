@@ -36,15 +36,18 @@ export class ScoringComponent {
       next: (response: any) => {
         if (response.message) {
           this.teeTimes = [];
-        } else {
-          this.teeTimes = response.map((teeTime: any, index: number) => {
-            const lastNames = teeTime.users.map((user: string) => user.split(' ').pop());
-            return {
+        }
+        else {
+            // Filter out tee times with no users before mapping
+            this.teeTimes = response.filter((teeTime: any) => Array.isArray(teeTime.users) && teeTime.users.length > 0)
+            .map((teeTime: any, index: number) => {
+              const lastNames = teeTime.users.map((user: string) => user.split(' ').pop());
+              return {
               id: index,
               users: teeTime.users,
               displayUsers: lastNames.join(', ')
-            };
-          });
+              };
+            });
         }
       },
       error: () => (this.teeTimes = [])
