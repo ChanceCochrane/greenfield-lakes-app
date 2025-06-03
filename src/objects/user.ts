@@ -4,6 +4,7 @@ export interface User {
   currentRound: number[];
   rounds?: Round[];
   paidSkins: boolean;
+  yearlyPoints?: number;
 }
 
 export interface Round {

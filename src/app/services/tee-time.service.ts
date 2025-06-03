@@ -16,8 +16,8 @@ export class TeeTimeService {
     return this.http.get<User[]>(`${this.apiUrl}/users`);
   }
 
-  createUser(name: string, handicap: number, currentRound: number[], rounds: number[], paidSkins: boolean): Observable<any> {
-    const user = { name, handicap, currentRound, rounds, paidSkins };
+  createUser(name: string, handicap: number, currentRound: number[], rounds: number[], paidSkins: boolean, yearlyPoints: number): Observable<any> {
+    const user = { name, handicap, currentRound, rounds, paidSkins, yearlyPoints };
     return this.http.post(`${this.apiUrl}/user`, user);
   }
 
@@ -27,6 +27,7 @@ export class TeeTimeService {
     currentRound?: number[];
     rounds?: number[][];
     paidSkins?: boolean;
+    yearlyPoints?: number;
   }): Observable<any> {
     return this.http.patch(`${this.apiUrl}/user`, data);
   }

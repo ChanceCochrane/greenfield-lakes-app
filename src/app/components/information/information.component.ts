@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { TeeTimeService } from '../../services/tee-time.service';
+import { User } from '../../../objects/user';
 
 @Component({
   selector: 'app-information',
@@ -8,6 +10,7 @@ import { environment } from '../../../environments/environment';
   styleUrl: './information.component.css'
 })
 export class InformationComponent {
+  users: User[] = []; // List of users you want to display
 
   targetAmountHoleInOne = environment.holeInOnePot; // Final amount to display
   targetAmountEndOfYearPot = environment.endOfYearPot; // Final amount to display
@@ -15,8 +18,11 @@ export class InformationComponent {
   holeInOneDisplay = 0;    // Value that animates
   endOfYearPot = 0;
 
+  constructor(private teeTimeService: TeeTimeService) {} // Inject service
+
   ngOnInit(): void {
-    this.animateCountUp();
+    this.getUsers();
+    this.animateCountUp(); // Start the count-up animation
   }
 
   animateCountUp(): void {
@@ -41,5 +47,21 @@ export class InformationComponent {
         clearInterval(counterEoY);
       }
     }, frameRate);
+  }
+
+  getUsers(): void {
+    this.teeTimeService.getUsers().subscribe(
+      (users: any[]) => { // Adjust type to match your User interface
+        this.users = users.map(user => {
+          user.handicap = user.handicap ?? 0;
+          user.paidSkins = user.paidSkins ?? false;
+          user.yearlyPoints = user.yearlyPoints ?? 0;
+          return user;
+        }).sort((a, b) => b.yearlyPoints - a.yearlyPoints).slice(0, 30); // Sort descending, take top 30
+      },
+      error => {
+        console.error('Error fetching users:', error);
+      }
+    );
   }
 }

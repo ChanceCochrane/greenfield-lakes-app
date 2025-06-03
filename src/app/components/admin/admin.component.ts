@@ -53,7 +53,8 @@ export class AdminComponent {
         this.users = users.map(user => {
           // Ensure that 0 is used when the handicap is null or undefined
           user.handicap = user.handicap ?? 0;
-          user.paidSkins = user.paidSkins ?? false; // Initialize paidSkins if not present
+          user.paidSkins = user.paidSkins ?? false;
+          user.yearlyPoints = user.yearlyPoints ?? 0;
           return user;
         });
         this.fetchTeeTimes();
@@ -126,6 +127,35 @@ export class AdminComponent {
     }
   }
 
+  onYearlyPointsChange(user: User, newPoints: any): void {
+    // Log the raw input to debug
+    console.log(`Raw newPoints for ${user.name}:`, newPoints, typeof newPoints);
+
+    // Convert to number and ensure it's an integer
+    const parsed = parseInt(newPoints, 10); // Use parseInt for safer conversion
+    console.log(`Parsed newPoints for ${user.name}:`, parsed, typeof parsed);
+
+    // Validate the parsed value
+    if (isNaN(parsed) || parsed <= 0 || parsed > 10000) {
+      console.warn(`Invalid point value for ${user.name}: ${newPoints} (parsed: ${parsed})`);
+      return;
+    }
+
+    // Only update if the value actually changed
+    if (user.yearlyPoints !== parsed) {
+      user.yearlyPoints = parsed;
+      console.log(`Updating yearlyPoints for ${user.name} to:`, parsed);
+
+      this.teeTimeService.updateUser({
+        name: user.name,
+        yearlyPoints: parsed, // Ensure we're sending a number
+      }).subscribe(
+        () => console.log(`Yearly points updated for ${user.name} to ${parsed}`),
+        (err) => console.error(`Error updating yearlyPoints for ${user.name}:`, err)
+      );
+    }
+  }
+
   getNextSundayDate(): Date {
     const today = new Date();
     const daysUntilSunday = (7 - today.getDay()) % 7;
@@ -171,7 +201,7 @@ export class AdminComponent {
   onSubmit() {
     if (this.user.name && this.user.handicap !== null) {
       // Call the createUser method from the service
-      this.teeTimeService.createUser(this.user.name, this.user.handicap, [], [], false)
+      this.teeTimeService.createUser(this.user.name, this.user.handicap, [], [], false, 0)
         .subscribe(
           (response) => {
             this.submissionMessage = 'User created successfully!';

@@ -1,6 +1,7 @@
 .wrapper {
   display: grid;
   place-items: center;
+  padding: 20px;
 }
 
 .typing-demo {
@@ -59,4 +60,74 @@ body {
 .construction-notice p {
   margin: 0;
   font-size: 1.25em;
+}
+
+.leaderboard-title {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.leaderboard {
+  width: 100%;
+  max-width: 600px;
+  border-collapse: collapse;
+  margin: 0 auto 20px; /* Center the table */
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.leaderboard th,
+.leaderboard td {
+  padding: 10px;
+  text-align: center; /* Center text in cells (remove if you prefer left-aligned) */
+  border-bottom: 1px solid #ddd;
+}
+
+.leaderboard th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.leaderboard tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.leaderboard tr:hover {
+  background-color: #f1f1f1;
+}
+
+.points-info {
+  max-width: 600px;
+  margin: 0 auto 20px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  text-align: left;
+}
+
+.points-info h3 {
+  margin-top: 0;
+  font-size: 1.3em;
+  color: #333;
+}
+
+.points-rules {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.points-rules ul {
+  list-style-type: circle;
+  padding-left: 20px;
+}
+
+.points-rules li {
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.points-rules strong {
+  color: #2c3e50;
 }

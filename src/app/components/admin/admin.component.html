@@ -26,6 +26,17 @@
               max="30"
             />
           </div>
+          <div class="yearly-points-input">
+            <label for="yearlyPoints-{{ user.name }}">Yearly Points:</label>
+            <input
+              type="number"
+              [ngModel]="user.yearlyPoints"
+              (ngModelChange)="onYearlyPointsChange(user, $event)"
+              step="1"
+              min="0"
+              max="10000"
+            />
+          </div>
           <div class="tee-time-select">
             <label for="teeTime-{{ user.name }}">Tee Time:</label>
             <select

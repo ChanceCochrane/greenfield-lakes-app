@@ -335,6 +335,17 @@ input[type="number"], select {
   border-radius: 4px;
 }
 
+.yearly-points-input {
+  margin: 10px 0;
+}
+.yearly-points-input label {
+  margin-right: 5px;
+}
+.yearly-points-input input {
+  width: 60px;
+  padding: 5px;
+}
+
 /* Mobile responsiveness */
 @media (max-width: 768px) {
   .tee-times-list {
