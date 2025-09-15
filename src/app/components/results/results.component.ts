@@ -14,6 +14,7 @@ export class ResultsComponent implements OnInit {
   displayDate: string = '';
   private targetDate: string = '';
   parValues: number[] = [3, 4, 5, 3, 3, 3, 3, 3, 5, 4, 3, 3, 3, 3, 4, 3, 3, 4];
+  holeHandicapValues: number[] = [9, 5, 3, 11, 17, 13, 15, 7, 1, 4, 14, 10, 12, 8, 6, 16, 18, 2];
   showNetLeaderboard: boolean = true;
 
   constructor(
@@ -87,13 +88,71 @@ export class ResultsComponent implements OnInit {
     return this.parValues.reduce((sum, p) => sum + p, 0);
   }
 
+  // Calculate net score for a specific hole for a specific user
+  calculateNetScoreForHole(user: User, holeIndex: number): number {
+    if (!user.currentRound || user.currentRound.length <= holeIndex) {
+      return 0;
+    }
+
+    const grossScore = user.currentRound[holeIndex];
+    const userHandicap = user.handicap || 0;
+    const holeHandicap = this.holeHandicapValues[holeIndex];
+
+    let strokesGiven = 0;
+
+    if (userHandicap > 0) {
+      // Positive handicap: player gets strokes
+      if (userHandicap >= 18) {
+        // Gets at least one stroke on every hole
+        strokesGiven = 1;
+        // Check if they get a second stroke on this hole
+        const extraStrokes = userHandicap - 18;
+        if (holeHandicap <= extraStrokes) {
+          strokesGiven = 2;
+        }
+      } else {
+        // Gets one stroke on the handicap holes up to their handicap
+        if (holeHandicap <= userHandicap) {
+          strokesGiven = 1;
+        }
+      }
+    } else if (userHandicap < 0) {
+      // Negative handicap: player gives strokes (scratch or better)
+      // They give strokes on the easiest holes (highest handicap values)
+      const strokesToGive = Math.abs(userHandicap);
+      if (holeHandicap >= (19 - strokesToGive)) {
+        strokesGiven = -1; // Add a stroke
+      }
+    }
+
+    return grossScore - strokesGiven;
+  }
+
+  // Get the display score for a hole (gross or net based on current leaderboard)
+  getDisplayScoreForHole(user: User, holeIndex: number): number {
+    if (this.showNetLeaderboard) {
+      return this.calculateNetScoreForHole(user, holeIndex);
+    } else {
+      return user.currentRound[holeIndex] || 0;
+    }
+  }
+
+  // Updated skins method to use net scores when net leaderboard is shown
   skins(i: number, user: User): boolean {
     if (!user.currentRound || user.currentRound.length <= i) {
       return false;
     }
 
-    const userScore = user.currentRound[i];
-    const allScoresForHole = this.usersWithScores.map(u => u.currentRound[i]).filter(score => score !== undefined);
+    const userScore = this.showNetLeaderboard
+      ? this.calculateNetScoreForHole(user, i)
+      : user.currentRound[i];
+
+    const allScoresForHole = this.usersWithScores.map(u =>
+      this.showNetLeaderboard
+        ? this.calculateNetScoreForHole(u, i)
+        : u.currentRound[i]
+    ).filter(score => score !== undefined);
+
     const minScore = Math.min(...allScoresForHole);
     const isUniqueMin = userScore === minScore && allScoresForHole.filter(score => score === minScore).length === 1;
 

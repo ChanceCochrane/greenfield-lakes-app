@@ -65,11 +65,11 @@
             *ngFor="let score of user.currentRound; let i = index"
             class="score-cell"
             [ngClass]="{
-              'birdie': score < parValues[i],
+              'birdie': getDisplayScoreForHole(user, i) < parValues[i],
               'skins': skins(i, user)
             }"
           >
-            {{ score }}
+            {{ getDisplayScoreForHole(user, i) }}
           </td>
           <td>{{ calculateTotal(user) }}</td>
           <td>{{ user.handicap !== null && user.handicap !== undefined ? user.handicap : 0 }}</td>

@@ -126,8 +126,15 @@ body {
 .points-rules li {
   margin-bottom: 10px;
   line-height: 1.5;
+  text-decoration: none !important;
 }
 
 .points-rules strong {
   color: #2c3e50;
+  text-decoration: none !important;
+}
+
+/* Ensure no strikethrough on any text in points-info */
+.points-info * {
+  text-decoration: none !important;
 }
