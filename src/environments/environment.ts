@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  sundayTeeTimes: [ "6:00", "6:07", "6:15", "6:22", "6:30", "6:37", "6:45", "6:52", "7:00", "7:07" ],
+  sundayTeeTimes: [ "6:30", "6:37", "6:45", "6:52", "7:00", "7:07" ],
   apiUrl: 'https://localhost:3000',
   tournamentDates: [ '2025-04-13',
     '2025-04-27', '2025-05-11',
@@ -11,6 +11,6 @@ export const environment = {
     '2025-10-26', '2025-11-09',
     '2025-11-22', '2025-11-23',
     '2025-12-07' ],
-  holeInOnePot: 454,
-  endOfYearPot: 556
+  holeInOnePot: 518,
+  endOfYearPot: 608
 };
