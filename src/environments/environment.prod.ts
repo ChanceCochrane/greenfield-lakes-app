@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  sundayTeeTimes: [ "6:30", "6:37", "6:45", "6:52", "7:00", "7:07" ],
+  sundayTeeTimes: [ "6:30", "6:37", "6:45", "6:52", "7:00", "7:07", "7:15" ],
   apiUrl: 'https://greenfield-api.fly.dev',
   tournamentDates: [ '2025-04-13',
     '2025-04-27', '2025-05-11',
