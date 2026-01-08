@@ -143,11 +143,30 @@ export class ResultsComponent implements OnInit {
       return false;
     }
 
+    // First check if the current user paid for skins
+    const userRound = user.rounds?.find(r =>
+      new Date(r.date).toISOString().split('T')[0] ===
+      new Date(this.targetDate).toISOString().split('T')[0]
+    );
+
+    if (!userRound?.paidSkins) {
+      return false;
+    }
+
     const userScore = this.showNetLeaderboard
       ? this.calculateNetScoreForHole(user, i)
       : user.currentRound[i];
 
-    const allScoresForHole = this.usersWithScores.map(u =>
+    // Here we need to filter out the players that did not pay to play skins
+    const eligiblePlayers = this.usersWithScores.filter(u => {
+      const round = u.rounds?.find(r =>
+        new Date(r.date).toISOString().split('T')[0] ===
+        new Date(this.targetDate).toISOString().split('T')[0]
+      );
+      return round?.paidSkins === true;
+    });
+
+    const allScoresForHole = eligiblePlayers.map(u =>
       this.showNetLeaderboard
         ? this.calculateNetScoreForHole(u, i)
         : u.currentRound[i]

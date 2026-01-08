@@ -11,4 +11,5 @@ export interface Round {
   date: string;
   roundScores: number[];
   handicap: number;
+  paidSkins: boolean;
 }
