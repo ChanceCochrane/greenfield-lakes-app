@@ -3,6 +3,7 @@ import { User } from '../../../objects/user';
 import { TournamentService } from '../../services/tournament.service';
 import { LeaderboardService } from '../../services/leaderboard.service';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -15,6 +16,9 @@ export class HomeComponent {
   grossLeaderboard: { name: string; grossscore: number; }[] = [];
   lastTournamentDate: string = '';
   nextTournamentDate: string = '';
+  targetAmountHoleInOne = environment.holeInOnePot; // Final amount to display
+
+  holeInOneDisplay = 0;    // Value that animates
 
   constructor(private leaderboardService: LeaderboardService,
     private tournamentService: TournamentService,
@@ -22,6 +26,7 @@ export class HomeComponent {
   ) {}
 
   ngOnInit(): void {
+    this.animateCountUp(); // Start the count-up animation
     this.lastTournamentDate = this.tournamentService.getMostRecentTournamentDate();
     this.nextTournamentDate = this.tournamentService.getNextTournamentDate();
     this.leaderboardService.getNetLeaderboardForDate(this.lastTournamentDate).subscribe((users: User[]) => {
@@ -37,6 +42,13 @@ export class HomeComponent {
         grossscore: this.calculateGross(user)
       }));
     });
+  }
+
+  ngOnDestroy(): void {
+    // Clear the interval if the component is destroyed to prevent memory leaks
+    if (this.holeInOneDisplay) {
+      clearInterval(this.holeInOneDisplay);
+    }
   }
 
   getFormattedDate(dateString: string): string {
@@ -66,5 +78,20 @@ export class HomeComponent {
 
   private calculateNet(user: User): number {
     return this.calculateGross(user) - (user.handicap || 0);
+  }
+
+  animateCountUp(): void {
+    const duration = 2500; // total animation time in ms
+    const frameRate = 40;  // ms between each step
+    const totalSteps = duration / frameRate;
+    const increment = this.targetAmountHoleInOne / totalSteps;
+
+    const counter = setInterval(() => {
+      this.holeInOneDisplay += increment;
+      if (this.holeInOneDisplay >= this.targetAmountHoleInOne) {
+        this.holeInOneDisplay = this.targetAmountHoleInOne;
+        clearInterval(counter);
+      }
+    }, frameRate);
   }
 }

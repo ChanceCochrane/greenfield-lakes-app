@@ -12,30 +12,10 @@ import { User } from '../../../objects/user';
 export class InformationComponent {
   users: User[] = []; // List of users you want to display
 
-  targetAmountHoleInOne = environment.holeInOnePot; // Final amount to display
-
-  holeInOneDisplay = 0;    // Value that animates
-
   constructor(private teeTimeService: TeeTimeService) {} // Inject service
 
   ngOnInit(): void {
     this.getUsers();
-    this.animateCountUp(); // Start the count-up animation
-  }
-
-  animateCountUp(): void {
-    const duration = 2500; // total animation time in ms
-    const frameRate = 40;  // ms between each step
-    const totalSteps = duration / frameRate;
-    const increment = this.targetAmountHoleInOne / totalSteps;
-
-    const counter = setInterval(() => {
-      this.holeInOneDisplay += increment;
-      if (this.holeInOneDisplay >= this.targetAmountHoleInOne) {
-        this.holeInOneDisplay = this.targetAmountHoleInOne;
-        clearInterval(counter);
-      }
-    }, frameRate);
   }
 
   getUsers(): void {
