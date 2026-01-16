@@ -11,7 +11,7 @@ import { LeaderboardService } from '../../services/leaderboard.service';
   styleUrl: './schedule.component.css'
 })
 export class ScheduleComponent implements OnInit{
-  tournaments: { date: Date, canSignUp: boolean }[] = [];
+  tournaments: { date: Date, format: string, canSignUp: boolean }[] = [];
   leaderboardToday: { name: string; } [] = [];
 
   constructor(private router: Router, private leaderboardService: LeaderboardService) {}
@@ -24,9 +24,9 @@ export class ScheduleComponent implements OnInit{
   async generateTournamentSchedule(today: Date): Promise<void> {
     await this.getScoresForToday(today);
 
-    this.tournaments = environment.tournamentDates.map(dateString => {
+    this.tournaments = environment.tournamentDates.map(tournament => {
       // Split the date string (e.g., '2025-04-13') into components
-      const [year, month, day] = dateString.split('-').map(Number);
+      const [year, month, day] = tournament.date.split('-').map(Number);
 
       // Create a Date object with local date components (month is 0-based in JS)
       const tournamentDate = new Date(year, month - 1, day);
@@ -41,6 +41,7 @@ export class ScheduleComponent implements OnInit{
 
        return {
         date: tournamentDate,
+        format: tournament.format,
         canSignUp: isSameDate ? this.leaderboardToday.length === 0 : tournamentDateOnly >= todayOnly
       };
     });

@@ -1,10 +1,11 @@
 <div class="schedule-container">
-  <h1 class="title">2025 Tournament Schedule</h1>
+  <h1 class="title">2026 Tournament Schedule</h1>
 
   <div class="tournament-grid">
     <div *ngFor="let tournament of tournaments">
       <div class="tournament">
-        <span>{{ tournament.date | date: 'fullDate' }}</span>
+        <div class="tournament-date">{{ tournament.date | date: 'MMMM d' }}</div>
+        <div class="tournament-format">{{ tournament.format }}</div>
 
         <!-- Only show the Sign Up button if the tournament is in the future -->
         <button *ngIf="tournament.canSignUp" class="signup-btn" (click)="onSignUp(tournament.date)">

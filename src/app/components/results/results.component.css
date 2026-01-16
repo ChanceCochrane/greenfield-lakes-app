@@ -101,7 +101,7 @@ td.par-tab {
   width: 100%; /* Ensure it's mobile-friendly */
   padding: 10px;
   text-align: center;
-  background-color: #f3f6f9; /* Light background for section */
+  background-color: #f5f4f4; /* Light background for section */
   border-radius: 8px;
 }
 
@@ -274,4 +274,34 @@ tr:hover td {
     width: 30%; /* Three columns on larger screens */
     max-width: none;
   }
+}
+
+/* Flight Sections */
+.flight-section {
+  width: 100%;
+  max-width: fit-content;
+  margin-top: 15px;
+}
+
+.flight-title {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #39aaed;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #f5f4f4;
+  border-radius: 8px;
+  border-left: 4px solid #39aaed;
+}
+
+/* Skins Legend */
+.skins-legend {
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 0.9rem;
+  color: #555;
+  font-style: italic;
 }

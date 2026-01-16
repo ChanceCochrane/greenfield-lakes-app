@@ -13,7 +13,7 @@ export class TournamentService {
 
     // Get tournament dates from environment
     const tournamentDates = environment.tournamentDates
-        .map(dateStr => new Date(dateStr))
+        .map(tournament => new Date(tournament.date))
         .filter(date => !isNaN(date.getTime())); // Filter out invalid dates
 
     // Find past tournaments
@@ -34,7 +34,7 @@ export class TournamentService {
 
     // Get tournament dates from environment
     const tournamentDates = environment.tournamentDates
-        .map(dateStr => new Date(dateStr))
+        .map(tournament => new Date(tournament.date))
         .filter(date => !isNaN(date.getTime())); // Filter out invalid dates
 
     // Find past tournaments

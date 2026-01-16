@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../../objects/user';
 import { TeeTimeService } from '../../services/tee-time.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-results',
@@ -11,11 +12,13 @@ import { TeeTimeService } from '../../services/tee-time.service';
 })
 export class ResultsComponent implements OnInit {
   usersWithScores: User[] = [];
+  flights: { name: string; users: User[] }[] = [];
   displayDate: string = '';
   private targetDate: string = '';
   parValues: number[] = [3, 4, 5, 3, 3, 3, 3, 3, 5, 4, 3, 3, 3, 3, 4, 3, 3, 4];
   holeHandicapValues: number[] = [9, 5, 3, 11, 17, 13, 15, 7, 1, 4, 14, 10, 12, 8, 6, 16, 18, 2];
   showNetLeaderboard: boolean = true;
+  private flightNames: string[] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
   constructor(
     private route: ActivatedRoute,
@@ -47,16 +50,61 @@ export class ResultsComponent implements OnInit {
         ...user,
         currentRound: this.getRoundForDate(user),
         handicap: this.calculateHandicap(user),
-      })).sort((a, b) => this.calculateNetTotal(a) - this.calculateNetTotal(b)); // Sort lowest net score first
+      }));
+
+      this.splitIntoFlights();
     });
   }
 
-  private sortUsers(): void {
-    this.usersWithScores.sort((a, b) => {
+  private splitIntoFlights(): void {
+    // Sort all users by handicap (lowest first)
+    const sortedByHandicap = [...this.usersWithScores].sort((a, b) =>
+      (a.handicap || 0) - (b.handicap || 0)
+    );
+
+    const numFlights = environment.flights;
+    const flightSize = Math.ceil(sortedByHandicap.length / numFlights);
+
+    // Create dynamic flights based on environment variable
+    this.flights = [];
+    for (let i = 0; i < numFlights; i++) {
+      const startIndex = i * flightSize;
+      const endIndex = Math.min(startIndex + flightSize, sortedByHandicap.length);
+      const flightUsers = sortedByHandicap.slice(startIndex, endIndex);
+
+      if (flightUsers.length > 0) {
+        this.flights.push({
+          name: this.flightNames[i] || `Flight ${i + 1}`,
+          users: flightUsers
+        });
+      }
+    }
+
+    // Sort each flight by score
+    this.sortFlights();
+  }
+
+  private sortFlights(): void {
+    const sortByScore = (a: User, b: User) => {
       const aScore = this.showNetLeaderboard ? this.calculateNetTotal(a) : this.calculateTotal(a);
       const bScore = this.showNetLeaderboard ? this.calculateNetTotal(b) : this.calculateTotal(b);
       return aScore - bScore;
-    });
+    };
+
+    this.flights.forEach(flight => flight.users.sort(sortByScore));
+  }
+
+  // Check if user paid skins for this date
+  userPaidSkins(user: User): boolean {
+    const round = user.rounds?.find(r =>
+      new Date(r.date).toISOString().split('T')[0] ===
+      new Date(this.targetDate).toISOString().split('T')[0]
+    );
+    return round?.paidSkins === true;
+  }
+
+  private sortUsers(): void {
+    this.sortFlights();
   }
 
   private getRoundForDate(user: User): number[] {
