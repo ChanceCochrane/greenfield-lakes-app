@@ -2,6 +2,7 @@ export const environment = {
   production: false,
   sundayTeeTimes: [ "7:45", "7:52", "8:00", "8:07", "8:15", "8:22", "8:30", "8:37" ],
   apiUrl: 'https://greenfield-api.fly.dev',
+  parValues: [3, 4, 5, 3, 3, 3, 3, 3, 5, 4, 3, 3, 3, 3, 4, 3, 3, 4],
   tournamentDates: [
     { date: '2026-01-18', format: 'Stroke Play' },
     { date: '2026-02-01', format: 'Stroke Play' },

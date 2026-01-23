@@ -24,7 +24,6 @@ export class AdminComponent {
   submissionMessage: string | null = null;
   // Static list of available times for the dropdown
   times: string[] = environment.sundayTeeTimes;
-  initializeRound = [3, 4, 5, 3, 3, 3, 3, 3, 5, 4, 3, 3, 3, 3, 4, 3, 3, 4];
 
   accessCode = '';
   authorized = false;

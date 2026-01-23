@@ -15,7 +15,7 @@ export class ResultsComponent implements OnInit {
   flights: { name: string; users: User[] }[] = [];
   displayDate: string = '';
   private targetDate: string = '';
-  parValues: number[] = [3, 4, 5, 3, 3, 3, 3, 3, 5, 4, 3, 3, 3, 3, 4, 3, 3, 4];
+  parValues: number[] = environment.parValues;
   holeHandicapValues: number[] = [9, 5, 3, 11, 17, 13, 15, 7, 1, 4, 14, 10, 12, 8, 6, 16, 18, 2];
   showNetLeaderboard: boolean = true;
   private flightNames: string[] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
