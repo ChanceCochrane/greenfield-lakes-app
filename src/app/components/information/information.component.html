@@ -88,6 +88,7 @@
       <div class="player-stats">
         <span><strong>Handicap:</strong> {{ selectedUser.handicap }}</span>
         <span><strong>Yearly Points:</strong> {{ selectedUser.yearlyPoints }}</span>
+        <span><strong>Yearly Earnings:</strong> {{ selectedUser.yearlyEarnings | currency:'USD':'symbol':'1.2-2' }}</span>
       </div>
     </div>
 

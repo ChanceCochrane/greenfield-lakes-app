@@ -35,6 +35,7 @@ export class InformationComponent implements OnInit {
           user.handicap = user.handicap ?? 0;
           user.paidSkins = user.paidSkins ?? false;
           user.yearlyPoints = user.yearlyPoints ?? 0;
+          user.yearlyEarnings = user.yearlyEarnings ?? 0;
           return user;
         });
         this.users = [...this.allUsers]

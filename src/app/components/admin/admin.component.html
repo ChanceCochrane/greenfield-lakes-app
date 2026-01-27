@@ -1,7 +1,33 @@
 <div *ngIf="authorized; else authForm">
   <!-- tee-time.component.html -->
   <div class="admin-container">
-    <h1>Welcome to the Admin Page</h1>
+    <h1>Admin Page</h1>
+
+    <!-- Tee Time Submissions Section - Now at the top -->
+    <div class="submissions-section">
+      <h2>Tee Time Submissions</h2>
+
+      <!-- Display submissions -->
+      <div *ngIf="submissions">
+        <div *ngFor="let submission of submissions | keyvalue" class="submission-card">
+          <p><strong>Submission Time:</strong> {{ submission.value.submissionTime }}</p>
+          <p><strong>Name:</strong> {{ submission.value.name }}</p>
+          <p><strong>Group:</strong> {{ submission.value.group }}</p>
+          <p><strong>Time:</strong> {{ submission.value.time }}</p>
+        </div>
+      </div>
+      <p *ngIf="!submissions">No submissions available.</p>
+
+      <!-- Buttons for submissions -->
+      <div class="submission-buttons">
+        <button (click)="fetchSubmissions()">Fetch Submissions</button>
+        <button (click)="deleteSubmissions()">Delete All Submissions</button>
+      </div>
+
+      <!-- Display messages -->
+      <p *ngIf="message" class="submission-message">{{ message }}</p>
+    </div>
+
     <div class="date-header">
       <label for="dateSelect">Tee Times for: </label>
       <input
@@ -12,8 +38,33 @@
       />
     </div>
 
+    <!-- User Search Filter -->
+    <div class="user-search-section">
+      <div class="search-container">
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          (input)="onSearchChange()"
+          placeholder="Search for a player..."
+          class="search-input"
+        />
+        <button *ngIf="selectedUser" (click)="clearSearch()" class="clear-btn">Clear</button>
+      </div>
+      <ul *ngIf="filteredUsers.length > 0" class="search-dropdown">
+        <li *ngFor="let user of filteredUsers" (click)="selectUser(user)">
+          {{ user.name }}
+        </li>
+      </ul>
+      <div class="user-count" *ngIf="!selectedUser">
+        Showing {{ users.length }} users
+      </div>
+      <div class="user-count" *ngIf="selectedUser">
+        Filtered to: {{ selectedUser.name }}
+      </div>
+    </div>
+
     <div class="tee-times-list">
-      <div *ngFor="let user of users" class="user-tee-time">
+      <div *ngFor="let user of displayedUsers" class="user-tee-time">
         <div class="user-name">{{ user.name }}</div>
         <div class="inputs-container">
           <div class="handicap-input">
@@ -35,6 +86,17 @@
               step="1"
               min="0"
               max="10000"
+            />
+          </div>
+          <div class="yearly-earnings-input">
+            <label for="yearlyEarnings-{{ user.name }}">Yearly Earnings:</label>
+            <input
+              type="number"
+              [ngModel]="user.yearlyEarnings"
+              (ngModelChange)="onYearlyEarningsChange(user, $event)"
+              step="0.01"
+              min="0"
+              max="100000"
             />
           </div>
           <div class="tee-time-select">
@@ -117,31 +179,6 @@
 
     <div *ngIf="submissionMessage" class="submission-message">
       {{ submissionMessage }}
-    </div>
-
-    <div>
-      <h2>Tee Time Submissions</h2>
-
-      <!-- Display submissions -->
-      <div *ngIf="submissions">
-        <div *ngFor="let submission of submissions | keyvalue">
-          <p><strong>Submission Time:</strong> {{ submission.value.submissionTime }}</p>
-          <p><strong>Name:</strong> {{ submission.value.name }}</p>
-          <p><strong>Group:</strong> {{ submission.value.group }}</p>
-          <p><strong>Time:</strong> {{ submission.value.time }}</p>
-          <hr />
-        </div>
-      </div>
-      <p *ngIf="!submissions">No submissions available.</p>
-
-      <!-- Button to fetch submissions -->
-      <button (click)="fetchSubmissions()">Fetch Submissions</button>
-
-      <!-- Button to delete all submissions -->
-      <button (click)="deleteSubmissions()">Delete All Submissions</button>
-
-      <!-- Display messages -->
-      <p *ngIf="message">{{ message }}</p>
     </div>
 
     <button (click)="archiveRounds()" class="archive-button">

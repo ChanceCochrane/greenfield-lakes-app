@@ -15,6 +15,7 @@ export class AdminComponent {
   selectedDate: Date = new Date(); // Default to today's date
   selectedDateString: string = '';
   users: User[] = []; // List of users you want to display
+  allUsers: User[] = []; // Full list for filtering
   teeTimes: string[] = [];
   selectedTeeTimes: { [user: string]: string } = {}; // To store selected tee time for each user
   user = {
@@ -24,6 +25,11 @@ export class AdminComponent {
   submissionMessage: string | null = null;
   // Static list of available times for the dropdown
   times: string[] = environment.sundayTeeTimes;
+
+  // Search filter properties
+  searchTerm: string = '';
+  filteredUsers: User[] = [];
+  selectedUser: User | null = null;
 
   accessCode = '';
   authorized = false;
@@ -49,19 +55,53 @@ export class AdminComponent {
   getUsers(): void {
     this.teeTimeService.getUsers().subscribe(
       (users: User[]) => {
-        this.users = users.map(user => {
+        this.allUsers = users.map(user => {
           // Ensure that 0 is used when the handicap is null or undefined
           user.handicap = user.handicap ?? 0;
           user.paidSkins = user.paidSkins ?? false;
           user.yearlyPoints = user.yearlyPoints ?? 0;
+          user.yearlyEarnings = user.yearlyEarnings ?? 0;
           return user;
         });
+        this.users = [...this.allUsers];
         this.fetchTeeTimes();
       },
       error => {
         console.error('Error fetching users:', error);
       }
     );
+  }
+
+  // Getter for displayed users - shows filtered user or all users
+  get displayedUsers(): User[] {
+    if (this.selectedUser) {
+      return [this.selectedUser];
+    }
+    return this.users;
+  }
+
+  onSearchChange(): void {
+    if (this.searchTerm.trim() === '') {
+      this.filteredUsers = [];
+      this.selectedUser = null;
+      return;
+    }
+    const term = this.searchTerm.toLowerCase();
+    this.filteredUsers = this.allUsers.filter(user =>
+      user.name.toLowerCase().includes(term)
+    );
+  }
+
+  selectUser(user: User): void {
+    this.selectedUser = user;
+    this.searchTerm = user.name;
+    this.filteredUsers = [];
+  }
+
+  clearSearch(): void {
+    this.searchTerm = '';
+    this.filteredUsers = [];
+    this.selectedUser = null;
   }
 
   fetchTeeTimes(): void {
@@ -155,6 +195,34 @@ export class AdminComponent {
     }
   }
 
+  onYearlyEarningsChange(user: User, newEarnings: any): void {
+    // Convert to number and ensure it's a valid decimal
+    const parsed = parseFloat(newEarnings);
+
+    // Validate the parsed value
+    if (isNaN(parsed) || parsed < 0 || parsed > 100000) {
+      console.warn(`Invalid earnings value for ${user.name}: ${newEarnings} (parsed: ${parsed})`);
+      return;
+    }
+
+    // Round to 2 decimal places for currency
+    const rounded = Math.round(parsed * 100) / 100;
+
+    // Only update if the value actually changed
+    if (user.yearlyEarnings !== rounded) {
+      user.yearlyEarnings = rounded;
+      console.log(`Updating yearlyEarnings for ${user.name} to:`, rounded);
+
+      this.teeTimeService.updateUser({
+        name: user.name,
+        yearlyEarnings: rounded,
+      }).subscribe(
+        () => console.log(`Yearly earnings updated for ${user.name} to ${rounded}`),
+        (err) => console.error(`Error updating yearlyEarnings for ${user.name}:`, err)
+      );
+    }
+  }
+
   getNextSundayDate(): Date {
     const today = new Date();
     const daysUntilSunday = (7 - today.getDay()) % 7;
@@ -200,7 +268,7 @@ export class AdminComponent {
   onSubmit() {
     if (this.user.name && this.user.handicap !== null) {
       // Call the createUser method from the service
-      this.teeTimeService.createUser(this.user.name, this.user.handicap, [], [], false, 0)
+      this.teeTimeService.createUser(this.user.name, this.user.handicap, [], [], false, 0, 0)
         .subscribe(
           (response) => {
             this.submissionMessage = 'User created successfully!';
