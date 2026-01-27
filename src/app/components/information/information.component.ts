@@ -40,7 +40,7 @@ export class InformationComponent implements OnInit {
         });
         this.users = [...this.allUsers]
           .sort((a, b) => (b.yearlyPoints ?? 0) - (a.yearlyPoints ?? 0))
-          .slice(0, 20); // Sort descending, take top 20
+          .slice(0, 25); // Sort descending, take top 25
       },
       error => {
         console.error('Error fetching users:', error);
