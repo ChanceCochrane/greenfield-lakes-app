@@ -65,8 +65,10 @@
   </div>
 
   <!-- Player Search Section -->
+  <div class="section-divider"></div>
   <div class="player-search-section">
-    <h3>Player Lookup</h3>
+    <h2 class="feature-title">Player Stats</h2>
+    <p class="feature-subtitle">Search for any player to view their rounds, handicap, and performance</p>
     <div class="search-container">
       <input
         type="text"
@@ -91,7 +93,7 @@
       <div class="player-stats">
         <span><strong>Handicap:</strong> {{ selectedUser.handicap }}</span>
         <span><strong>Yearly Points:</strong> {{ selectedUser.yearlyPoints }}</span>
-        <span><strong>Yearly Earnings:</strong> {{ selectedUser.yearlyEarnings | currency:'USD':'symbol':'1.2-2' }}</span>
+        <span><strong>Yearly Winnings:</strong> {{ selectedUser.yearlyEarnings | currency:'USD':'symbol':'1.2-2' }}</span>
       </div>
     </div>
 
@@ -161,14 +163,15 @@
     </div>
   </div>
 
-  <h2 class="leaderboard-title">Plalyer Of The Year Points</h2>
+  <div class="section-divider"></div>
+  <h2 class="leaderboard-title">Player Of The Year Points</h2>
   <table class="leaderboard">
     <thead>
       <tr>
         <th>Rank</th>
         <th>Name</th>
         <th>Points</th>
-        <th>Earnings</th>
+        <th>Winnings</th>
       </tr>
     </thead>
     <tbody>

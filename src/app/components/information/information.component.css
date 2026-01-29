@@ -4,12 +4,38 @@
   padding: 20px;
 }
 
+/* Section Divider */
+.section-divider {
+  width: 100%;
+  max-width: 600px;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #39aaed, #ed7c39, transparent);
+  margin: 30px 0;
+}
+
 /* Player Search Section */
 .player-search-section {
   width: 100%;
   max-width: 600px;
   margin-bottom: 20px;
   text-align: center;
+  padding: 25px;
+  background: linear-gradient(135deg, #f8fbff 0%, #fff8f5 100%);
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(57, 170, 237, 0.15);
+}
+
+.feature-title {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.feature-subtitle {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 20px;
 }
 
 .player-search-section h3 {
