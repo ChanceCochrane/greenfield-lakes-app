@@ -23,7 +23,7 @@ body {
 
 .dropdown-container select {
   /* Button-like styling */
-  background-color: #39aaed; /* Orange color */
+  background-color: #022913; /* Green color */
   color: white;
   font-size: 1.25rem; /* Larger text for better visibility */
   padding: 1rem 2rem; /* Increased padding for a larger button */
@@ -63,7 +63,7 @@ body {
 /* Hover and focus states */
 .dropdown-container select:hover,
 .dropdown-container select:focus {
-  background-color: #39aaed; /* Slightly darker orange on hover/focus */
+  background-color: #022913; /* Green on hover/focus */
   outline: none; /* Remove default focus outline */
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
@@ -71,7 +71,7 @@ body {
 /* Ensure the disabled option (persistent label) is styled consistently */
 .dropdown-container select option[disabled][selected] {
   color: white;
-  background-color: #39aaed;
+  background-color: #022913;
 }
 
 /* Fallback for no tee times message */
@@ -121,7 +121,7 @@ select:focus {
   width: 48px;
   height: 48px;
   font-size: 1.5rem;
-  background-color: #ED7C39;
+  background-color: #b7a796;
   color: #fff;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -133,7 +133,7 @@ select:focus {
 
 .hole-control button:hover,
 .hole-control button:focus {
-  background-color: #ED7C39;
+  background-color: #b7a796;
   outline: none;
 }
 
@@ -173,7 +173,7 @@ select:focus {
   width: 48px;
   height: 48px;
   font-size: 1.5rem;
-  background-color: #39aaed;
+  background-color: #022913;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -185,7 +185,7 @@ select:focus {
 
 .score-control button:hover,
 .score-control button:focus {
-  background-color: #39aaed;
+  background-color: #022913;
   outline: none;
 }
 

@@ -20,6 +20,68 @@ h2 {
   font-size: 1.5rem;
 }
 
+/* Payouts Section */
+.payouts-container {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 20px;
+  padding: 20px;
+  background: linear-gradient(135deg, #f5f9f6 0%, #faf8f6 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(2, 41, 19, 0.15);
+}
+
+.payouts-title {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #022913;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.payouts-grid {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.payout-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px 25px;
+  border-radius: 10px;
+  min-width: 100px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.payout-card.first-place {
+  background: linear-gradient(135deg, #022913 0%, #034d23 100%);
+  color: white;
+}
+
+.payout-card.second-place {
+  background: linear-gradient(135deg, #b7a796 0%, #9a8b7c 100%);
+  color: white;
+}
+
+.payout-card.third-place {
+  background: linear-gradient(135deg, #290218 0%, #3d0324 100%);
+  color: white;
+}
+
+.place-label {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  margin-bottom: 5px;
+}
+
+.payout-amount {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
 .no-scores {
   text-align: center;
   padding: 15px;
@@ -68,15 +130,20 @@ thead {
   position: sticky;
   top: 0;
   z-index: 100;
-  background-color: rgba(200, 247, 197) !important;
 }
 
 .par-row {
   top: 53px;
 }
 
+.par-row td.score-header {
+  background-color: #022913 !important;
+  color: white !important;
+}
+
 td.par-tab {
-  background-color: #39aaed;
+  background-color: #022913 !important;
+  color: white !important;
 }
 
 .users-column {
@@ -139,13 +206,83 @@ td.par-tab {
 .player-name {
   font-size: 1.1rem;
   font-weight: bold;
-  color: #39aaed;
+  color: #022913;
   margin-bottom: 5px;
 }
 
 .hole-number {
   font-size: 0.9rem;
   color: #555;
+}
+
+/* Skins Payout Display */
+.skins-payout-container {
+  margin-top: 20px;
+  padding: 20px;
+  background: linear-gradient(135deg, #f5f9f6 0%, #faf8f6 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(2, 41, 19, 0.15);
+}
+
+.skins-payout-title {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #022913;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.skins-payout-details {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.skins-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-width: 80px;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #022913;
+}
+
+.skins-payout-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px 25px;
+  background: linear-gradient(135deg, #022913 0%, #034d23 100%);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.payout-label {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 5px;
+}
+
+.payout-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
 }
 
 .no-skins {
@@ -155,7 +292,7 @@ td.par-tab {
   border-radius: 4px;
   font-size: 1rem;
   text-align: center;
-  color: #d32f2f; /* Red color for the message */
+  color: #290218; /* Red color for the message */
 }
 
 th, td {
@@ -165,8 +302,9 @@ th, td {
 }
 
 th {
-  background-color: #39aaed;
+  background-color: #022913;
   font-weight: bold;
+  color: white;
 }
 
 td {
@@ -174,14 +312,16 @@ td {
 }
 
 td.score-header {
-  background-color: #39aaed;
+  background-color: #022913;
   font-weight: bold;
+  color: white;
 }
 
 .score-header {
-  background-color: #39aaed;
+  background-color: #022913;
   width: 20px;
   min-width: 20px;
+  color: white;
 }
 
 .score-cell {
@@ -200,12 +340,13 @@ tr:hover td {
 .score-cell.birdie {
   padding: 0.25rem;
   font-weight: bold;
-  color: #ed7c39;
+  color: #290218;
   text-align: center;
 }
 
 .score-cell.skins {
-  background-color: #39aaed;
+  background-color: #022913;
+  color: white;
 }
 
 .toggle-button {
@@ -215,7 +356,7 @@ tr:hover td {
   font-size: 16px;
   font-weight: 600;
   color: white;
-  background-color: #ed7c39;
+  background-color: #b7a796;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -287,12 +428,12 @@ tr:hover td {
   text-align: center;
   font-size: 1.3rem;
   font-weight: bold;
-  color: #39aaed;
+  color: #022913;
   margin-bottom: 10px;
   padding: 10px;
   background-color: #f5f4f4;
   border-radius: 8px;
-  border-left: 4px solid #39aaed;
+  border-left: 4px solid #022913;
 }
 
 /* Skins Legend */
@@ -303,5 +444,54 @@ tr:hover td {
   padding: 10px;
   font-size: 0.9rem;
   color: #555;
+  font-style: italic;
+}
+
+/* Closest to Pin Section */
+.ctp-container {
+  margin-top: 25px;
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(135deg, #f5f9f6 0%, #faf8f6 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(2, 41, 19, 0.15);
+}
+
+.ctp-title {
+  font-size: 1.2rem;
+  color: #022913;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.ctp-payout-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 30px;
+  background: linear-gradient(135deg, #b7a796 0%, #9a8b7c 100%);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  margin: 0 auto;
+}
+
+.ctp-label {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 5px;
+}
+
+.ctp-value {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: white;
+}
+
+.ctp-note {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: #666;
   font-style: italic;
 }

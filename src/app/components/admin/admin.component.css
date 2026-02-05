@@ -37,12 +37,12 @@
 }
 
 .search-input:focus {
-  border-color: #39aaed;
+  border-color: #022913;
 }
 
 .clear-btn {
   padding: 12px 20px;
-  background-color: #ed7c39;
+  background-color: #b7a796;
   color: white;
   border: none;
   border-radius: 8px;
@@ -52,7 +52,7 @@
 }
 
 .clear-btn:hover {
-  background-color: #d66a2d;
+  background-color: #9a8b7c;
 }
 
 .search-dropdown {
@@ -369,7 +369,7 @@ p {
   padding: 12px;
   font-size: 16px;
   color: #fff;
-  background-color: #39aaed;
+  background-color: #022913;
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -377,7 +377,7 @@ p {
 }
 
 .auth-box button:hover {
-  background-color: #0056b3;
+  background-color: #034d23;
 }
 
 .error {
@@ -395,7 +395,7 @@ p {
 }
 
 #checkbox:checked + #text-box {
-  background-color: #39aaed; /* Change the color when checked */
+  background-color: #022913; /* Change the color when checked */
 }
 
 .handicap-input, .tee-time-select, .paid-skins-container {
@@ -493,12 +493,12 @@ input[type="number"], select {
 }
 
 .submission-buttons button:first-child {
-  background-color: #39aaed;
+  background-color: #022913;
   color: white;
 }
 
 .submission-buttons button:first-child:hover {
-  background-color: #2d8bc4;
+  background-color: #034d23;
   transform: translateY(-1px);
 }
 

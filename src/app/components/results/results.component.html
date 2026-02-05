@@ -1,17 +1,4 @@
 <div class="results-container">
-  <h2>{{ showNetLeaderboard ? 'Net' : 'Gross' }} Results - {{ displayDate }}</h2>
-  <div class="skins-container" *ngIf="getSkinsList().length > 0">
-    <h3>Skins Winners</h3>
-    <div class="skins-cards-container">
-      <div *ngFor="let skin of getSkinsList()" class="skin-card">
-        <div class="player-name">{{ skin.player }}</div>
-        <div class="hole-number">Hole {{ skin.hole }}</div>
-      </div>
-    </div>
-  </div>
-  <div *ngIf="getSkinsList().length === 0" class="no-skins">
-    No skins awarded.
-  </div>
   <button (click)="toggleLeaderboard()" class="toggle-button">
     Click to See {{ !showNetLeaderboard ? 'Net' : 'Gross' }} Results
   </button>
@@ -83,8 +70,68 @@
     </div>
   </div>
 
+  <!-- Estimated Payouts Section (below leaderboards) -->
+  <div class="payouts-container" *ngIf="usersWithScores.length > 0">
+    <h3 class="payouts-title">Estimated Gross/Net Payouts</h3>
+    <div class="payouts-grid">
+      <div class="payout-card first-place">
+        <span class="place-label">1st Place</span>
+        <span class="payout-amount">${{ payouts.first | number:'1.2-2' }}</span>
+      </div>
+      <div class="payout-card second-place">
+        <span class="place-label">2nd Place</span>
+        <span class="payout-amount">${{ payouts.second | number:'1.2-2' }}</span>
+      </div>
+      <div class="payout-card third-place">
+        <span class="place-label">3rd Place</span>
+        <span class="payout-amount">${{ payouts.third | number:'1.2-2' }}</span>
+      </div>
+    </div>
+  </div>
+
   <!-- Skins Legend -->
   <div class="skins-legend" *ngIf="usersWithScores.length > 0">
     <span>* Player paid for skins</span>
+  </div>
+
+  <!-- Skins Container (moved below leaderboards) -->
+  <div class="skins-container" *ngIf="getSkinsList().length > 0">
+    <h3>Skins Winners</h3>
+    <div class="skins-cards-container">
+      <div *ngFor="let skin of getSkinsList()" class="skin-card">
+        <div class="player-name">{{ skin.player }}</div>
+        <div class="hole-number">Hole {{ skin.hole }}</div>
+      </div>
+    </div>
+    <!-- Skins Payout Display -->
+    <div class="skins-payout-container">
+      <h4 class="skins-payout-title">Estimated {{ showNetLeaderboard ? 'Net' : 'Gross' }} Skins Payout</h4>
+      <div class="skins-payout-details">
+        <div class="skins-stat">
+          <span class="stat-label">Total Pot</span>
+          <span class="stat-value">${{ skinsTotalPot | number:'1.2-2' }}</span>
+        </div>
+        <div class="skins-stat">
+          <span class="stat-label">Skins Won</span>
+          <span class="stat-value">{{ getSkinsList().length }}</span>
+        </div>
+        <div class="skins-payout-card">
+          <span class="payout-label">Payout Per Skin</span>
+          <span class="payout-value">${{ skinsPayoutPerSkin | number:'1.2-2' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="getSkinsList().length === 0 && usersWithScores.length > 0" class="no-skins">
+    No skins awarded.
+  </div>
+
+  <!-- Closest to Pin Payout Section -->
+  <div class="ctp-container" *ngIf="usersWithScores.length > 0">
+    <h3 class="ctp-title">Closest to Pin Payout</h3>
+    <div class="ctp-payout-card">
+      <span class="ctp-label">Payout Per CTP</span>
+      <span class="ctp-value">${{ usersWithScores.length | number:'1.2-2' }}</span>
+    </div>
   </div>
 </div>

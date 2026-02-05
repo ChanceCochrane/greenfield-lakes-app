@@ -75,4 +75,25 @@ export class LeaderboardService {
     );
     return round?.handicap || 0;
   }
+
+  /**
+   * Calculate the estimated payouts for 1st, 2nd, and 3rd place
+   * Formula:
+   * - Total pot = (A flight players) × $15
+   * - Gross pot = Total pot / 2
+   * - Net pot = Total pot / 2
+   * - 1st place: 50% of pot
+   * - 2nd place: 30% of pot
+   * - 3rd place: 20% of pot
+   */
+  calculatePayouts(aFlightPlayerCount: number): { first: number; second: number; third: number } {
+    const totalPot = aFlightPlayerCount * 15;
+    const halfPot = totalPot / 2; // Split between gross and net
+
+    return {
+      first: halfPot * 0.5,   // 50%
+      second: halfPot * 0.3,  // 30%
+      third: halfPot * 0.2    // 20%
+    };
+  }
 }

@@ -30,6 +30,6 @@ export const environment = {
     { date: '2026-12-06', format: 'Stroke Play - Club Championship' },
     { date: '2026-12-20', format: 'Stroke Play - Player of The Year Tourney Ends' }
   ],
-  holeInOnePot: 810,
+  holeInOnePot: 850,
   flights: 2
 };

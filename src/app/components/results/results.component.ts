@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../../objects/user';
 import { TeeTimeService } from '../../services/tee-time.service';
+import { LeaderboardService } from '../../services/leaderboard.service';
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -20,9 +21,18 @@ export class ResultsComponent implements OnInit {
   showNetLeaderboard: boolean = true;
   private flightNames: string[] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
+  // Payout estimates
+  payouts: { first: number; second: number; third: number } = { first: 0, second: 0, third: 0 };
+
+  // Skins payout estimates
+  skinsPlayerCount: number = 0;
+  skinsTotalPot: number = 0;
+  skinsPayoutPerSkin: number = 0;
+
   constructor(
     private route: ActivatedRoute,
-    private teeTimeService: TeeTimeService
+    private teeTimeService: TeeTimeService,
+    private leaderboardService: LeaderboardService
   ) {}
 
   ngOnInit(): void {
@@ -37,6 +47,7 @@ export class ResultsComponent implements OnInit {
   toggleLeaderboard(): void {
     this.showNetLeaderboard = !this.showNetLeaderboard;
     this.sortUsers();
+    this.calculateSkinsPayouts();
   }
 
   private loadScores(): void {
@@ -53,6 +64,7 @@ export class ResultsComponent implements OnInit {
       }));
 
       this.splitIntoFlights();
+      this.calculateSkinsPayouts();
     });
   }
 
@@ -79,6 +91,10 @@ export class ResultsComponent implements OnInit {
         });
       }
     }
+
+    // Calculate payouts based on A flight player count
+    const aFlightPlayerCount = this.flights.length > 0 ? this.flights[0].users.length : 0;
+    this.payouts = this.leaderboardService.calculatePayouts(aFlightPlayerCount);
 
     // Sort each flight by score
     this.sortFlights();
@@ -238,5 +254,30 @@ export class ResultsComponent implements OnInit {
     });
     // Sort by hole number (ascending: Hole 1 to Hole 18)
     return skinsList.sort((a, b) => a.hole - b.hole);
+  }
+
+  /**
+   * Calculate skins payouts
+   * Formula:
+   * - Count players who paid for skins (across all flights)
+   * - Total pot = skinsPlayerCount × $10
+   * - Payout per skin = Total pot / number of skins won
+   */
+  private calculateSkinsPayouts(): void {
+    // Count players who paid for skins across all flights
+    this.skinsPlayerCount = this.usersWithScores.filter(user => {
+      const round = user.rounds?.find(r =>
+        new Date(r.date).toISOString().split('T')[0] ===
+        new Date(this.targetDate).toISOString().split('T')[0]
+      );
+      return round?.paidSkins === true;
+    }).length;
+
+    // Calculate total pot ($10 per player goes into net/gross pot)
+    this.skinsTotalPot = this.skinsPlayerCount * 10;
+
+    // Calculate payout per skin
+    const skinsCount = this.getSkinsList().length;
+    this.skinsPayoutPerSkin = skinsCount > 0 ? this.skinsTotalPot / skinsCount : 0;
   }
 }

@@ -9,7 +9,7 @@
   width: 100%;
   max-width: 600px;
   height: 2px;
-  background: linear-gradient(to right, transparent, #39aaed, #ed7c39, transparent);
+  background: linear-gradient(to right, transparent, #022913, #b7a796, transparent);
   margin: 30px 0;
 }
 
@@ -20,9 +20,9 @@
   margin-bottom: 20px;
   text-align: center;
   padding: 25px;
-  background: linear-gradient(135deg, #f8fbff 0%, #fff8f5 100%);
+  background: linear-gradient(135deg, #f5f9f6 0%, #faf8f6 100%);
   border-radius: 16px;
-  box-shadow: 0 4px 15px rgba(57, 170, 237, 0.15);
+  box-shadow: 0 4px 15px rgba(2, 41, 19, 0.15);
 }
 
 .feature-title {
@@ -61,12 +61,12 @@
 }
 
 .search-input:focus {
-  border-color: #39aaed;
+  border-color: #022913;
 }
 
 .clear-btn {
   padding: 12px 20px;
-  background-color: #ed7c39;
+  background-color: #b7a796;
   color: white;
   border: none;
   border-radius: 8px;
@@ -76,7 +76,7 @@
 }
 
 .clear-btn:hover {
-  background-color: #d66a2d;
+  background-color: #9a8b7c;
 }
 
 .search-dropdown {
@@ -178,7 +178,7 @@
 }
 
 .rounds-table th {
-  background-color: #39aaed;
+  background-color: #022913;
   color: white;
   font-weight: bold;
 }
@@ -198,13 +198,13 @@
 
 .par-row .par-label {
   font-weight: bold;
-  background-color: #39aaed;
+  background-color: #022913;
   color: white;
 }
 
 .par-row .par-cell {
   font-weight: bold;
-  background-color: #ed7c39;
+  background-color: #b7a796;
 }
 
 .score-cell {
@@ -224,8 +224,8 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  border: 2px solid #ed7c39;
-  color: #ed7c39;
+  border: 2px solid #290218;
+  color: #290218;
   font-weight: bold;
 }
 
@@ -260,7 +260,7 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  border: 2px solid #ed7c39;
+  border: 2px solid #290218;
 }
 
 .legend-square {
@@ -290,13 +290,13 @@
 }
 
 .avg-card {
-  background: linear-gradient(135deg, #39aaed 0%, #2196F3 100%);
+  background: linear-gradient(135deg, #022913 0%, #034d23 100%);
   color: white;
   padding: 20px 30px;
   border-radius: 12px;
   text-align: center;
   min-width: 120px;
-  box-shadow: 0 4px 8px rgba(57, 170, 237, 0.3);
+  box-shadow: 0 4px 8px rgba(2, 41, 19, 0.3);
 }
 
 .avg-label {
@@ -352,7 +352,7 @@ body {
 .counter-amount {
   font-size: 2.5rem;
   font-weight: bold;
-  color: #39aaed;
+  color: #022913;
 }
 
 .construction-notice {

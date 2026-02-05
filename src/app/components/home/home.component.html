@@ -1,5 +1,11 @@
 <div class="hero">
-  <h1> Welcome to the Greenfield Lakes Golf League </h1>
+  <h1> Greenfield Lakes Golf League </h1>
+  <div class="typing-demo">
+    Hole In One Pot!!!!
+  </div>
+  <div class="counter-amount">
+    ${{ holeInOneDisplay | number:'1.0-0' }}
+  </div>
   <p>Sign up now to reserve your spot in the next tournament!</p>
   <button class="signup-btn" (click)="goToSignUp()">Sign Up Now</button>
 </div>
@@ -39,12 +45,5 @@
 
   <div class="results-button-wrapper">
     <button class="results-btn" (click)="goToFullResults()">Full Leaderboard</button>
-  </div>
-
-  <div class="typing-demo">
-    Hole In One Pot!!!!
-  </div>
-  <div class="counter-amount">
-    ${{ holeInOneDisplay | number:'1.0-0' }}
   </div>
 </section>

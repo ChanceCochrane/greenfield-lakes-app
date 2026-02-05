@@ -52,7 +52,7 @@
 }
 
 .signup-btn {
-  background: #ed7c39;
+  background: #b7a796;
   color: white;
   border: none;
   padding: 12px 20px 12px 20px;
@@ -65,7 +65,7 @@
 }
 
 .results-btn {
-  background: #ed7c39;
+  background: #b7a796;
   color: white;
   border: none;
   padding: 12px 20px;
@@ -99,7 +99,7 @@ th, td {
 }
 
 th {
-  background: #39aaed;
+  background: #022913;
   color: white;
 }
 
@@ -130,7 +130,7 @@ tbody tr:nth-child(even) {
 .counter-amount {
   font-size: 2.5rem;
   font-weight: bold;
-  color: #39aaed;
+  color: #022913;
   text-align: center; /* Center the counter amount */
   margin: 0 auto; /* Center the element with no top margin */
 }
