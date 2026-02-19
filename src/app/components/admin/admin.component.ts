@@ -262,6 +262,14 @@ export class AdminComponent {
           console.error('Error creating tee time:', error);
         }
       });
+    } else {
+      this.teeTimeService.updateUser({
+        name: user,
+        currentRound: []
+      }).subscribe({
+        next: () => console.log(`Current round cleared for ${user}`),
+        error: (err) => console.error(`Error clearing current round for ${user}:`, err)
+      });
     }
   }
 

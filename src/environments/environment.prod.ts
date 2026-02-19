@@ -1,16 +1,16 @@
 export const environment = {
   production: true,
-  sundayTeeTimes: [ "7:45", "7:52", "8:00", "8:07", "8:15", "8:22", "8:30", "8:37" ],
+  sundayTeeTimes: [ "7:00", "7:07", "7:15", "7:22", "7:30", "7:37", "7:45", "7:52", "8:00" ],
   apiUrl: 'https://greenfield-api.fly.dev',
   parValues: [3, 4, 5, 3, 3, 3, 3, 3, 5, 4, 3, 3, 3, 3, 4, 3, 3, 4],
   tournamentDates: [
     { date: '2026-01-18', format: 'Stroke Play' },
     { date: '2026-02-01', format: 'Stroke Play' },
     { date: '2026-02-15', format: 'Stroke Play' },
-    { date: '2026-03-01', format: '2-man Scramble' },
-    { date: '2026-03-15', format: 'Stroke Play' },
-    { date: '2026-03-29', format: 'Stroke Play' },
-    { date: '2026-04-12', format: 'Stroke Play - Greenfield Major' },
+    { date: '2026-03-01', format: 'Stroke Play' },
+    { date: '2026-03-15', format: '2-man Scramble' },
+    { date: '2026-03-29', format: 'Stroke Play - Greenfield Major' },
+    { date: '2026-04-12', format: 'Stroke Play' },
     { date: '2026-04-26', format: 'Stroke Play' },
     { date: '2026-05-10', format: 'Stroke Play' },
     { date: '2026-05-24', format: '2-man Ryder Cup' },
@@ -30,6 +30,6 @@ export const environment = {
     { date: '2026-12-06', format: 'Stroke Play - Club Championship' },
     { date: '2026-12-20', format: 'Stroke Play - Player of The Year Tourney Ends' }
   ],
-  holeInOnePot: 850,
+  holeInOnePot: 920,
   flights: 2
 };
