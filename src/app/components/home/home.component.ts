@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { User } from '../../../objects/user';
 import { TournamentService } from '../../services/tournament.service';
 import { LeaderboardService } from '../../services/leaderboard.service';
+import { TeeTimeService } from '../../services/tee-time.service';
 import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -16,17 +16,18 @@ export class HomeComponent {
   grossLeaderboard: { name: string; grossscore: number; }[] = [];
   lastTournamentDate: string = '';
   nextTournamentDate: string = '';
-  targetAmountHoleInOne = environment.holeInOnePot; // Final amount to display
+  targetAmountHoleInOne = 0;
 
   holeInOneDisplay = 0;    // Value that animates
 
   constructor(private leaderboardService: LeaderboardService,
     private tournamentService: TournamentService,
+    private teeTimeService: TeeTimeService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.animateCountUp(); // Start the count-up animation
+    this.fetchHoleInOnePot();
     this.lastTournamentDate = this.tournamentService.getMostRecentTournamentDate();
     this.nextTournamentDate = this.tournamentService.getNextTournamentDate();
     this.leaderboardService.getNetLeaderboardForDate(this.lastTournamentDate).subscribe((users: User[]) => {
@@ -78,6 +79,18 @@ export class HomeComponent {
 
   private calculateNet(user: User): number {
     return this.calculateGross(user) - (user.handicap || 0);
+  }
+
+  fetchHoleInOnePot(): void {
+    this.teeTimeService.getHoleInOnePot().subscribe({
+      next: (response) => {
+        this.targetAmountHoleInOne = response.amount;
+        this.animateCountUp();
+      },
+      error: (err) => {
+        console.error('Error fetching hole-in-one pot:', err);
+      }
+    });
   }
 
   animateCountUp(): void {

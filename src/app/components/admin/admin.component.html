@@ -127,6 +127,59 @@
       </div>
     </div>
 
+    <!-- Tee Time Slot Generation Section -->
+    <div class="slots-section">
+      <h2>Generate Tee Time Slots</h2>
+      <div class="slots-inputs">
+        <div class="slot-input-group">
+          <label for="slotStartTime">Start Time:</label>
+          <input
+            type="text"
+            id="slotStartTime"
+            [(ngModel)]="slotStartTime"
+            placeholder="7:00"
+          />
+        </div>
+        <div class="slot-input-group">
+          <label for="slotCount">Number of Slots:</label>
+          <input
+            type="number"
+            id="slotCount"
+            [(ngModel)]="slotCount"
+            min="1"
+            max="20"
+          />
+        </div>
+      </div>
+      <button (click)="generateTeeTimeSlots()" class="generate-slots-btn">Generate Slots</button>
+      <p *ngIf="slotsMessage" class="slots-message">{{ slotsMessage }}</p>
+      <div *ngIf="teeTimes.length > 0" class="current-slots">
+        <p><strong>Current Slots:</strong> {{ teeTimes.join(', ') }}</p>
+      </div>
+    </div>
+
+    <!-- Hole-in-One Pot Section -->
+    <div class="slots-section">
+      <h2>Hole-in-One Pot</h2>
+      <div class="slots-inputs">
+        <div class="slot-input-group">
+          <label for="holeInOnePot">Amount ($):</label>
+          <input
+            type="number"
+            id="holeInOnePot"
+            [(ngModel)]="holeInOnePotAmount"
+            min="0"
+            step="1"
+          />
+        </div>
+      </div>
+      <button (click)="updateHoleInOnePot()" class="generate-slots-btn">Update Pot</button>
+      <p *ngIf="holeInOnePotMessage" class="slots-message">{{ holeInOnePotMessage }}</p>
+      <div class="current-slots">
+        <p><strong>Current Pot:</strong> {{ holeInOnePotAmount | currency:'USD':'symbol':'1.0-0' }}</p>
+      </div>
+    </div>
+
     <!-- Section Title: Create New User -->
     <div class="create-user-header">
       <h2>Create New User</h2>

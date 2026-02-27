@@ -3,6 +3,7 @@ import { environment } from '../../../environments/environment';
 import { TeeTimeService } from '../../services/tee-time.service';
 import { User, Round } from '../../../objects/user';
 
+
 @Component({
   selector: 'app-information',
   standalone: false,
@@ -22,10 +23,25 @@ export class InformationComponent implements OnInit {
   avgPar4Score: number = 0;
   avgPar5Score: number = 0;
 
+  // Hole-in-one pot
+  holeInOnePotAmount: number = 0;
+
   constructor(private teeTimeService: TeeTimeService) {} // Inject service
 
   ngOnInit(): void {
     this.getUsers();
+    this.fetchHoleInOnePot();
+  }
+
+  fetchHoleInOnePot(): void {
+    this.teeTimeService.getHoleInOnePot().subscribe({
+      next: (response) => {
+        this.holeInOnePotAmount = response.amount;
+      },
+      error: (err) => {
+        console.error('Error fetching hole-in-one pot:', err);
+      }
+    });
   }
 
   getUsers(): void {

@@ -24,12 +24,21 @@ export class AdminComponent {
   };
   submissionMessage: string | null = null;
   // Static list of available times for the dropdown
-  times: string[] = environment.sundayTeeTimes;
+  times: string[] = [];
 
   // Search filter properties
   searchTerm: string = '';
   filteredUsers: User[] = [];
   selectedUser: User | null = null;
+
+  // Tee time slot generation
+  slotStartTime: string = '7:00';
+  slotCount: number = 9;
+  slotsMessage: string = '';
+
+  // Hole-in-one pot
+  holeInOnePotAmount: number = 0;
+  holeInOnePotMessage: string = '';
 
   accessCode = '';
   authorized = false;
@@ -50,6 +59,9 @@ export class AdminComponent {
     this.getUsers();
 
     this.fetchSubmissions();
+
+    this.fetchTeeTimeSlots();
+    this.fetchHoleInOnePot();
   }
 
   getUsers(): void {
@@ -102,6 +114,53 @@ export class AdminComponent {
     this.searchTerm = '';
     this.filteredUsers = [];
     this.selectedUser = null;
+  }
+
+  generateTeeTimeSlots(): void {
+    this.teeTimeService.createTeeTimeSlots(this.slotStartTime, this.slotCount).subscribe({
+      next: (response) => {
+        this.slotsMessage = response.message;
+        this.teeTimes = response.slots;
+      },
+      error: (err) => {
+        this.slotsMessage = 'Error generating tee time slots.';
+        console.error(err);
+      }
+    });
+  }
+
+  fetchTeeTimeSlots(): void {
+    this.teeTimeService.getTeeTimeSlots().subscribe({
+      next: (slots) => {
+        this.teeTimes = slots;
+      },
+      error: (err) => {
+        console.error('Error fetching tee time slots:', err);
+      }
+    });
+  }
+
+  fetchHoleInOnePot(): void {
+    this.teeTimeService.getHoleInOnePot().subscribe({
+      next: (response) => {
+        this.holeInOnePotAmount = response.amount;
+      },
+      error: (err) => {
+        console.error('Error fetching hole-in-one pot:', err);
+      }
+    });
+  }
+
+  updateHoleInOnePot(): void {
+    this.teeTimeService.setHoleInOnePot(this.holeInOnePotAmount).subscribe({
+      next: (response) => {
+        this.holeInOnePotMessage = response.message;
+      },
+      error: (err) => {
+        this.holeInOnePotMessage = 'Error updating hole-in-one pot.';
+        console.error(err);
+      }
+    });
   }
 
   fetchTeeTimes(): void {
@@ -231,8 +290,7 @@ export class AdminComponent {
   }
 
   generateTeeTimes() {
-    const times = environment.sundayTeeTimes;
-    this.teeTimes = times; // Set the generated times to the teeTimes array
+    this.fetchTeeTimeSlots();
   }
 
   // Update onDateChange to accept typed event

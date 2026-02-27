@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TeeTimeService } from '../../services/tee-time.service';
 import { formatDate } from '@angular/common';
-import { environment } from '../../../environments/environment';
 import { User } from '../../../objects/user';
 
 @Component({
@@ -16,7 +15,7 @@ export class TeeSheetComponent {
   name = '';
   group = '';
   timeSuggestion = '';
-  times: string[] = environment.sundayTeeTimes;
+  times: string[] = [];
   teeSheet: { time: string; users: (User  | null)[] }[] = [];
   allUsers: User[] = [];
 
@@ -37,6 +36,18 @@ export class TeeSheetComponent {
       }
     });
     this.getAllUsers();
+    this.fetchTeeTimeSlots();
+  }
+
+  fetchTeeTimeSlots(): void {
+    this.teeTimeService.getTeeTimeSlots().subscribe({
+      next: (slots) => {
+        this.times = slots;
+      },
+      error: (err) => {
+        console.error('Error fetching tee time slots:', err);
+      }
+    });
   }
 
   getAllUsers(): void {

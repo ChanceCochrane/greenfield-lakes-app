@@ -1,6 +1,5 @@
 export const environment = {
   production: true,
-  sundayTeeTimes: [ "7:00", "7:07", "7:15", "7:22", "7:30", "7:37", "7:45", "7:52", "8:00" ],
   apiUrl: 'https://greenfield-api.fly.dev',
   parValues: [3, 4, 5, 3, 3, 3, 3, 3, 5, 4, 3, 3, 3, 3, 4, 3, 3, 4],
   tournamentDates: [
@@ -30,6 +29,5 @@ export const environment = {
     { date: '2026-12-06', format: 'Stroke Play - Club Championship' },
     { date: '2026-12-20', format: 'Stroke Play - Player of The Year Tourney Ends' }
   ],
-  holeInOnePot: 920,
   flights: 2
 };

@@ -87,4 +87,20 @@ export class TeeTimeService {
   deleteAllSubmissions(): Observable<any> {
     return this.http.delete(`${this.apiUrl}/submissions`); // Call the DELETE /submissions endpoint
   }
+
+  createTeeTimeSlots(startTime: string, count: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/tee-times/slots`, { startTime, count });
+  }
+
+  getTeeTimeSlots(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrl}/tee-times/slots`);
+  }
+
+  setHoleInOnePot(amount: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/users/hole-in-one-pot`, { amount });
+  }
+
+  getHoleInOnePot(): Observable<{ amount: number }> {
+    return this.http.get<{ amount: number }>(`${this.apiUrl}/users/hole-in-one-pot`);
+  }
 }

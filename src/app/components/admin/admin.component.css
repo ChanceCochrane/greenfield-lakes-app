@@ -518,6 +518,91 @@ input[type="number"], select {
   color: #666;
 }
 
+/* Tee Time Slot Generation Section */
+.slots-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 25px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.slots-section h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #2c5aa0;
+  font-size: 1.4rem;
+}
+
+.slots-inputs {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.slot-input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.slot-input-group label {
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.slot-input-group input {
+  padding: 8px 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  text-align: center;
+  width: 120px;
+}
+
+.slot-input-group input:focus {
+  border-color: #022913;
+  outline: none;
+}
+
+.generate-slots-btn {
+  padding: 10px 20px;
+  background-color: #022913;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.generate-slots-btn:hover {
+  background-color: #034d23;
+  transform: translateY(-1px);
+}
+
+.slots-message {
+  margin-top: 10px;
+  font-style: italic;
+  color: #666;
+}
+
+.current-slots {
+  margin-top: 10px;
+  padding: 10px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.current-slots p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
 /* Mobile responsiveness */
 @media (max-width: 768px) {
   .tee-times-list {
