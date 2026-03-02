@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TeeTimeService } from '../../services/tee-time.service';
 import { formatDate } from '@angular/common';
+import { combineLatest } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { User } from '../../../objects/user';
 
 @Component({
@@ -35,35 +37,26 @@ export class TeeSheetComponent {
         this.tournamentDate = new Date(year, month, day);
       }
     });
-    this.getAllUsers();
-    this.fetchTeeTimeSlots();
+    this.loadData();
   }
 
-  fetchTeeTimeSlots(): void {
-    this.teeTimeService.getTeeTimeSlots().subscribe({
-      next: (slots) => {
-        this.times = slots;
-      },
-      error: (err) => {
-        console.error('Error fetching tee time slots:', err);
-      }
-    });
-  }
-
-  getAllUsers(): void {
-    this.teeTimeService.getUsers().subscribe(
-      (users: User[]) => {
+  loadData(): void {
+    combineLatest([
+      this.teeTimeService.getUsers(),
+      this.teeTimeService.getTeeTimeSlots()
+    ]).pipe(take(1)).subscribe({
+      next: ([users, slots]) => {
         this.allUsers = users.map(user => {
-          // Ensure that 0 is used when the handicap is null or undefined
-          user.paidSkins = user.paidSkins ?? false; // Initialize paidSkins if not present
+          user.paidSkins = user.paidSkins ?? false;
           return user;
         });
-        this.loadTeeTimes(); // Load tee times after fetching users
+        this.times = slots;
+        this.loadTeeTimes();
       },
-      error => {
-        console.error('Error fetching users:', error);
+      error: (err) => {
+        console.error('Error loading data:', err);
       }
-    );
+    });
   }
 
   loadTeeTimes(): void {
