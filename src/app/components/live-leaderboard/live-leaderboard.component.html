@@ -1,10 +1,12 @@
 <div class="leaderboard-container">
-  <h2>{{ showNet ? 'Net Leaderboard' : 'Gross Leaderboard' }}</h2>
   <div *ngFor="let player of leaderboard; let i = index" class="leaderboard-row">
     <span class="rank">{{ i + 1 }}.</span>
     <span class="name">{{ player.name }}</span>
     <span class="score" [ngClass]="{'even': player.score === 'E', 'under': +player.score < 0, 'over': +player.score > 0}">
-      {{ player.score }}
+      {{ player.score === 'E' ? 'E' : (+player.score > 0 ? '+' : '') + player.score }}
     </span>
+  </div>
+  <div *ngIf="leaderboard.length === 0" class="leaderboard-row">
+    <span class="name" style="text-align: center; color: #999; font-style: italic;">No scores yet</span>
   </div>
 </div>

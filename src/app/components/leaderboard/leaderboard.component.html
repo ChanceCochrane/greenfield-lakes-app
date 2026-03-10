@@ -1,0 +1,213 @@
+<!-- Dropdown for Tee Time Selection -->
+<div class="dropdown-container">
+  <select *ngIf="teeTimes.length > 0; else noTeeTimes" (change)="onGroupSelect($event)"
+    [ngClass]="{'no-selection': !selectedTeeTimeIndex}">
+    <option value="" disabled selected>Select a tee time</option>
+    <option *ngFor="let teeTime of teeTimes; let i = index" [value]="i">
+      {{ teeTime.displayUsers }}
+    </option>
+  </select>
+  <ng-template #noTeeTimes>
+    <p>No tee times today {{ selectedDateString | date: 'EEEE, MMMM d' }}.</p>
+  </ng-template>
+
+  <div *ngIf="selectedUsers.length > 0" class="scoring-interface">
+    <div class="hole-control">
+      <button (click)="decrementHole()">&#9664;</button>
+      <span>
+        <ng-container [ngSwitch]="holeIndex">
+          <ng-container *ngSwitchCase="9">Front 9</ng-container>
+          <ng-container *ngSwitchCase="19">Back 9</ng-container>
+          <ng-container *ngSwitchCase="20">Total Score</ng-container>
+          <ng-container *ngSwitchDefault>Hole {{ holeIndex < 9 ? holeIndex + 1 : holeIndex }}</ng-container>
+        </ng-container>
+      </span>
+      <button (click)="incrementHole()">&#9654;</button>
+    </div>
+
+    <div *ngFor="let user of selectedUsers" class="player-row">
+      <span>{{ user.name }}</span>
+            <!-- Hole Scores -->
+      <div class="score-control" *ngIf="holeIndex >= 0 && holeIndex < 9">
+        <button (click)="adjustScore(user, -1)">&#9664;</button>
+        <span>{{ user.currentRound?.[holeIndex] ?? 0 }}</span>
+        <button (click)="adjustScore(user, 1)">&#9654;</button>
+      </div>
+
+      <!-- Front 9 Total -->
+      <div class="score-control" *ngIf="holeIndex === 9">
+        <span> {{ getFrontNineTotal(user) }}</span>
+      </div>
+
+      <!-- Hole Scores 10–18 -->
+      <div class="score-control" *ngIf="holeIndex >= 10 && holeIndex < 19">
+        <button (click)="adjustScore(user, -1)">&#9664;</button>
+        <span>{{ user.currentRound?.[holeIndex - 1] ?? 0 }}</span>
+        <button (click)="adjustScore(user, 1)">&#9654;</button>
+      </div>
+
+      <!-- Back 9 Total -->
+      <div class="score-control" *ngIf="holeIndex === 19">
+        <span> {{ getBackNineTotal(user) }}</span>
+      </div>
+
+      <!-- Overall Total -->
+      <div class="score-control" *ngIf="holeIndex === 20">
+        <span> {{ getTotalScore(user) }}</span>
+      </div>
+    </div>
+</div>
+
+<!-- Leaderboards with Accordion Dropdown -->
+<div *ngIf="teeTimes.length > 0">
+  <!-- Net Leaderboard Accordion -->
+  <div class="accordion-item">
+    <div class="accordion-header" (click)="toggleAccordion('net')">
+      <h3>Net Leaderboard</h3>
+      <span>{{ accordionStates['net'] ? '-' : '+' }}</span>
+    </div>
+    <div class="accordion-content" [ngClass]="{'open': accordionStates['net']}">
+      <app-live-leaderboard
+        [selectedDate]="selectedDateString"
+        [refreshTrigger]="leaderboardTrigger.asObservable()"
+        [showNet]="true">
+      </app-live-leaderboard>
+    </div>
+  </div>
+
+  <!-- Gross Leaderboard Accordion -->
+  <div class="accordion-item">
+    <div class="accordion-header" (click)="toggleAccordion('gross')">
+      <h3>Gross Leaderboard</h3>
+      <span>{{ accordionStates['gross'] ? '-' : '+' }}</span>
+    </div>
+    <div class="accordion-content" [ngClass]="{'open': accordionStates['gross']}">
+      <app-live-leaderboard
+        [refreshTrigger]="leaderboardTrigger.asObservable()"
+        [selectedDate]="selectedDateString"
+        [showNet]="false">
+      </app-live-leaderboard>
+    </div>
+  </div>
+</div>
+
+<!-- Player Search Section -->
+<div class="section-divider"></div>
+<div class="player-search-section">
+  <h2 class="feature-title">Player Stats</h2>
+  <p class="feature-subtitle">Search for any player to view their rounds, handicap, and performance</p>
+  <div class="search-container">
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      (input)="onSearchChange()"
+      placeholder="Search for a player..."
+      class="search-input"
+    />
+    <button *ngIf="selectedUser" (click)="clearSelection()" class="clear-btn">Clear</button>
+  </div>
+  <ul *ngIf="filteredUsers.length > 0" class="search-dropdown">
+    <li *ngFor="let user of filteredUsers" (click)="selectUser(user)">
+      {{ user.name }}
+    </li>
+  </ul>
+</div>
+
+<!-- Selected Player Details -->
+<div *ngIf="selectedUser" class="player-details">
+  <div class="player-header">
+    <h3>{{ selectedUser.name }}</h3>
+    <div class="player-stats">
+      <span><strong>Handicap:</strong> {{ selectedUser.handicap }}</span>
+      <span><strong>Yearly Points:</strong> {{ selectedUser.yearlyPoints }}</span>
+      <span><strong>Yearly Winnings:</strong> {{ selectedUser.yearlyEarnings | currency:'USD':'symbol':'1.2-2' }}</span>
+    </div>
+  </div>
+
+  <!-- Rounds Table -->
+  <div class="rounds-section" *ngIf="selectedUser.rounds && selectedUser.rounds.length > 0">
+    <h4>Rounds This Year</h4>
+    <div class="table-scroll-wrapper">
+      <table class="rounds-table">
+        <thead>
+          <tr>
+            <th class="date-col">Date</th>
+            <th *ngFor="let hole of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]" class="hole-header">{{ hole }}</th>
+            <th>Total</th>
+          </tr>
+          <tr class="par-row">
+            <td class="par-label">Par</td>
+            <td *ngFor="let par of parValues" class="par-cell">{{ par }}</td>
+            <td class="par-cell">{{ calculateParTotal() }}</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let round of selectedUser.rounds">
+            <td class="date-col">{{ formatRoundDate(round.date) }}</td>
+            <td
+              *ngFor="let score of round.roundScores; let i = index"
+              class="score-cell"
+              [ngClass]="getScoreClass(score, i)"
+            >
+              <span [ngClass]="{'score-birdie': getScoreClass(score, i) === 'birdie-circle', 'score-bogey': getScoreClass(score, i) === 'bogey-square'}">
+                {{ score }}
+              </span>
+            </td>
+            <td class="total-cell">{{ calculateRoundTotal(round) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Legend -->
+    <div class="score-legend">
+      <span class="legend-item"><span class="legend-circle"></span> Birdie or Better</span>
+      <span class="legend-item"><span class="legend-square"></span> Bogey or Worse</span>
+    </div>
+
+    <!-- Average Scores by Par -->
+    <div class="par-averages">
+      <h4>Average Scores by Par Type</h4>
+      <div class="averages-grid">
+        <div class="avg-card">
+          <div class="avg-label">Par 3 Avg</div>
+          <div class="avg-value">{{ avgPar3Score | number:'1.2-2' }}</div>
+        </div>
+        <div class="avg-card">
+          <div class="avg-label">Par 4 Avg</div>
+          <div class="avg-value">{{ avgPar4Score | number:'1.2-2' }}</div>
+        </div>
+        <div class="avg-card">
+          <div class="avg-label">Par 5 Avg</div>
+          <div class="avg-value">{{ avgPar5Score | number:'1.2-2' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!selectedUser.rounds || selectedUser.rounds.length === 0" class="no-rounds">
+    No rounds recorded for this player yet.
+  </div>
+</div>
+
+<!-- Player of the Year Leaderboard -->
+<div class="section-divider"></div>
+<h2 class="leaderboard-title">Player Of The Year Points</h2>
+<table class="poty-leaderboard">
+  <thead>
+    <tr>
+      <th>Rank</th>
+      <th>Name</th>
+      <th>Points</th>
+      <th>Winnings</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of potypUsers; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ user.name }}</td>
+      <td>{{ user.yearlyPoints }}</td>
+      <td>{{ user.yearlyEarnings | currency:'USD':'symbol':'1.2-2' }}</td>
+    </tr>
+  </tbody>
+</table>

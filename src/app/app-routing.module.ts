@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { InformationComponent } from './components/information/information.component';
 import { ScheduleComponent } from './components/schedule/schedule.component';
-import { ScoringComponent } from './components/scoring/scoring.component';
+import { LeaderboardComponent } from './components/leaderboard/leaderboard.component';
 import { ResultsComponent } from './components/results/results.component';
 import { TeeSheetComponent } from './components/tee-sheet/tee-sheet.component';
 import { AdminComponent } from './components/admin/admin.component';
@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'information', component: InformationComponent },
   { path: 'schedule', component: ScheduleComponent },
-  { path: 'scoring', component: ScoringComponent },
+  { path: 'leaderboard', component: LeaderboardComponent },
   { path: 'results/:date', component: ResultsComponent },
   { path: 'teesheet/:date', component: TeeSheetComponent },
   { path: 'admin', component: AdminComponent},

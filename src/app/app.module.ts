@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { InformationComponent } from './components/information/information.component';
 import { ScheduleComponent } from './components/schedule/schedule.component';
-import { ScoringComponent } from './components/scoring/scoring.component';
+import { LeaderboardComponent } from './components/leaderboard/leaderboard.component';
 import { HttpClientModule } from '@angular/common/http';
 import { LeaderboardService } from './services/leaderboard.service';
 import { TeeTimeService } from './services/tee-time.service';
@@ -22,7 +22,7 @@ import { AdminComponent } from './components/admin/admin.component';
     HomeComponent,
     InformationComponent,
     ScheduleComponent,
-    ScoringComponent,
+    LeaderboardComponent,
     ResultsComponent,
     TeeSheetComponent,
     LiveLeaderboardComponent,

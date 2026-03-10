@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
-import { User } from '../../../objects/user';
+import { User, Round } from '../../../objects/user';
 import { TeeTimeService } from '../../services/tee-time.service';
+import { environment } from '../../../environments/environment';
 import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-scoring',
+  selector: 'app-leaderboard',
   standalone: false,
-  templateUrl: './scoring.component.html',
-  styleUrl: './scoring.component.css'
+  templateUrl: './leaderboard.component.html',
+  styleUrl: './leaderboard.component.css'
 })
-export class ScoringComponent {
+export class LeaderboardComponent {
   teeTimes: any[] = [];
   selectedGroup: string | null = null;
   groupUsers: User[] = [];
@@ -26,6 +27,17 @@ export class ScoringComponent {
     gross: false
   };
   selectedTeeTimeIndex: number | null = null;
+
+  // Player Stats & POTY
+  potypUsers: User[] = [];
+  allSearchUsers: User[] = [];
+  searchTerm: string = '';
+  filteredUsers: User[] = [];
+  selectedUser: User | null = null;
+  parValues: number[] = environment.parValues;
+  avgPar3Score: number = 0;
+  avgPar4Score: number = 0;
+  avgPar5Score: number = 0;
 
   constructor(private teeTimeService: TeeTimeService) {}
 
@@ -75,6 +87,23 @@ export class ScoringComponent {
         this.allUsers = [];
       }
     });
+
+    // Load all users for POTY leaderboard and player search
+    this.teeTimeService.getUsers().subscribe(
+      (users: any[]) => {
+        this.allSearchUsers = users.map(user => {
+          user.handicap = user.handicap ?? 0;
+          user.paidSkins = user.paidSkins ?? false;
+          user.yearlyPoints = user.yearlyPoints ?? 0;
+          user.yearlyEarnings = user.yearlyEarnings ?? 0;
+          return user;
+        });
+        this.potypUsers = [...this.allSearchUsers]
+          .sort((a, b) => (b.yearlyPoints ?? 0) - (a.yearlyPoints ?? 0))
+          .slice(0, 35);
+      },
+      error => console.error('Error fetching users:', error)
+    );
   }
 
   onGroupSelect(event: Event): void {
@@ -174,5 +203,76 @@ export class ScoringComponent {
 
   toggleAccordion(type: string) {
     this.accordionStates[type] = !this.accordionStates[type];
+  }
+
+  // Player Stats methods
+  onSearchChange(): void {
+    if (this.searchTerm.trim() === '') {
+      this.filteredUsers = [];
+      return;
+    }
+    const term = this.searchTerm.toLowerCase();
+    this.filteredUsers = this.allSearchUsers.filter(user =>
+      user.name.toLowerCase().includes(term)
+    );
+  }
+
+  selectUser(user: User): void {
+    this.selectedUser = user;
+    this.searchTerm = user.name;
+    this.filteredUsers = [];
+    this.calculateAveragesByPar();
+  }
+
+  clearSelection(): void {
+    this.selectedUser = null;
+    this.searchTerm = '';
+    this.filteredUsers = [];
+    this.avgPar3Score = 0;
+    this.avgPar4Score = 0;
+    this.avgPar5Score = 0;
+  }
+
+  getScoreClass(score: number, holeIndex: number): string {
+    const par = this.parValues[holeIndex];
+    if (score <= par - 1) return 'birdie-circle';
+    if (score >= par + 1) return 'bogey-square';
+    return '';
+  }
+
+  calculateRoundTotal(round: Round): number {
+    return round.roundScores.reduce((sum, score) => sum + score, 0);
+  }
+
+  calculateParTotal(): number {
+    return this.parValues.reduce((sum, p) => sum + p, 0);
+  }
+
+  formatRoundDate(dateStr: string): string {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  }
+
+  calculateAveragesByPar(): void {
+    if (!this.selectedUser || !this.selectedUser.rounds || this.selectedUser.rounds.length === 0) {
+      this.avgPar3Score = 0;
+      this.avgPar4Score = 0;
+      this.avgPar5Score = 0;
+      return;
+    }
+    let par3Scores: number[] = [];
+    let par4Scores: number[] = [];
+    let par5Scores: number[] = [];
+    this.selectedUser.rounds.forEach(round => {
+      round.roundScores.forEach((score, index) => {
+        const par = this.parValues[index];
+        if (par === 3) par3Scores.push(score);
+        else if (par === 4) par4Scores.push(score);
+        else if (par === 5) par5Scores.push(score);
+      });
+    });
+    this.avgPar3Score = par3Scores.length > 0 ? par3Scores.reduce((a, b) => a + b, 0) / par3Scores.length : 0;
+    this.avgPar4Score = par4Scores.length > 0 ? par4Scores.reduce((a, b) => a + b, 0) / par4Scores.length : 0;
+    this.avgPar5Score = par5Scores.length > 0 ? par5Scores.reduce((a, b) => a + b, 0) / par5Scores.length : 0;
   }
 }
