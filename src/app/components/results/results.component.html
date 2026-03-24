@@ -1,4 +1,11 @@
 <div class="results-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1 class="page-title">Tournament Results</h1>
+    <div class="page-subtitle">{{ displayDate }}</div>
+    <div class="page-format">{{ tournamentFormat }}</div>
+  </div>
+
   <button (click)="toggleLeaderboard()" class="toggle-button">
     Click to See {{ !showNetLeaderboard ? 'Net' : 'Gross' }} Results
   </button>
@@ -9,7 +16,7 @@
 
   <!-- Dynamic Flights -->
   <div *ngFor="let flight of flights" class="flight-section">
-    <h3 class="flight-title">{{ flight.name }} Flight</h3>
+    <h3 class="flight-title" (click)="toggleLeaderboard()">{{ flight.name }} Flight{{ showNetLeaderboard ? ' — Net Leaderboard' : ' — Gross Leaderboard' }}</h3>
     <div class="table-scroll-outer">
       <div class="table-scroll-wrapper">
         <table class="results-table">
@@ -68,6 +75,43 @@
         </table>
       </div>
     </div>
+
+    <!-- Flight Skins Winners (directly under this flight's leaderboard) -->
+    <div class="skins-container" *ngIf="getSkinsListForFlight(flight).length > 0">
+      <h3>{{ flight.name }} Flight — Skins Winners</h3>
+      <div class="skins-cards-container">
+        <div *ngFor="let skin of getSkinsListForFlight(flight)" class="skin-card">
+          <div class="player-name">{{ skin.player }}</div>
+          <div class="hole-number">Hole {{ skin.hole }}</div>
+        </div>
+      </div>
+      <!-- Skins Payout Display -->
+      <div class="skins-payout-container">
+        <h4 class="skins-payout-title">Estimated {{ showNetLeaderboard ? 'Net' : 'Gross' }} Skins Payout</h4>
+        <div class="skins-payout-details">
+          <div class="skins-stat">
+            <span class="stat-label">Total Pot</span>
+            <span class="stat-value">${{ flight.skinsTotalPot | number:'1.2-2' }}</span>
+          </div>
+          <div class="skins-stat">
+            <span class="stat-label">Skins Won</span>
+            <span class="stat-value">{{ getSkinsListForFlight(flight).length }}</span>
+          </div>
+          <div class="skins-payout-card">
+            <span class="payout-label">Payout Per Skin</span>
+            <span class="payout-value">${{ flight.skinsPayoutPerSkin | number:'1.2-2' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="getSkinsListForFlight(flight).length === 0 && flight.users.length > 0" class="no-skins">
+      No skins awarded for {{ flight.name }} Flight.
+    </div>
+  </div>
+
+  <!-- Skins Legend -->
+  <div class="skins-legend" *ngIf="usersWithScores.length > 0">
+    <span>* Player paid for skins</span>
   </div>
 
   <!-- Estimated Payouts Section (below leaderboards) -->
@@ -87,43 +131,6 @@
         <span class="payout-amount">${{ payouts.third | number:'1.2-2' }}</span>
       </div>
     </div>
-  </div>
-
-  <!-- Skins Legend -->
-  <div class="skins-legend" *ngIf="usersWithScores.length > 0">
-    <span>* Player paid for skins</span>
-  </div>
-
-  <!-- Skins Container (moved below leaderboards) -->
-  <div class="skins-container" *ngIf="getSkinsList().length > 0">
-    <h3>Skins Winners</h3>
-    <div class="skins-cards-container">
-      <div *ngFor="let skin of getSkinsList()" class="skin-card">
-        <div class="player-name">{{ skin.player }}</div>
-        <div class="hole-number">Hole {{ skin.hole }}</div>
-      </div>
-    </div>
-    <!-- Skins Payout Display -->
-    <div class="skins-payout-container">
-      <h4 class="skins-payout-title">Estimated {{ showNetLeaderboard ? 'Net' : 'Gross' }} Skins Payout</h4>
-      <div class="skins-payout-details">
-        <div class="skins-stat">
-          <span class="stat-label">Total Pot</span>
-          <span class="stat-value">${{ skinsTotalPot | number:'1.2-2' }}</span>
-        </div>
-        <div class="skins-stat">
-          <span class="stat-label">Skins Won</span>
-          <span class="stat-value">{{ getSkinsList().length }}</span>
-        </div>
-        <div class="skins-payout-card">
-          <span class="payout-label">Payout Per Skin</span>
-          <span class="payout-value">${{ skinsPayoutPerSkin | number:'1.2-2' }}</span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div *ngIf="getSkinsList().length === 0 && usersWithScores.length > 0" class="no-skins">
-    No skins awarded.
   </div>
 
   <!-- Closest to Pin Payout Section -->

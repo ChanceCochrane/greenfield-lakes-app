@@ -13,8 +13,9 @@ import { environment } from '../../../environments/environment';
 })
 export class ResultsComponent implements OnInit {
   usersWithScores: User[] = [];
-  flights: { name: string; users: User[] }[] = [];
+  flights: { name: string; users: User[]; skinsPlayerCount: number; skinsTotalPot: number; skinsPayoutPerSkin: number }[] = [];
   displayDate: string = '';
+  tournamentFormat: string = '';
   private targetDate: string = '';
   parValues: number[] = environment.parValues;
   holeHandicapValues: number[] = [9, 5, 3, 11, 17, 13, 15, 7, 1, 4, 14, 10, 12, 8, 6, 16, 18, 2];
@@ -23,11 +24,6 @@ export class ResultsComponent implements OnInit {
 
   // Payout estimates
   payouts: { first: number; second: number; third: number } = { first: 0, second: 0, third: 0 };
-
-  // Skins payout estimates
-  skinsPlayerCount: number = 0;
-  skinsTotalPot: number = 0;
-  skinsPayoutPerSkin: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,6 +36,8 @@ export class ResultsComponent implements OnInit {
       this.targetDate = params['date']; // Get the date parameter from the route
       const [year, month, day] = this.targetDate.split('-').map(Number);
       this.displayDate = new Date(year, month - 1, day).toLocaleDateString();
+      const tournament = environment.tournamentDates.find(t => t.date === this.targetDate);
+      this.tournamentFormat = tournament?.format || 'Stroke Play';
       this.loadScores();
     });
   }
@@ -47,7 +45,7 @@ export class ResultsComponent implements OnInit {
   toggleLeaderboard(): void {
     this.showNetLeaderboard = !this.showNetLeaderboard;
     this.sortUsers();
-    this.calculateSkinsPayouts();
+    this.calculateAllFlightSkinsPayouts();
   }
 
   private loadScores(): void {
@@ -64,7 +62,7 @@ export class ResultsComponent implements OnInit {
       }));
 
       this.splitIntoFlights();
-      this.calculateSkinsPayouts();
+      this.calculateAllFlightSkinsPayouts();
     });
   }
 
@@ -87,7 +85,10 @@ export class ResultsComponent implements OnInit {
       if (flightUsers.length > 0) {
         this.flights.push({
           name: this.flightNames[i] || `Flight ${i + 1}`,
-          users: flightUsers
+          users: flightUsers,
+          skinsPlayerCount: 0,
+          skinsTotalPot: 0,
+          skinsPayoutPerSkin: 0
         });
       }
     }
@@ -201,13 +202,12 @@ export class ResultsComponent implements OnInit {
     }
   }
 
-  // Updated skins method to use net scores when net leaderboard is shown
-  skins(i: number, user: User): boolean {
+  // Flight-scoped skins: checks if a user won a skin on hole i within their flight
+  skinsForFlight(i: number, user: User, flightUsers: User[]): boolean {
     if (!user.currentRound || user.currentRound.length <= i) {
       return false;
     }
 
-    // First check if the current user paid for skins
     const userRound = user.rounds?.find(r =>
       new Date(r.date).toISOString().split('T')[0] ===
       new Date(this.targetDate).toISOString().split('T')[0]
@@ -221,8 +221,8 @@ export class ResultsComponent implements OnInit {
       ? this.calculateNetScoreForHole(user, i)
       : user.currentRound[i];
 
-    // Here we need to filter out the players that did not pay to play skins
-    const eligiblePlayers = this.usersWithScores.filter(u => {
+    // Only compare against eligible players within the same flight
+    const eligiblePlayers = flightUsers.filter(u => {
       const round = u.rounds?.find(r =>
         new Date(r.date).toISOString().split('T')[0] ===
         new Date(this.targetDate).toISOString().split('T')[0]
@@ -242,42 +242,43 @@ export class ResultsComponent implements OnInit {
     return isUniqueMin;
   }
 
-  // Updated method to generate and sort skins list by hole number
-  getSkinsList(): { player: string; hole: number }[] {
+  // Backward-compatible wrapper that finds the user's flight
+  skins(i: number, user: User): boolean {
+    const flight = this.flights.find(f => f.users.includes(user));
+    return flight ? this.skinsForFlight(i, user, flight.users) : false;
+  }
+
+  // Get skins list scoped to a specific flight
+  getSkinsListForFlight(flight: { name: string; users: User[] }): { player: string; hole: number }[] {
     const skinsList: { player: string; hole: number }[] = [];
-    this.usersWithScores.forEach((user) => {
+    flight.users.forEach((user) => {
       user.currentRound.forEach((score, i) => {
-        if (this.skins(i, user)) {
-          skinsList.push({ player: user.name, hole: i + 1 }); // Hole numbers are 1-based
+        if (this.skinsForFlight(i, user, flight.users)) {
+          skinsList.push({ player: user.name, hole: i + 1 });
         }
       });
     });
-    // Sort by hole number (ascending: Hole 1 to Hole 18)
     return skinsList.sort((a, b) => a.hole - b.hole);
   }
 
   /**
-   * Calculate skins payouts
-   * Formula:
-   * - Count players who paid for skins (across all flights)
-   * - Total pot = skinsPlayerCount × $10
-   * - Payout per skin = Total pot / number of skins won
+   * Calculate skins payouts per flight
+   * Each flight has its own pot from its own skins-paying players
    */
-  private calculateSkinsPayouts(): void {
-    // Count players who paid for skins across all flights
-    this.skinsPlayerCount = this.usersWithScores.filter(user => {
-      const round = user.rounds?.find(r =>
-        new Date(r.date).toISOString().split('T')[0] ===
-        new Date(this.targetDate).toISOString().split('T')[0]
-      );
-      return round?.paidSkins === true;
-    }).length;
+  private calculateAllFlightSkinsPayouts(): void {
+    this.flights.forEach(flight => {
+      flight.skinsPlayerCount = flight.users.filter(user => {
+        const round = user.rounds?.find(r =>
+          new Date(r.date).toISOString().split('T')[0] ===
+          new Date(this.targetDate).toISOString().split('T')[0]
+        );
+        return round?.paidSkins === true;
+      }).length;
 
-    // Calculate total pot ($10 per player goes into net/gross pot)
-    this.skinsTotalPot = this.skinsPlayerCount * 10;
+      flight.skinsTotalPot = flight.skinsPlayerCount * 10;
 
-    // Calculate payout per skin
-    const skinsCount = this.getSkinsList().length;
-    this.skinsPayoutPerSkin = skinsCount > 0 ? this.skinsTotalPot / skinsCount : 0;
+      const skinsCount = this.getSkinsListForFlight(flight).length;
+      flight.skinsPayoutPerSkin = skinsCount > 0 ? flight.skinsTotalPot / skinsCount : 0;
+    });
   }
 }
