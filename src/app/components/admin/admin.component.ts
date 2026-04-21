@@ -391,6 +391,10 @@ export class AdminComponent {
       });
   }
 
+  trackByUserName(_index: number, user: User): string {
+    return user.name;
+  }
+
   formatDate(date: Date): string {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0'); // JS months are 0-indexed

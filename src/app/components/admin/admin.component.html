@@ -64,7 +64,7 @@
     </div>
 
     <div class="tee-times-list">
-      <div *ngFor="let user of displayedUsers" class="user-tee-time">
+      <div *ngFor="let user of displayedUsers; trackBy: trackByUserName" class="user-tee-time">
         <div class="user-name">{{ user.name }}</div>
         <div class="inputs-container">
           <div class="handicap-input">
@@ -117,7 +117,7 @@
               Paid Skins:
               <input
                 type="checkbox"
-                id="checkbox"
+                [id]="'paidSkins-' + user.name"
                 [(ngModel)]="user.paidSkins"
                 (ngModelChange)="onCheckboxChange(user, $event)"
               />
