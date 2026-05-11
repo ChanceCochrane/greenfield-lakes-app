@@ -21,6 +21,7 @@ export class ResultsComponent implements OnInit {
   holeHandicapValues: number[] = [9, 5, 3, 11, 17, 13, 15, 7, 1, 4, 14, 10, 12, 8, 6, 16, 18, 2];
   showNetLeaderboard: boolean = true;
   private flightNames: string[] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+  private numFlights: number = 2;
 
   // Payout estimates
   payouts: { first: number; second: number; third: number } = { first: 0, second: 0, third: 0 };
@@ -38,6 +39,7 @@ export class ResultsComponent implements OnInit {
       this.displayDate = new Date(year, month - 1, day).toLocaleDateString();
       const tournament = environment.tournamentDates.find(t => t.date === this.targetDate);
       this.tournamentFormat = tournament?.format || 'Stroke Play';
+      this.numFlights = tournament?.Flights || 2;
       this.loadScores();
     });
   }
@@ -72,7 +74,7 @@ export class ResultsComponent implements OnInit {
       (a.handicap || 0) - (b.handicap || 0)
     );
 
-    const numFlights = environment.flights;
+    const numFlights = this.numFlights;
     const flightSize = Math.ceil(sortedByHandicap.length / numFlights);
 
     // Create dynamic flights based on environment variable
