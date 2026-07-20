@@ -32,10 +32,21 @@ h3 {
 }
 
 .time-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
   color: #0f172a;
+}
+
+.handicap-header {
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
 }
 
 .players {
@@ -59,7 +70,17 @@ h3 {
 }
 
 .player-name {
+  flex: 1;
+  min-width: 0;
   color: #334155;
+}
+
+.player-handicap {
+  flex-shrink: 0;
+  min-width: 2rem;
+  text-align: right;
+  font-weight: 600;
+  color: #0f172a;
 }
 
 form {

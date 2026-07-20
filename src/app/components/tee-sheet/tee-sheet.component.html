@@ -15,7 +15,10 @@
 <div class="tee-sheet">
   <h2>Tournament Tee Sheet - {{ tournamentDate | date: 'longDate' }}</h2>
   <div class="tee-time" *ngFor="let slot of teeSheet">
-    <div class="time-header">{{ slot.time }} AM</div>
+    <div class="time-header">
+      <span>{{ slot.time }} AM</span>
+      <span class="handicap-header">Handicap</span>
+    </div>
     <div class="players">
       <div class="player" *ngFor="let user of slot.users; let i = index">
         <span class="player-number">{{ i + 1 }}.</span>
@@ -23,6 +26,7 @@
           {{ user?.name || '' }}
           <span *ngIf="user?.paidSkins" class="skins-check">✅</span>
         </span>
+        <span class="player-handicap">{{ user ? (user.handicap ?? '') : '' }}</span>
       </div>
     </div>
   </div>

@@ -76,69 +76,56 @@
       </div>
     </div>
 
-    <!-- Flight Skins Winners (directly under this flight's leaderboard) -->
-    <div class="skins-container" *ngIf="getSkinsListForFlight(flight).length > 0">
-      <h3>{{ flight.name }} Flight — Skins Winners</h3>
-      <div class="skins-cards-container">
-        <div *ngFor="let skin of getSkinsListForFlight(flight)" class="skin-card">
-          <div class="player-name">{{ skin.player }}</div>
-          <div class="hole-number">Hole {{ skin.hole }}</div>
+    <!-- Skins Legend -->
+    <div class="skins-legend" *ngIf="flight.users.length > 0">
+      <span>* Player paid for skins</span>
+    </div>
+
+    <!-- Flight Winners (directly under this flight's leaderboard) -->
+    <div class="skins-container" *ngIf="flight.users.length > 0">
+      <h3>{{ flight.name }} Flight Winners</h3>
+
+      <!-- Gross/Net Winners Podium -->
+      <div class="podium-section" *ngIf="(showNetLeaderboard ? flight.winners.net : flight.winners.gross).length > 0">
+        <h4 class="section-subtitle">{{ showNetLeaderboard ? 'Net' : 'Gross' }} Winners</h4>
+        <div class="podium-list">
+          <div
+            *ngFor="let winner of (showNetLeaderboard ? flight.winners.net : flight.winners.gross)"
+            class="podium-card"
+            [ngClass]="'place-' + winner.place"
+          >
+            <span class="podium-place">{{ winner.placeLabel }}</span>
+            <span class="podium-name">{{ winner.name }}</span>
+            <span class="podium-stat">
+              <span class="podium-stat-label">{{ showNetLeaderboard ? 'Net' : 'Gross' }}</span>
+              <span class="podium-stat-value">{{ winner.score }}</span>
+            </span>
+            <span class="podium-stat">
+              <span class="podium-stat-label">Payout</span>
+              <span class="podium-stat-value">${{ winner.payout | number:'1.2-2' }}</span>
+            </span>
+          </div>
         </div>
       </div>
-      <!-- Skins Payout Display -->
-      <div class="skins-payout-container">
-        <h4 class="skins-payout-title">Estimated {{ showNetLeaderboard ? 'Net' : 'Gross' }} Skins Payout</h4>
-        <div class="skins-payout-details">
-          <div class="skins-stat">
-            <span class="stat-label">Total Pot</span>
-            <span class="stat-value">${{ flight.skinsTotalPot | number:'1.2-2' }}</span>
-          </div>
-          <div class="skins-stat">
-            <span class="stat-label">Skins Won</span>
-            <span class="stat-value">{{ getSkinsListForFlight(flight).length }}</span>
-          </div>
-          <div class="skins-payout-card">
-            <span class="payout-label">Payout Per Skin</span>
-            <span class="payout-value">${{ flight.skinsPayoutPerSkin | number:'1.2-2' }}</span>
+
+      <!-- Skins Winners -->
+      <div class="skins-section">
+        <h4 class="section-subtitle">Skins Winners</h4>
+        <div class="skins-payout-line" *ngIf="getSkinsListForFlight(flight).length > 0">
+          Estimated Payout Per Skin: <strong>${{ flight.skinsPayoutPerSkin | number:'1.2-2' }}</strong>
+        </div>
+        <div class="skins-list" *ngIf="getSkinsListForFlight(flight).length > 0">
+          <div *ngFor="let entry of getGroupedSkinsForFlight(flight)" class="skin-row">
+            <span class="skin-player">{{ entry.player }}</span>
+            <span class="skin-holes">
+              <span *ngFor="let hole of entry.holes" class="skin-hole-chip">{{ hole }}</span>
+            </span>
           </div>
         </div>
+        <div *ngIf="getSkinsListForFlight(flight).length === 0" class="no-skins">
+          No skins awarded for {{ flight.name }} Flight.
+        </div>
       </div>
-    </div>
-    <div *ngIf="getSkinsListForFlight(flight).length === 0 && flight.users.length > 0" class="no-skins">
-      No skins awarded for {{ flight.name }} Flight.
-    </div>
-  </div>
-
-  <!-- Skins Legend -->
-  <div class="skins-legend" *ngIf="usersWithScores.length > 0">
-    <span>* Player paid for skins</span>
-  </div>
-
-  <!-- Estimated Payouts Section (below leaderboards) -->
-  <div class="payouts-container" *ngIf="usersWithScores.length > 0">
-    <h3 class="payouts-title">Estimated Gross/Net Payouts</h3>
-    <div class="payouts-grid">
-      <div class="payout-card first-place">
-        <span class="place-label">1st Place</span>
-        <span class="payout-amount">${{ payouts.first | number:'1.2-2' }}</span>
-      </div>
-      <div class="payout-card second-place">
-        <span class="place-label">2nd Place</span>
-        <span class="payout-amount">${{ payouts.second | number:'1.2-2' }}</span>
-      </div>
-      <div class="payout-card third-place">
-        <span class="place-label">3rd Place</span>
-        <span class="payout-amount">${{ payouts.third | number:'1.2-2' }}</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Closest to Pin Payout Section -->
-  <div class="ctp-container" *ngIf="usersWithScores.length > 0">
-    <h3 class="ctp-title">Closest to Pin Payout</h3>
-    <div class="ctp-payout-card">
-      <span class="ctp-label">Payout Per CTP</span>
-      <span class="ctp-value">${{ usersWithScores.length | number:'1.2-2' }}</span>
     </div>
   </div>
 </div>

@@ -5,6 +5,23 @@ import { TeeTimeService } from '../../services/tee-time.service';
 import { LeaderboardService } from '../../services/leaderboard.service';
 import { environment } from '../../../environments/environment';
 
+interface FlightWinner {
+  place: number;
+  placeLabel: string;
+  name: string;
+  score: number;
+  payout: number;
+}
+
+interface Flight {
+  name: string;
+  users: User[];
+  skinsPlayerCount: number;
+  skinsTotalPot: number;
+  skinsPayoutPerSkin: number;
+  winners: { gross: FlightWinner[]; net: FlightWinner[] };
+}
+
 @Component({
   selector: 'app-results',
   standalone: false,
@@ -13,12 +30,17 @@ import { environment } from '../../../environments/environment';
 })
 export class ResultsComponent implements OnInit {
   usersWithScores: User[] = [];
-  flights: { name: string; users: User[]; skinsPlayerCount: number; skinsTotalPot: number; skinsPayoutPerSkin: number }[] = [];
+  flights: Flight[] = [];
   displayDate: string = '';
   tournamentFormat: string = '';
   private targetDate: string = '';
   parValues: number[] = environment.parValues;
-  holeHandicapValues: number[] = [9, 5, 3, 11, 17, 13, 15, 7, 1, 4, 14, 10, 12, 8, 6, 16, 18, 2];
+  holeHandicapValues: number[] = environment.courseHandicapValues;
+  // Hole indexes ordered from hardest (handicap 1) to easiest, used for scorecard playoffs
+  private holesByDifficulty: number[] = environment.courseHandicapValues
+    .map((hcp: number, idx: number) => ({ hcp, idx }))
+    .sort((a: { hcp: number; idx: number }, b: { hcp: number; idx: number }) => a.hcp - b.hcp)
+    .map((h: { hcp: number; idx: number }) => h.idx);
   showNetLeaderboard: boolean = true;
   private flightNames: string[] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
   private numFlights: number = 2;
@@ -33,6 +55,9 @@ export class ResultsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Scroll to top immediately, before the view renders, to avoid a
+    // visible jump after the page loads
+    window.scrollTo(0, 0);
     this.route.params.subscribe(params => {
       this.targetDate = params['date']; // Get the date parameter from the route
       const [year, month, day] = this.targetDate.split('-').map(Number);
@@ -65,6 +90,7 @@ export class ResultsComponent implements OnInit {
 
       this.splitIntoFlights();
       this.calculateAllFlightSkinsPayouts();
+      this.computeFlightWinners();
     });
   }
 
@@ -90,7 +116,8 @@ export class ResultsComponent implements OnInit {
           users: flightUsers,
           skinsPlayerCount: 0,
           skinsTotalPot: 0,
-          skinsPayoutPerSkin: 0
+          skinsPayoutPerSkin: 0,
+          winners: { gross: [], net: [] }
         });
       }
     }
@@ -104,13 +131,102 @@ export class ResultsComponent implements OnInit {
   }
 
   private sortFlights(): void {
-    const sortByScore = (a: User, b: User) => {
-      const aScore = this.showNetLeaderboard ? this.calculateNetTotal(a) : this.calculateTotal(a);
-      const bScore = this.showNetLeaderboard ? this.calculateNetTotal(b) : this.calculateTotal(b);
-      return aScore - bScore;
-    };
+    const useNet = this.showNetLeaderboard;
+    this.flights.forEach(flight =>
+      flight.users.sort((a, b) => this.compareByScoreWithPlayoff(a, b, useNet))
+    );
+  }
 
-    this.flights.forEach(flight => flight.users.sort(sortByScore));
+  /**
+   * Compare two players by total score. Ties are broken with a scorecard
+   * playoff: compare hole scores starting at the hardest handicap hole
+   * (handicap 1) and moving to easier holes until the tie is broken.
+   * Net comparisons use net hole scores; gross comparisons use gross.
+   */
+  private compareByScoreWithPlayoff(a: User, b: User, useNet: boolean): number {
+    const aTotal = useNet ? this.calculateNetTotal(a) : this.calculateTotal(a);
+    const bTotal = useNet ? this.calculateNetTotal(b) : this.calculateTotal(b);
+    if (aTotal !== bTotal) {
+      return aTotal - bTotal;
+    }
+
+    for (const holeIndex of this.holesByDifficulty) {
+      const aHole = useNet ? this.calculateNetScoreForHole(a, holeIndex) : (a.currentRound[holeIndex] ?? 0);
+      const bHole = useNet ? this.calculateNetScoreForHole(b, holeIndex) : (b.currentRound[holeIndex] ?? 0);
+      if (aHole !== bHole) {
+        return aHole - bHole;
+      }
+    }
+
+    return 0;
+  }
+
+  /**
+   * Compute the top-3 gross and top-3 net winners for each flight.
+   * A player can only win one position: if a player places in both lists,
+   * they keep whichever placing is better (gross wins an equal placing)
+   * and the other list moves up.
+   */
+  private computeFlightWinners(): void {
+    this.flights.forEach(flight => {
+      const grossOrder = [...flight.users].sort((a, b) => this.compareByScoreWithPlayoff(a, b, false));
+      const netOrder = [...flight.users].sort((a, b) => this.compareByScoreWithPlayoff(a, b, true));
+
+      const excludedFromGross = new Set<User>();
+      const excludedFromNet = new Set<User>();
+      let grossTop: User[] = [];
+      let netTop: User[] = [];
+
+      // Iteratively resolve players appearing in both top-3 lists.
+      // Only one conflict is resolved per iteration (the player with the
+      // best placing), because each resolution shifts the other list up
+      // and can change the placings of the remaining conflicted players.
+      while (true) {
+        grossTop = grossOrder.filter(u => !excludedFromGross.has(u)).slice(0, 3);
+        netTop = netOrder.filter(u => !excludedFromNet.has(u)).slice(0, 3);
+
+        const conflicts = grossTop.filter(u => netTop.includes(u));
+        if (conflicts.length === 0) {
+          break;
+        }
+
+        // Pick the conflicted player with the best (lowest) placing
+        let player = conflicts[0];
+        let bestPlace = Number.MAX_SAFE_INTEGER;
+        for (const candidate of conflicts) {
+          const place = Math.min(grossTop.indexOf(candidate), netTop.indexOf(candidate)) + 1;
+          if (place < bestPlace) {
+            bestPlace = place;
+            player = candidate;
+          }
+        }
+
+        const grossPlace = grossTop.indexOf(player) + 1;
+        const netPlace = netTop.indexOf(player) + 1;
+        if (grossPlace <= netPlace) {
+          excludedFromNet.add(player);
+        } else {
+          excludedFromGross.add(player);
+        }
+      }
+
+      flight.winners = {
+        gross: grossTop.map((u, i) => this.buildWinner(u, i + 1, false)),
+        net: netTop.map((u, i) => this.buildWinner(u, i + 1, true))
+      };
+    });
+  }
+
+  private buildWinner(user: User, place: number, useNet: boolean): FlightWinner {
+    const placeLabels = ['1st', '2nd', '3rd'];
+    const payoutsByPlace = [this.payouts.first, this.payouts.second, this.payouts.third];
+    return {
+      place,
+      placeLabel: placeLabels[place - 1] || `${place}th`,
+      name: user.name,
+      score: useNet ? this.calculateNetTotal(user) : this.calculateTotal(user),
+      payout: payoutsByPlace[place - 1] || 0
+    };
   }
 
   // Check if user paid skins for this date
@@ -261,6 +377,18 @@ export class ResultsComponent implements OnInit {
       });
     });
     return skinsList.sort((a, b) => a.hole - b.hole);
+  }
+
+  // Skins grouped by player (one row per player), most skins first
+  getGroupedSkinsForFlight(flight: { name: string; users: User[] }): { player: string; holes: number[] }[] {
+    const grouped = new Map<string, number[]>();
+    this.getSkinsListForFlight(flight).forEach(skin => {
+      const holes = grouped.get(skin.player) || [];
+      holes.push(skin.hole);
+      grouped.set(skin.player, holes);
+    });
+    return Array.from(grouped, ([player, holes]) => ({ player, holes }))
+      .sort((a, b) => b.holes.length - a.holes.length || a.holes[0] - b.holes[0]);
   }
 
   /**

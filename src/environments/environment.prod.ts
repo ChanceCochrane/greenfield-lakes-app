@@ -2,6 +2,7 @@ export const environment = {
   production: true,
   apiUrl: 'https://greenfield-api.fly.dev',
   parValues: [3, 4, 5, 3, 3, 3, 3, 3, 5, 4, 3, 3, 3, 3, 4, 3, 3, 4],
+  courseHandicapValues: [9, 5, 3, 11, 17, 13, 15, 7, 1, 4, 14, 10, 12, 8, 6, 16, 18, 2],
   tournamentDates: [
     { date: '2026-01-18', format: 'Stroke Play', Flights: 2 },
     { date: '2026-02-01', format: 'Stroke Play', Flights: 2 },
