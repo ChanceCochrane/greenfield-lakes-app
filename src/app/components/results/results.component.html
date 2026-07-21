@@ -1,87 +1,42 @@
 <div class="results-container">
   <!-- Page Header -->
-  <div class="page-header">
-    <h1 class="page-title">Tournament Results</h1>
-    <div class="page-subtitle">{{ displayDate }}</div>
-    <div class="page-format">{{ tournamentFormat }}</div>
-  </div>
-
-  <button (click)="toggleLeaderboard()" class="toggle-button">
-    Click to See {{ !showNetLeaderboard ? 'Net' : 'Gross' }} Results
-  </button>
+  <header class="page-header">
+    <div class="header-eyebrow">Tournament Results</div>
+    <h1 class="header-date">{{ displayDate }}</h1>
+    <div class="header-divider"></div>
+    <div class="header-format">{{ tournamentFormat }}</div>
+  </header>
 
   <div *ngIf="usersWithScores.length === 0" class="no-scores">
     No scores available for this date
   </div>
 
-  <!-- Dynamic Flights -->
-  <div *ngFor="let flight of flights" class="flight-section">
-    <h3 class="flight-title" (click)="toggleLeaderboard()">{{ flight.name }} Flight{{ showNetLeaderboard ? ' — Net Leaderboard' : ' — Gross Leaderboard' }}</h3>
-    <div class="table-scroll-outer">
-      <div class="table-scroll-wrapper">
-        <table class="results-table">
-          <thead>
-            <tr class="sticky-row">
-              <th class="th-player">Player</th>
-              <th class="score-header">1</th>
-              <th class="score-header">2</th>
-              <th class="score-header">3</th>
-              <th class="score-header">4</th>
-              <th class="score-header">5</th>
-              <th class="score-header">6</th>
-              <th class="score-header">7</th>
-              <th class="score-header">8</th>
-              <th class="score-header">9</th>
-              <th class="score-header">10</th>
-              <th class="score-header">11</th>
-              <th class="score-header">12</th>
-              <th class="score-header">13</th>
-              <th class="score-header">14</th>
-              <th class="score-header">15</th>
-              <th class="score-header">16</th>
-              <th class="score-header">17</th>
-              <th class="score-header">18</th>
-              <th>Gross Score</th>
-              <th>Handicap</th>
-              <th>Net Score</th>
-            </tr>
+  <!-- Flight Tabs -->
+  <nav class="flight-tabs" *ngIf="flights.length > 1" aria-label="Flight navigation">
+    <button
+      *ngFor="let flight of flights; let i = index"
+      type="button"
+      class="flight-tab"
+      [class.active]="i === selectedFlightIndex"
+      (click)="selectFlight(i)"
+    >
+      {{ flight.name }} Flight
+    </button>
+  </nav>
 
-            <tr class="sticky-row par-row">
-              <td class="par-tab"><strong>Par</strong></td>
-              <td *ngFor="let par of parValues" class="score-header">{{ par }}</td>
-              <td class="score-header">{{ calculateParTotal() }}</td>
-              <td class="score-header"></td>
-              <td class="score-header"></td>
-            </tr>
-          </thead>
+  <!-- Net / Gross Toggle -->
+  <div class="score-mode-toggle" *ngIf="flights.length > 0" role="group" aria-label="Score type">
+    <button type="button" class="mode-option" [class.active]="showNetLeaderboard" (click)="setScoreMode(true)">
+      Net
+    </button>
+    <button type="button" class="mode-option" [class.active]="!showNetLeaderboard" (click)="setScoreMode(false)">
+      Gross
+    </button>
+  </div>
 
-          <!-- Flight User Rows -->
-          <tr *ngFor="let user of flight.users">
-            <td class="sticky-col">{{ user.name }}{{ userPaidSkins(user) ? '*' : '' }}</td>
-            <td
-              *ngFor="let score of user.currentRound; let i = index"
-              class="score-cell"
-              [ngClass]="{
-                'birdie': getDisplayScoreForHole(user, i) < parValues[i],
-                'skins': skins(i, user)
-              }"
-            >
-              {{ getDisplayScoreForHole(user, i) }}
-            </td>
-            <td>{{ calculateTotal(user) }}</td>
-            <td>{{ user.handicap !== null && user.handicap !== undefined ? user.handicap : 0 }}</td>
-            <td>{{ calculateNetTotal(user) }}</td>
-          </tr>
-        </table>
-      </div>
-    </div>
-
-    <!-- Skins Legend -->
-    <div class="skins-legend" *ngIf="flight.users.length > 0">
-      <span>* Player paid for skins</span>
-    </div>
-
-    <!-- Flight Winners (directly under this flight's leaderboard) -->
+  <!-- Selected Flight -->
+  <div *ngIf="selectedFlight as flight" class="flight-section">
+    <!-- Flight Winners (above the leaderboard) -->
     <div class="skins-container" *ngIf="flight.users.length > 0">
       <h3>{{ flight.name }} Flight Winners</h3>
 
@@ -126,6 +81,57 @@
           No skins awarded for {{ flight.name }} Flight.
         </div>
       </div>
+    </div>
+
+    <!-- Flight Leaderboard -->
+    <h3 class="flight-title">{{ flight.name }} Flight — {{ showNetLeaderboard ? 'Net' : 'Gross' }} Leaderboard</h3>
+    <div class="table-scroll-outer">
+      <div class="table-scroll-wrapper">
+        <table class="results-table">
+          <thead>
+            <tr class="sticky-row">
+              <th class="th-player">Player</th>
+              <th *ngFor="let par of parValues; let i = index" class="score-header">{{ i + 1 }}</th>
+              <th class="totals-header">Gross Score</th>
+              <th class="totals-header">Handicap</th>
+              <th class="totals-header">Net Score</th>
+            </tr>
+
+            <tr class="sticky-row par-row">
+              <td class="par-tab"><strong>Par</strong></td>
+              <td *ngFor="let par of parValues" class="score-header">{{ par }}</td>
+              <td class="score-header">{{ calculateParTotal() }}</td>
+              <td class="score-header"></td>
+              <td class="score-header"></td>
+            </tr>
+          </thead>
+
+          <tbody>
+            <!-- Flight User Rows -->
+            <tr *ngFor="let user of flight.users">
+              <td class="sticky-col">{{ user.name }}{{ userPaidSkins(user) ? '*' : '' }}</td>
+              <td
+                *ngFor="let score of user.currentRound; let i = index"
+                class="score-cell"
+                [ngClass]="{
+                  'birdie': getDisplayScoreForHole(user, i) < parValues[i],
+                  'skins': skinsForFlight(i, user, flight.users)
+                }"
+              >
+                {{ getDisplayScoreForHole(user, i) }}
+              </td>
+              <td class="totals-col">{{ calculateTotal(user) }}</td>
+              <td class="totals-col">{{ user.handicap || 0 }}</td>
+              <td class="totals-col">{{ calculateNetTotal(user) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Skins Legend -->
+    <div class="skins-legend" *ngIf="flight.users.length > 0">
+      <span>* Player paid for skins</span>
     </div>
   </div>
 </div>

@@ -17,43 +17,119 @@
 /* Page Header */
 .page-header {
   width: 100%;
+  max-width: 600px;
   text-align: center;
-  margin-bottom: 10px;
-  padding: 20px 15px;
-  background: linear-gradient(135deg, #022913 0%, #034d23 100%);
+  margin-bottom: 16px;
+  padding: 24px 15px 20px;
+  background: linear-gradient(160deg, #022913 0%, #034d23 60%, #045c2b 100%);
   border-radius: 12px;
+  border-bottom: 4px solid #b7a796;
   box-shadow: 0 4px 16px rgba(2, 41, 19, 0.3);
   color: white;
 }
 
-.page-title {
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin-bottom: 6px;
-  letter-spacing: 0.5px;
-}
-
-.page-subtitle {
-  font-size: 1.1rem;
-  opacity: 0.9;
-  margin-bottom: 4px;
-}
-
-.page-format {
-  font-size: 1.2rem;
+.header-eyebrow {
+  font-size: 0.8rem;
   font-weight: 600;
-  padding: 6px 20px;
-  display: inline-block;
-  background-color: rgba(255, 255, 255, 0.15);
-  border-radius: 20px;
-  margin-top: 6px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: #d8cfc4;
+  margin-bottom: 8px;
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 10px;
-  font-size: 1.5rem;
+.header-date {
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
 }
+
+.header-divider {
+  width: 56px;
+  height: 3px;
+  margin: 0 auto 12px;
+  background-color: #b7a796;
+  border-radius: 2px;
+}
+
+.header-format {
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 6px 22px;
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 20px;
+}
+
+/* Flight Tabs */
+.flight-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 600px;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.flight-tab {
+  flex: 1 1 auto;
+  min-width: 90px;
+  max-width: 220px;
+  padding: 12px 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #6b6b6b;
+  background-color: #f1efec;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.flight-tab.active {
+  color: white;
+  background: linear-gradient(135deg, #022913 0%, #034d23 100%);
+  border-color: #b7a796;
+  box-shadow: 0 3px 10px rgba(2, 41, 19, 0.4);
+}
+
+.flight-tab.active::after {
+  content: ' ✓';
+  color: #d8cfc4;
+}
+
+/* Net / Gross Segmented Toggle */
+.score-mode-toggle {
+  display: flex;
+  width: 100%;
+  max-width: 440px;
+  padding: 4px;
+  margin-bottom: 8px;
+  background-color: #e4e0da;
+  border-radius: 10px;
+}
+
+.mode-option {
+  flex: 1;
+  padding: 12px 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #555;
+  background-color: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.mode-option.active {
+  color: white;
+  background: linear-gradient(135deg, #022913 0%, #034d23 100%);
+  box-shadow: 0 2px 6px rgba(2, 41, 19, 0.35);
+}
+
 
 .no-scores {
   text-align: center;
@@ -86,9 +162,11 @@ table {
   width: max-content;
   border-collapse: collapse;
   background-color: white;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 10px rgba(2, 41, 19, 0.15);
   font-size: 0.9rem;
   min-width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 thead {
@@ -111,20 +189,15 @@ thead {
 
 .par-row td.score-header {
   background-color: #022913 !important;
-  color: white !important;
+  color: #d8cfc4 !important;
+  font-weight: 600;
+  border-bottom: 3px solid #b7a796;
 }
 
 td.par-tab {
   background-color: #022913 !important;
-  color: white !important;
-}
-
-.users-column {
-  position: sticky;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  background-color: #fff;
+  color: #d8cfc4 !important;
+  border-bottom: 3px solid #b7a796;
 }
 
 .sticky-col {
@@ -338,7 +411,7 @@ td.par-tab {
 th, td {
   padding: 8px 6px;
   text-align: center;
-  border: 1px solid #ddd;
+  border: 1px solid #e2ddd6;
 }
 
 th {
@@ -349,6 +422,39 @@ th {
 
 td {
   background-color: white;
+}
+
+/* Zebra striping (tan-tinted) */
+tbody tr:nth-child(even) td {
+  background-color: #f7f5f1;
+}
+
+/* Player name column */
+tbody td.sticky-col {
+  text-align: left;
+  padding-left: 10px;
+  font-weight: 600;
+  color: #022913;
+  white-space: nowrap;
+}
+
+tbody tr:nth-child(even) td.sticky-col {
+  background-color: #f7f5f1;
+}
+
+/* Totals columns (Gross / Handicap / Net) */
+.totals-header {
+  border-bottom: 3px solid #b7a796;
+}
+
+td.totals-col {
+  background-color: #efe9e1;
+  font-weight: 700;
+  color: #022913;
+}
+
+tbody tr:nth-child(even) td.totals-col {
+  background-color: #e9e2d8;
 }
 
 td.score-header {
@@ -377,31 +483,20 @@ tr:hover td {
   background-color: #e8f5e9;
 }
 
+/* Birdie or better: classic scorecard circle */
 .score-cell.birdie {
   padding: 0.25rem;
   font-weight: bold;
   color: #290218;
   text-align: center;
+  box-shadow: inset 0 0 0 2px #b7a796;
+  border-radius: 50%;
 }
 
-.score-cell.skins {
+.score-cell.skins,
+tbody tr td.score-cell.skins {
   background-color: #022913;
   color: white;
-}
-
-.toggle-button {
-  display: block;
-  margin: 16px auto;
-  padding: 12px 24px;
-  font-size: 16px;
-  font-weight: 600;
-  color: white;
-  background-color: #b7a796;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  max-width: 90%;
-  width: 100%;
 }
 
 /* Desktop adjustments */
@@ -421,8 +516,8 @@ tr:hover td {
     justify-content: center; /* Center the table on desktop */
   }
 
-  .toggle-button {
-    max-width: 300px;
+  .flight-tabs {
+    max-width: 600px;
   }
 
   .skins-container {
@@ -446,44 +541,27 @@ tr:hover td {
   }
 }
 
-@media (min-width: 600px) {
-  .skins-cards-container {
-    justify-content: space-between;
-  }
-
-  .skin-card {
-    width: 30%; /* Three columns on larger screens */
-    max-width: none;
-  }
-}
-
 /* Flight Sections */
 .flight-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
-  max-width: fit-content;
-  margin-top: 15px;
+  margin-top: 8px;
 }
 
 .flight-title {
+  width: 100%;
+  max-width: 600px;
   text-align: center;
   font-size: 1.3rem;
   font-weight: bold;
   color: white;
-  margin-bottom: 10px;
+  margin: 20px 0 10px;
   padding: 12px 16px;
   background: linear-gradient(135deg, #022913 0%, #034d23 100%);
   border-radius: 8px;
   letter-spacing: 0.3px;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-}
-
-.flight-title:hover {
-  opacity: 0.85;
-}
-
-.flight-title:active {
-  opacity: 0.7;
 }
 
 /* Skins Legend */

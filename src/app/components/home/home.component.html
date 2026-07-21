@@ -1,49 +1,68 @@
-<div class="hero">
-  <h1> Greenfield Lakes Golf League </h1>
-  <div class="typing-demo">
-    Hole In One Pot!!!!
-  </div>
-  <div class="counter-amount">
-    ${{ holeInOneDisplay | number:'1.0-0' }}
-  </div>
-  <p>Sign up now to reserve your spot in the next tournament!</p>
-  <button class="signup-btn" (click)="goToSignUp()">Sign Up Now</button>
+<div class="home-container">
+  <!-- Hero -->
+  <header class="hero">
+    <h1>Greenfield Lakes<br />Golf League</h1>
+    <div class="hero-divider"></div>
+    <div class="pot-banner">
+      <span class="pot-label">Hole-In-One Pot</span>
+      <span class="pot-amount">${{ holeInOneDisplay | number:'1.0-0' }}</span>
+    </div>
+  </header>
+
+  <!-- Next Tournament -->
+  <section class="next-tournament" *ngIf="nextTournamentDate">
+    <div class="card-eyebrow">Next Tournament</div>
+    <div class="next-date">{{ getFormattedDate(nextTournamentDate) }}</div>
+    <div class="next-meta">
+      <span class="next-format">{{ nextTournamentFormat }}</span>
+      <span class="next-countdown" *ngIf="daysUntilNext !== null">
+        {{ daysUntilNext === 0 ? 'Today!' : daysUntilNext === 1 ? 'Tomorrow' : 'In ' + daysUntilNext + ' days' }}
+      </span>
+    </div>
+    <button class="btn btn-tan" (click)="goToSignUp()">Sign Up &mdash; View Tee Sheet</button>
+  </section>
+
+  <!-- Latest Winners -->
+  <section class="latest-results" *ngIf="flights.length > 0">
+    <h2 class="section-title">Latest Winners</h2>
+    <p class="section-subtitle">{{ getFormattedDate(lastTournamentDate) }}</p>
+
+    <div class="flight-card" *ngFor="let flight of flights">
+      <h3 class="flight-card-title">{{ flight.name }} Flight</h3>
+      <div class="winners-columns">
+        <div class="winners-group">
+          <div class="winners-group-label">Net</div>
+          <div class="winner-row" *ngFor="let winner of flight.winners.net">
+            <span class="winner-place">{{ winner.placeLabel }}</span>
+            <span class="winner-name">{{ winner.name }}</span>
+            <span class="winner-score">{{ winner.score }}</span>
+            <span class="winner-payout">${{ winner.payout | number:'1.2-2' }}</span>
+          </div>
+        </div>
+        <div class="winners-group">
+          <div class="winners-group-label">Gross</div>
+          <div class="winner-row" *ngFor="let winner of flight.winners.gross">
+            <span class="winner-place">{{ winner.placeLabel }}</span>
+            <span class="winner-name">{{ winner.name }}</span>
+            <span class="winner-score">{{ winner.score }}</span>
+            <span class="winner-payout">${{ winner.payout | number:'1.2-2' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-green" (click)="goToFullResults()">Full Results &amp; Skins</button>
+  </section>
+
+  <!-- Quick Links -->
+  <nav class="quick-links">
+    <button class="quick-link" (click)="goToSchedule()">
+      <span class="quick-link-title">Schedule</span>
+      <span class="quick-link-sub">All 2026 tournaments</span>
+    </button>
+    <button class="quick-link" (click)="goToLeaderboard()">
+      <span class="quick-link-title">Player Stats</span>
+      <span class="quick-link-sub">POTY race &amp; scorecards</span>
+    </button>
+  </nav>
 </div>
-
-<section class="leaderboard">
-  <h2 class="board-title">Results from {{ getFormattedDate(lastTournamentDate) }}</h2>
-  <h3 class="board-title">Net Leaders</h3>
-  <table>
-    <thead>
-      <tr>
-        <th>Player</th>
-        <th>Net Score</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let player of netLeaderboard">
-        <td>{{ player.name }}</td>
-        <td>{{ player.netscore }}</td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 class="board-title">Gross Leaders</h3>
-  <table>
-    <thead>
-      <tr>
-        <th>Player</th>
-        <th>Gross Score</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let player of grossLeaderboard">
-        <td>{{ player.name }}</td>
-        <td>{{ player.grossscore }}</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="results-button-wrapper">
-    <button class="results-btn" (click)="goToFullResults()">Full Leaderboard</button>
-  </div>
-</section>
