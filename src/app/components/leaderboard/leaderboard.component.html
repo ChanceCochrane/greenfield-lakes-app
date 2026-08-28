@@ -1,12 +1,42 @@
-<!-- Dropdown for Tee Time Selection -->
+<!-- Step 1: Find your group -->
 <div class="dropdown-container">
-  <select *ngIf="teeTimes.length > 0; else noTeeTimes" (change)="onGroupSelect($event)"
-    [ngClass]="{'no-selection': !selectedTeeTimeIndex}">
-    <option value="" disabled selected>Select a tee time</option>
-    <option *ngFor="let teeTime of teeTimes; let i = index" [value]="i">
-      {{ teeTime.displayUsers }}
-    </option>
-  </select>
+  <div class="group-picker" *ngIf="teeTimes.length > 0; else noTeeTimes">
+    <div class="group-picker-header">
+      <h2 class="group-picker-title">Find Your Group</h2>
+      <p class="group-picker-subtitle">Tap the box below, then type a name to narrow the list</p>
+    </div>
+
+    <div class="group-combo" [ngClass]="{'needs-attention': selectedTeeTimeIndex === null && !groupDropdownOpen}">
+      <input
+        type="text"
+        class="group-combo-input"
+        [(ngModel)]="groupFilter"
+        (focus)="openGroupDropdown()"
+        (input)="openGroupDropdown()"
+        (blur)="closeGroupDropdown()"
+        placeholder="Tap here to find your group..."
+        aria-label="Search and select your tee time group"
+        role="combobox"
+        [attr.aria-expanded]="groupDropdownOpen" />
+      <button *ngIf="groupFilter" type="button" class="group-combo-clear" (mousedown)="$event.preventDefault()" (click)="clearGroupFilter()" aria-label="Clear">&times;</button>
+      <span *ngIf="!groupFilter" class="group-combo-chevron" aria-hidden="true">&#9662;</span>
+
+      <ul *ngIf="groupDropdownOpen" class="group-dropdown" role="listbox">
+        <li *ngFor="let teeTime of visibleTeeTimes"
+            role="option"
+            [ngClass]="{'selected': teeTime.id === selectedTeeTimeIndex}"
+            (mousedown)="$event.preventDefault()"
+            (click)="selectGroup(teeTime)">
+          {{ teeTime.displayUsers }}
+        </li>
+        <li *ngIf="visibleTeeTimes.length === 0" class="no-match">No groups match that name</li>
+      </ul>
+    </div>
+
+    <p *ngIf="selectedGroupLabel" class="group-confirmation">
+      Scoring for: <strong>{{ selectedGroupLabel }}</strong>
+    </p>
+  </div>
   <ng-template #noTeeTimes>
     <p>No tee times today {{ selectedDateString | date: 'EEEE, MMMM d' }}.</p>
   </ng-template>
@@ -58,36 +88,34 @@
     </div>
 </div>
 
-<!-- Leaderboards with Accordion Dropdown -->
-<div *ngIf="teeTimes.length > 0">
-  <!-- Net Leaderboard Accordion -->
-  <div class="accordion-item">
-    <div class="accordion-header" (click)="toggleAccordion('net')">
-      <h3>Net Leaderboard</h3>
-      <span>{{ accordionStates['net'] ? '-' : '+' }}</span>
-    </div>
-    <div class="accordion-content" [ngClass]="{'open': accordionStates['net']}">
-      <app-live-leaderboard
-        [selectedDate]="selectedDateString"
-        [refreshTrigger]="leaderboardTrigger.asObservable()"
-        [showNet]="true">
-      </app-live-leaderboard>
-    </div>
+<!-- Live Leaderboard with Net/Gross toggle -->
+<div *ngIf="teeTimes.length > 0" class="live-board-card">
+  <div class="live-board-header">
+    <h3>Live Leaderboard</h3>
+    <span class="live-pill"><span class="live-dot"></span>LIVE</span>
   </div>
 
-  <!-- Gross Leaderboard Accordion -->
-  <div class="accordion-item">
-    <div class="accordion-header" (click)="toggleAccordion('gross')">
-      <h3>Gross Leaderboard</h3>
-      <span>{{ accordionStates['gross'] ? '-' : '+' }}</span>
-    </div>
-    <div class="accordion-content" [ngClass]="{'open': accordionStates['gross']}">
-      <app-live-leaderboard
-        [refreshTrigger]="leaderboardTrigger.asObservable()"
-        [selectedDate]="selectedDateString"
-        [showNet]="false">
-      </app-live-leaderboard>
-    </div>
+  <div class="board-toggle" role="tablist">
+    <button type="button" role="tab" [attr.aria-selected]="leaderboardView === 'net'"
+      [ngClass]="{'active': leaderboardView === 'net'}" (click)="setLeaderboardView('net')">
+      Net
+    </button>
+    <button type="button" role="tab" [attr.aria-selected]="leaderboardView === 'gross'"
+      [ngClass]="{'active': leaderboardView === 'gross'}" (click)="setLeaderboardView('gross')">
+      Gross
+    </button>
+  </div>
+
+  <p class="board-hint">
+    {{ leaderboardView === 'net' ? 'Net = your score after handicap strokes.' : 'Gross = your raw score, no handicap.' }}
+  </p>
+
+  <div class="live-board-body">
+    <app-live-leaderboard
+      [selectedDate]="selectedDateString"
+      [refreshTrigger]="leaderboardTrigger.asObservable()"
+      [showNet]="leaderboardView === 'net'">
+    </app-live-leaderboard>
   </div>
 </div>
 

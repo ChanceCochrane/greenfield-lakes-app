@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { User } from '../../../objects/user';
 import { TeeTimeService } from '../../services/tee-time.service';
 
@@ -8,7 +8,7 @@ import { TeeTimeService } from '../../services/tee-time.service';
   templateUrl: './live-leaderboard.component.html',
   styleUrl: './live-leaderboard.component.css'
 })
-export class LiveLeaderboardComponent {
+export class LiveLeaderboardComponent implements OnChanges {
   @Input() refreshTrigger: any; // optional trigger for manual updates
   @Input() selectedDate: string = '';
   @Input() showNet: boolean = false; // NEW: whether to show net scores
@@ -25,6 +25,12 @@ export class LiveLeaderboardComponent {
     // Optional: Refresh if parent triggers update
     if (this.refreshTrigger) {
       this.refreshTrigger.subscribe(() => this.loadLeaderboard());
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['showNet'] && !changes['showNet'].firstChange) {
+      this.leaderboard = this.calculateLeaderboard(this.users);
     }
   }
 

@@ -22,11 +22,11 @@ export class LeaderboardComponent {
   selectedDate: Date = new Date(); // TO DO: Set this to todays date so the leaderboard is only visible on tourney day
   selectedDateString: string = '';
   initializeRound = [3, 4, 5, 3, 3, 3, 3, 3, 5, 4, 3, 3, 3, 3, 4, 3, 3, 4];
-  accordionStates: { [key: string]: boolean } = {
-    net: false,
-    gross: false
-  };
+  leaderboardView: 'net' | 'gross' = 'net';
   selectedTeeTimeIndex: number | null = null;
+  groupFilter: string = '';
+  groupDropdownOpen: boolean = false;
+  selectedGroupLabel: string | null = null;
 
   // Player Stats & POTY
   potypUsers: User[] = [];
@@ -106,12 +106,39 @@ export class LeaderboardComponent {
     );
   }
 
-  onGroupSelect(event: Event): void {
-    const selectedId = (event.target as HTMLSelectElement).value;
-    const index = parseInt(selectedId, 10);
-    this.selectedGroupId = selectedId; // Keep for UI highlighting if needed
-    this.selectedTeeTimeIndex = selectedId ? +selectedId : null;
-    this.loadSelectedGroup(index);
+  get visibleTeeTimes(): any[] {
+    const term = this.groupFilter.trim().toLowerCase();
+    // Show the full list when empty or still displaying the chosen group's name
+    if (!term || this.groupFilter === this.selectedGroupLabel) return this.teeTimes;
+    return this.teeTimes.filter((teeTime: any) =>
+      teeTime.users.some((name: string) => name.toLowerCase().includes(term))
+    );
+  }
+
+  openGroupDropdown(): void {
+    this.groupDropdownOpen = true;
+  }
+
+  closeGroupDropdown(): void {
+    this.groupDropdownOpen = false;
+    // Restore the selected group's name if the user typed but didn't pick anything
+    if (this.selectedGroupLabel) {
+      this.groupFilter = this.selectedGroupLabel;
+    }
+  }
+
+  clearGroupFilter(): void {
+    this.groupFilter = '';
+    this.groupDropdownOpen = true;
+  }
+
+  selectGroup(teeTime: any): void {
+    this.selectedGroupId = String(teeTime.id);
+    this.selectedTeeTimeIndex = teeTime.id;
+    this.selectedGroupLabel = teeTime.displayUsers;
+    this.groupFilter = teeTime.displayUsers;
+    this.groupDropdownOpen = false;
+    this.loadSelectedGroup(teeTime.id);
   }
 
   loadSelectedGroup(index: number): void {
@@ -201,8 +228,8 @@ export class LeaderboardComponent {
     return `${year}-${month}-${day}`;
   }
 
-  toggleAccordion(type: string) {
-    this.accordionStates[type] = !this.accordionStates[type];
+  setLeaderboardView(view: 'net' | 'gross'): void {
+    this.leaderboardView = view;
   }
 
   // Player Stats methods
